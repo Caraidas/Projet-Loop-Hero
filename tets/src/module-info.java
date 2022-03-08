@@ -1,3 +1,0 @@
-module tets {
-	qsdfghjklmù
-}
