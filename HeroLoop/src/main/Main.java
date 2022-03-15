@@ -1,7 +1,13 @@
 package main;
 
+import map.Map;
+
 public class Main {
 	public static void main(String[] args) {
-		System.out.println("luhrfihepfhzpo");
+		Map m = new Map();
+		
+		m.generateMap();
+		
+		System.out.println(m);
 	}
 }
