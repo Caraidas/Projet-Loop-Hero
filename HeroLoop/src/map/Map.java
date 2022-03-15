@@ -2,6 +2,8 @@ package map;
 
 import java.util.Arrays;
 
+import fr.umlv.zen5.ApplicationContext;
+
 public class Map {
 	private final Case map[][];
 
@@ -43,6 +45,14 @@ public class Map {
 			s.append("\n");
 		}
 		return s.toString();
+	}
+	
+	public void draw(ApplicationContext context) {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				map[i][j].draw(context, i * 100, j * 100);
+			}
+		}
 	}
 	
 	
