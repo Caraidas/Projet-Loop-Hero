@@ -18,7 +18,7 @@ public class Demo {
     void draw(ApplicationContext context, float x, float y) {
       context.renderFrame(graphics -> {
         // hide the previous rectangle
-        graphics.setColor(Color.RED);
+        graphics.drawImage(null, 0, 0, 93, 129, 0, 0, 93, 129, null);
         graphics.fill(ellipse);
         
         // show a new ellipse at the position of the pointer
