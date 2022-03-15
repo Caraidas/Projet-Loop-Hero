@@ -50,7 +50,7 @@ public class Main {
 			break;
 			
 		default:
-			throw new IllegalArgumentException("Unexpected value: " + event.getAction());
+			System.out.println("bravo nidal");
 		}
 	}
 	
