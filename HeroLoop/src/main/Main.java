@@ -57,6 +57,6 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Main controller = new Main();
-		Application.run(Color.blue, controller::gameLoop);
+		Application.run(Color.black, controller::gameLoop);
 	}
 }

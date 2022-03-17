@@ -1,11 +1,10 @@
 package map;
 
 import java.awt.Color;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
+import java.util.ArrayList;
 
 import Cards.Card;
+import entities.Entity;
 import fr.umlv.zen5.ApplicationContext;
 
 public class Case {
@@ -26,7 +25,7 @@ public class Case {
 	
 	public void draw(ApplicationContext context, int i, int j) {
 		context.renderFrame(graphics -> {
-			graphics.setColor(Color.red);
+			graphics.setColor(Color.white);
 			graphics.drawRect(i, j, 50, 50);
 		});
 	}

@@ -23,13 +23,13 @@ public class Map {
 			}	
 		}
 		
-		for (int i = 3; i < 9; i++) {
-			map[i][4] = new RoadCase();
-			map[i][14] = new RoadCase();
+		for (int i = 2; i < 10; i++) { // columns
+			map[i][2] = new RoadCase();
+			map[i][12] = new RoadCase();
 		}
 		
-		for (int i = 4; i < 15; i++) {
-			map[3][i] = new RoadCase();
+		for (int i = 2; i < 12; i++) { // lines
+			map[2][i] = new RoadCase();
 			map[9][i] = new RoadCase();
 		}
 	}
