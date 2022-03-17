@@ -7,7 +7,7 @@ import fr.umlv.zen5.ApplicationContext;
 public class Map {
 	private final Case map[][];
 
-	public Map(Case[][] map) {
+	private Map(Case[][] map) {
 		this.map = map;
 	}
 	
