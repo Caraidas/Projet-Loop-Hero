@@ -26,7 +26,7 @@ public class Case {
 	public void draw(ApplicationContext context, int i, int j) {
 		context.renderFrame(graphics -> {
 			graphics.setColor(Color.white);
-			graphics.drawRect(i, j, 50, 50);
+			graphics.drawRect(i, j, 60, 60);
 		});
 	}
 }

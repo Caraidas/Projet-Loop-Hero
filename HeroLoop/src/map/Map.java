@@ -50,7 +50,7 @@ public class Map {
 	public void draw(ApplicationContext context) {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
-				map[i][j].draw(context, j * 50, i * 50 + 250);
+				map[i][j].draw(context, j * 60, i * 60 + 140);
 			}
 		}
 	}

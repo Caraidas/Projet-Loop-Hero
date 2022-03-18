@@ -35,9 +35,9 @@ public class RoadCase extends Case {
 	public void draw(ApplicationContext context, int i, int j) {
 		context.renderFrame(graphics -> {
 			graphics.setColor(Color.yellow);
-			graphics.fillRect(i, j, 50, 50);
+			graphics.fillRect(i, j, 60, 60);
 			graphics.setColor(Color.black);
-			graphics.drawRect(i, j, 50, 50);
+			graphics.drawRect(i, j, 60, 60);
 		});
 	}
 
