@@ -1,5 +1,6 @@
 package items;
 
-abstract class Item {
+public interface Item {
+	
 
 }

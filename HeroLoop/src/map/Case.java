@@ -22,11 +22,4 @@ public class Case {
 	public String toString() {
 		return "C";
 	}
-	
-	public void draw(ApplicationContext context, int i, int j) {
-		context.renderFrame(graphics -> {
-			graphics.setColor(Color.white);
-			graphics.drawRect(i, j, 60, 60);
-		});
-	}
 }

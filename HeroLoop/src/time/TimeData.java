@@ -22,7 +22,7 @@ public class TimeData {
 		return (elapsedTotal % DAY_MILLISECONDS) / (double) DAY_MILLISECONDS;
 	}
 	
-	public long elapsedBob() {
+	public long elapsedPlayer() {
 		if (stopped) {
 			return 0;
 		}

@@ -31,14 +31,5 @@ public class RoadCase extends Case {
 	public String toString() {
 		return "R";
 	}
-	
-	public void draw(ApplicationContext context, int i, int j) {
-		context.renderFrame(graphics -> {
-			graphics.setColor(Color.yellow);
-			graphics.fillRect(i, j, 60, 60);
-			graphics.setColor(Color.black);
-			graphics.drawRect(i, j, 60, 60);
-		});
-	}
 
 }

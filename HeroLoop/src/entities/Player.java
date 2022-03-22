@@ -1,15 +1,25 @@
 package entities;
 
-import data.GridPosition;
+import inventory.Inventory;
 
-public class Player {
-	private GridPosition position;
-	private GridPosition lastPosition;
+public class Player { // TODO : extends
+	private int position;
+	private Inventory inventory;
 	
 	
-	public Player(GridPosition position, GridPosition lastPosition) {
-		super();
+	public Player(int position) {
 		this.position = position;
-		this.lastPosition = lastPosition;
+	}
+	
+	public int position() {
+		return position;
+	}
+	
+	public void updatePosition() {
+		position++;
+		if (position >= 34) {
+			position = 0;
+		}
+		System.out.println(position);
 	}
 }

@@ -2,16 +2,20 @@ package main;
 
 import java.awt.Color;
 
+import entities.Player;
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
+import graphics.View;
 import map.Map;
+import time.TimeData;
 
 public class Main {
+	private final TimeData timeData = new TimeData();
 	
-	public static void doKeyActionAndDraw(ApplicationContext context, Event event, Map m) {
+	public static void doKeyActionAndDraw(ApplicationContext context, Event event, Map m, Player player) {
 		doKeyAction(context, event);
-		m.draw(context);
+		View.drawScreen(context, m, player);
 	}
 	
 	public static void doKeyAction(ApplicationContext context, Event event) {
@@ -25,18 +29,27 @@ public class Main {
 		}
 	}
 	
-	public void gameLoop(ApplicationContext context) {
-		Map m = new Map();
-		m.generateMap();
-		m.draw(context);
-		while (true) {
-			System.out.println("start");
-			code(context, m);
-			System.out.println("end");
+	private void doPlayerAction(ApplicationContext context, Player player) {
+		if (timeData.elapsedPlayer() >= TimeData.PLAYER_DELAY) {
+			player.updatePosition();
+			timeData.resetElapsedBob();
 		}
 	}
 	
-	public void code(ApplicationContext context, Map m) {
+	public void gameLoop(ApplicationContext context) {
+		Map m = new Map();
+		m.generateLoop();
+		m.generateMap();
+		Player player = new Player(0);
+		View.drawScreen(context, m, player);
+		while (true) {
+			doPlayerAction(context, player);
+			code(context, m, player);
+			View.drawScreen(context, m, player);
+		}
+	}
+	
+	public void code(ApplicationContext context, Map m, Player player) {
 		
 		Event event = context.pollOrWaitEvent(200);
 		
@@ -46,7 +59,7 @@ public class Main {
 		
 		switch (event.getAction()) {
 		case KEY_PRESSED:
-			doKeyActionAndDraw(context, event, m);
+			doKeyActionAndDraw(context, event, m, player);
 			break;
 			
 		default:

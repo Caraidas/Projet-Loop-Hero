@@ -1,11 +1,12 @@
 package map;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
-import fr.umlv.zen5.ApplicationContext;
+import data.GridPosition;
 
 public class Map {
 	private final Case map[][];
+	private final ArrayList<GridPosition> loop = new ArrayList<>();
 
 	private Map(Case[][] map) {
 		this.map = map;
@@ -15,6 +16,40 @@ public class Map {
 		this(new Case[12][21]);
 	}
 	
+	public int lines() {
+		return map.length;
+	}
+	
+	public int columns() {
+		return map[0].length;
+	}
+	
+	public ArrayList<GridPosition> loop() {
+		return loop;
+	}
+	
+	public Case getCase(int i, int j) {
+		return map[i][j];
+	}
+	
+	public void generateLoop() {
+		
+		for (int i = 2; i < 10; i++) { // columns
+			loop.add(new GridPosition(i, 2));
+		}
+		
+		for (int i = 2; i < 12; i++) { // lines
+			loop.add(new GridPosition(10, i));
+		}
+		
+		for (int i = 2; i < 10; i++) { // columns
+			loop.add(new GridPosition(i, 11));
+		}
+		
+		for (int i = 2; i < 12; i++) { // lines
+			loop.add(new GridPosition(2, i));
+		}
+	}
 	
 	public void generateMap() {
 		for (int i = 0; i < map.length; i++) {
@@ -23,14 +58,8 @@ public class Map {
 			}	
 		}
 		
-		for (int i = 2; i < 10; i++) { // columns
-			map[i][2] = new RoadCase();
-			map[i][12] = new RoadCase();
-		}
-		
-		for (int i = 2; i < 12; i++) { // lines
-			map[2][i] = new RoadCase();
-			map[9][i] = new RoadCase();
+		for (GridPosition pos : loop) {
+			map[pos.line()][pos.column()] = new RoadCase(false);
 		}
 	}
 
@@ -46,14 +75,4 @@ public class Map {
 		}
 		return s.toString();
 	}
-	
-	public void draw(ApplicationContext context) {
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[0].length; j++) {
-				map[i][j].draw(context, j * 60, i * 60 + 70);
-			}
-		}
-	}
-	
-	
 }
