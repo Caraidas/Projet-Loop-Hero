@@ -34,19 +34,19 @@ public class Map {
 	
 	public void generateLoop() {
 		
-		for (int i = 2; i < 10; i++) { // columns
+		for (int i = 2; i <= 11; i++) { 
 			loop.add(new GridPosition(i, 2));
 		}
 		
-		for (int i = 2; i < 12; i++) { // lines
-			loop.add(new GridPosition(10, i));
+		for (int i = 3; i <= 10; i++) {
+			loop.add(new GridPosition(11, i));
 		}
 		
-		for (int i = 2; i < 10; i++) { // columns
-			loop.add(new GridPosition(i, 11));
+		for (int i = 10; i >= 2; i--) {
+			loop.add(new GridPosition(i, 10));
 		}
 		
-		for (int i = 2; i < 12; i++) { // lines
+		for (int i = 9; i >= 2; i--) {
 			loop.add(new GridPosition(2, i));
 		}
 	}
@@ -59,7 +59,7 @@ public class Map {
 		}
 		
 		for (GridPosition pos : loop) {
-			map[pos.line()][pos.column()] = new RoadCase(false);
+			map[pos.column()][pos.line()] = new RoadCase(false);
 		}
 	}
 

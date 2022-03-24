@@ -18,6 +18,7 @@ import fr.umlv.zen5.ScreenInfo;
 import map.Case;
 import map.Map;
 import map.RoadCase;
+import time.TimeData;
 
 public class View {
 	
@@ -83,18 +84,26 @@ public class View {
 		graphics.fillRect(0, 0, (int) width, caseSize);
 	}
 	
-	public static void drawHud(ApplicationContext context, Graphics2D graphics, float width, int caseSize) {
-		drawHudRight(context, graphics, width, caseSize);
-		drawHudTop(context, graphics, width, caseSize);
+	public static void drawTimeBar(ApplicationContext context, Graphics2D graphics, double timeFraction) {
+		graphics.setColor(Color.LIGHT_GRAY);
+		graphics.fillRect(10, 10, 400, 20);
+		graphics.setColor(Color.GREEN);
+		graphics.fillRect(15, 15, (int)(390 * timeFraction), 10);
 	}
 	
-	public static void drawScreen(ApplicationContext context, Map m, Player player) {
+	public static void drawHud(ApplicationContext context, Graphics2D graphics, float width, int caseSize, TimeData timeData) {
+		drawHudRight(context, graphics, width, caseSize);
+		drawHudTop(context, graphics, width, caseSize);
+		drawTimeBar(context, graphics, timeData.timeFraction());
+	}
+	
+	public static void drawScreen(ApplicationContext context, Map m, Player player, TimeData timeData) {
 		float width = getScreenWidth(context);
 		int caseSize = (int) ((60 * width) / 1536);
 		
 		context.renderFrame(graphics -> {
 			drawMap(context, graphics, m, caseSize);
-			drawHud(context, graphics, width, caseSize);
+			drawHud(context, graphics, width, caseSize, timeData);
 			drawPlayer(context, graphics, player, m, caseSize);
 		});
 	}

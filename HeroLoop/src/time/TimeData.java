@@ -5,8 +5,8 @@ public class TimeData {
 	private long elapsedTotal = 0; 	// elapsed time since creation
 	private long elapsedPlayer = 0; 	// elapsed time since last Player reset()
 	private boolean stopped;
-	public final static double DAY_MILLISECONDS = 20_000;
-	public final static int PLAYER_DELAY = 1000;
+	public static double DAY_MILLISECONDS = 20_000;
+	public static int PLAYER_DELAY = 1000;
 
 	private void tickTock() {
 		long tock = System.currentTimeMillis();
@@ -48,4 +48,20 @@ public class TimeData {
 		tick = System.currentTimeMillis();
 	}
 	
+	public void timeControl() {
+		if (stopped) {
+			start();
+		} else {
+			stop();
+		}
+	}
+	
+	public void accelerateTime(int factor) {
+		if (factor == 1) {
+			PLAYER_DELAY = 1000;
+			DAY_MILLISECONDS = 20_000;
+		}
+		PLAYER_DELAY = 1000 / factor;
+		DAY_MILLISECONDS = 20_000 / factor;
+	}
 }

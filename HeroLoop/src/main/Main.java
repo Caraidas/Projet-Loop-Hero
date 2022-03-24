@@ -11,11 +11,11 @@ import map.Map;
 import time.TimeData;
 
 public class Main {
-	private final TimeData timeData = new TimeData();
+	private final static TimeData timeData = new TimeData();
 	
 	public static void doKeyActionAndDraw(ApplicationContext context, Event event, Map m, Player player) {
 		doKeyAction(context, event);
-		View.drawScreen(context, m, player);
+		View.drawScreen(context, m, player, timeData);
 	}
 	
 	public static void doKeyAction(ApplicationContext context, Event event) {
@@ -25,6 +25,11 @@ public class Main {
 			context.exit(0);
 			throw new AssertionError("ne devrait pas arriver");
 		}
+		case S -> timeData.timeControl();
+		case A -> timeData.accelerateTime(1);
+		case Z -> timeData.accelerateTime(2);
+		case E -> timeData.accelerateTime(4);
+		
 		default -> System.out.println("Touche inactive : " + event.getKey());
 		}
 	}
@@ -41,11 +46,11 @@ public class Main {
 		m.generateLoop();
 		m.generateMap();
 		Player player = new Player(0);
-		View.drawScreen(context, m, player);
+		View.drawScreen(context, m, player, timeData);
 		while (true) {
 			doPlayerAction(context, player);
 			code(context, m, player);
-			View.drawScreen(context, m, player);
+			View.drawScreen(context, m, player, timeData);
 		}
 	}
 	
