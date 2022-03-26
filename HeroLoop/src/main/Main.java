@@ -2,18 +2,22 @@ package main;
 
 import java.awt.Color;
 
+import data.Range;
 import entities.Player;
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
 import graphics.View;
+import inventory.Inventory;
 import map.Map;
 import time.TimeData;
 
 public class Main {
 	private final static TimeData timeData = new TimeData();
+	private final static Map m = new Map();
+	private final static Player player = new Player(0, new Inventory(), 250, 250.0, new Range(4, 6), 0.0, 0.0, 0, 0, 0);
 	
-	public static void doKeyActionAndDraw(ApplicationContext context, Event event, Map m, Player player) {
+	public static void doKeyActionAndDraw(ApplicationContext context, Event event) {
 		doKeyAction(context, event);
 		View.drawScreen(context, m, player, timeData);
 	}
@@ -34,27 +38,34 @@ public class Main {
 		}
 	}
 	
-	private void doPlayerAction(ApplicationContext context, Player player) {
+	private void doPlayerAction(ApplicationContext context) {
 		if (timeData.elapsedPlayer() >= TimeData.PLAYER_DELAY) {
 			player.updatePosition();
 			timeData.resetElapsedBob();
 		}
+		
+		m.getCase(m.getPlayerPos(player)).clear();
 	}
 	
 	public void gameLoop(ApplicationContext context) {
-		Map m = new Map();
 		m.generateLoop();
 		m.generateMap();
-		Player player = new Player(0);
 		View.drawScreen(context, m, player, timeData);
 		while (true) {
-			doPlayerAction(context, player);
-			code(context, m, player);
+			doPlayerAction(context);
+			doEventAction(context);
+			doTimeAction(context);
 			View.drawScreen(context, m, player, timeData);
 		}
 	}
 	
-	public void code(ApplicationContext context, Map m, Player player) {
+	public void doTimeAction(ApplicationContext context) {
+		if (timeData.timeFraction() > 0.95) { 
+			m.spawn();
+		}
+	}
+	
+	public void doEventAction(ApplicationContext context) {
 		
 		Event event = context.pollOrWaitEvent(200);
 		
@@ -64,7 +75,7 @@ public class Main {
 		
 		switch (event.getAction()) {
 		case KEY_PRESSED:
-			doKeyActionAndDraw(context, event, m, player);
+			doKeyActionAndDraw(context, event);
 			break;
 			
 		default:

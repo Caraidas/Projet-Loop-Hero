@@ -8,5 +8,13 @@ public class Inventory {
 	private Item sword;
 	private Item ring;
 	private Item amulet;
+	
+	public Inventory() {
+		this.helmet = null;
+		this.armor = null;
+		this.sword = null;
+		this.ring = null;
+		this.amulet = null;
+	}
 
 }

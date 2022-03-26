@@ -1,9 +1,8 @@
 package map;
 
-import java.util.ArrayList;
-
 import Cards.Card;
-import entities.Entity;
+import entities.Monster;
+
 
 public class Cell {
 	private Card card;
@@ -14,6 +13,14 @@ public class Cell {
 	
 	public Cell() {
 		this(null);
+	}
+	
+	public void spawn(Monster monster) {
+		return;
+	}
+	
+	public void clear() {
+		return;
 	}
 	
 	@Override

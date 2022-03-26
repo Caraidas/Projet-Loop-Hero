@@ -9,15 +9,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.imageio.ImageIO;
-
+import entities.Monster;
 import entities.Player;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.ScreenInfo;
 import map.Cell;
 import map.Map;
-import map.RoadCase;
+import map.RoadCell;
 import time.TimeData;
 
 public class View {
@@ -51,16 +52,34 @@ public class View {
 		}
 	}
 	
-	public static void drawRoadCell(ApplicationContext context, Graphics2D graphics, int i, int j, int caseSize) {
+	public static void drawRoadCell(ApplicationContext context, Graphics2D graphics, int i, int j, int caseSize, Cell c) {
 		String pictureName = "ressources/Map-Sprite/horizontal-road.png";
 		Path path = Path.of(pictureName);
 		drawImage(context, graphics, i, j, path, caseSize);
+		
+		int newI;	
+		int newJ;
+		ArrayList<Monster> monsters = ((RoadCell)(c)).getEntities();
+		for (int index = 0; index < monsters.size(); index++) { // ((RoadCase)(c)).getEntities()
+			if (index % 2 != 0) {
+				newI = (int)(i + (caseSize * 0.5));
+			} else {
+				newI = i;
+			}
+			
+			if (index <= 1) { 
+				newJ = j;
+			} else {
+				newJ = (int)(j + (caseSize * 0.5));
+			}
+			drawImage(context, graphics, newI, newJ, Path.of(monsters.get(index).getSprite()), (int)(caseSize * 0.5)); 
+		}
 	}
 	
 	public static void drawCell(ApplicationContext context, Graphics2D graphics, int i, int j, Cell c, int caseSize) {
 		
-		if (c instanceof RoadCase) {
-			drawRoadCell(context, graphics, i, j, caseSize);
+		if (c instanceof RoadCell) {
+			drawRoadCell(context, graphics, i, j, caseSize, c);
 		} else {
 			graphics.setColor(Color.white);
 			graphics.drawRect(i, j, 60, 60);

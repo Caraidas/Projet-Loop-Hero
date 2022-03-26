@@ -1,5 +1,7 @@
 package combat;
 
-abstract class Combat {
-
+	
+	public Combat() {
+		
+	}
 }

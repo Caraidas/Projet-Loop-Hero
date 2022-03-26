@@ -3,6 +3,8 @@ package map;
 import java.util.ArrayList;
 
 import data.GridPosition;
+import entities.Monster;
+import entities.Player;
 
 public class Map {
 	private final Cell map[][];
@@ -32,6 +34,14 @@ public class Map {
 		return map[i][j];
 	}
 	
+	public Cell getCase(GridPosition g) {
+		return this.getCase(g.column(), g.line());
+	}
+	
+	public GridPosition getPlayerPos(Player p) {
+		return loop.get(p.position());
+	}
+	
 	public void generateLoop() {
 		
 		for (int i = 2; i <= 11; i++) { 
@@ -46,7 +56,7 @@ public class Map {
 			loop.add(new GridPosition(i, 10));
 		}
 		
-		for (int i = 9; i >= 2; i--) {
+		for (int i = 9; i >= 3; i--) {
 			loop.add(new GridPosition(2, i));
 		}
 	}
@@ -59,7 +69,14 @@ public class Map {
 		}
 		
 		for (GridPosition pos : loop) {
-			map[pos.column()][pos.line()] = new RoadCase();
+			map[pos.column()][pos.line()] = new RoadCell();
+		}
+	}
+	
+	public void spawn() {
+		Monster slime = new Monster(13, 3.3, 0.0, 0.0, 0, 0, 0, "ressources/Entities-Sprite/monsters/Slime.png");
+		for (GridPosition g : loop) {
+			this.getCase(g.column(), g.line()).spawn(slime);
 		}
 	}
 
