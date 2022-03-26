@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Color;
 
+import Battle.BattleData;
 import data.Range;
 import entities.Player;
 import fr.umlv.zen5.Application;
@@ -16,6 +17,7 @@ public class Main {
 	private final static TimeData timeData = new TimeData();
 	private final static Map m = new Map();
 	private final static Player player = new Player(0, new Inventory(), 250, 250.0, new Range(4, 6), 0.0, 0.0, 0, 0, 0);
+	private final BattleData battleData = new BattleData();
 	
 	public static void doKeyActionAndDraw(ApplicationContext context, Event event) {
 		doKeyAction(context, event);
@@ -44,6 +46,7 @@ public class Main {
 			timeData.resetElapsedBob();
 		}
 		
+		battleData.startBattle(m.getCase(m.getPlayerPos(player)), player);
 		m.getCase(m.getPlayerPos(player)).clear();
 	}
 	

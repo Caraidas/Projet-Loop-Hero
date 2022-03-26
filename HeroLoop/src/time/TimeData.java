@@ -19,7 +19,6 @@ public class TimeData {
 		if (!stopped) {
 			tickTock();
 		}
-		System.out.println((elapsedTotal % DAY_MILLISECONDS) / (double) DAY_MILLISECONDS);
 		return (elapsedTotal % DAY_MILLISECONDS) / (double) DAY_MILLISECONDS;
 	}
 	

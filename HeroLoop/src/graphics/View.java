@@ -62,17 +62,17 @@ public class View {
 		ArrayList<Monster> monsters = ((RoadCell)(c)).getEntities();
 		for (int index = 0; index < monsters.size(); index++) { // ((RoadCase)(c)).getEntities()
 			if (index % 2 != 0) {
-				newI = (int)(i + (caseSize * 0.5));
+				newI = (int)(i + (caseSize * 0.5)) - 5;
 			} else {
-				newI = i;
+				newI = i + 5;
 			}
 			
 			if (index <= 1) { 
-				newJ = j;
+				newJ = j + 5;
 			} else {
-				newJ = (int)(j + (caseSize * 0.5));
+				newJ = (int)(j + (caseSize * 0.5)) - 5;
 			}
-			drawImage(context, graphics, newI, newJ, Path.of(monsters.get(index).getSprite()), (int)(caseSize * 0.5)); 
+			drawImage(context, graphics, newI, newJ, Path.of(monsters.get(index).getSprite()), (int)(caseSize * 0.35));
 		}
 	}
 	
