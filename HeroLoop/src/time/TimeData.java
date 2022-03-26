@@ -6,7 +6,7 @@ public class TimeData {
 	private long elapsedPlayer = 0; 	// elapsed time since last Player reset()
 	private boolean stopped;
 	public static double DAY_MILLISECONDS = 20_000;
-	public static int PLAYER_DELAY = 1000;
+	public static int PLAYER_DELAY = 1500;
 
 	private void tickTock() {
 		long tock = System.currentTimeMillis();

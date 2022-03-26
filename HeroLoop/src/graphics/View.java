@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import entities.Player;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.ScreenInfo;
-import map.Case;
+import map.Cell;
 import map.Map;
 import map.RoadCase;
 import time.TimeData;
@@ -51,12 +51,16 @@ public class View {
 		}
 	}
 	
-	public static void drawCase(ApplicationContext context, Graphics2D graphics, int i, int j, Case c, int caseSize) {
+	public static void drawRoadCell(ApplicationContext context, Graphics2D graphics, int i, int j, int caseSize) {
+		String pictureName = "ressources/Map-Sprite/horizontal-road.png";
+		Path path = Path.of(pictureName);
+		drawImage(context, graphics, i, j, path, caseSize);
+	}
+	
+	public static void drawCell(ApplicationContext context, Graphics2D graphics, int i, int j, Cell c, int caseSize) {
 		
 		if (c instanceof RoadCase) {
-			String pictureName = "ressources/Map-Sprite/horizontal-road.png";
-			Path path = Path.of(pictureName);
-			drawImage(context, graphics, i, j, path, caseSize);
+			drawRoadCell(context, graphics, i, j, caseSize);
 		} else {
 			graphics.setColor(Color.white);
 			graphics.drawRect(i, j, 60, 60);
@@ -66,7 +70,7 @@ public class View {
 	public static void drawMap(ApplicationContext context, Graphics2D graphics, Map map, int caseSize) {
 		for (int i = 0; i < map.lines(); i++) {
 			for (int j = 0; j < map.columns(); j++) {
-				drawCase(context, graphics, j * caseSize, i * caseSize + caseSize, map.getCase(i, j), caseSize);
+				drawCell(context, graphics, j * caseSize, i * caseSize + caseSize, map.getCase(i, j), caseSize);
 			}
 		}
 	}

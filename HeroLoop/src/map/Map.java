@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import data.GridPosition;
 
 public class Map {
-	private final Case map[][];
+	private final Cell map[][];
 	private final ArrayList<GridPosition> loop = new ArrayList<>();
 
-	private Map(Case[][] map) {
+	private Map(Cell[][] map) {
 		this.map = map;
 	}
 	
 	public Map() {
-		this(new Case[12][21]);
+		this(new Cell[12][21]);
 	}
 	
 	public int lines() {
@@ -28,7 +28,7 @@ public class Map {
 		return loop;
 	}
 	
-	public Case getCase(int i, int j) {
+	public Cell getCase(int i, int j) {
 		return map[i][j];
 	}
 	
@@ -54,12 +54,12 @@ public class Map {
 	public void generateMap() {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
-				map[i][j] = new Case();
+				map[i][j] = new Cell();
 			}	
 		}
 		
 		for (GridPosition pos : loop) {
-			map[pos.column()][pos.line()] = new RoadCase(false);
+			map[pos.column()][pos.line()] = new RoadCase();
 		}
 	}
 

@@ -1,30 +1,31 @@
 package map;
 
-import java.awt.Color;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
+import java.util.Random;
 import Cards.Card;
 import entities.Entity;
-import fr.umlv.zen5.ApplicationContext;
 
-public class RoadCase extends Case {
-	private boolean playerOn;
-	private final ArrayList<Entity> entities;
+public class RoadCase extends Cell {
+	private final ArrayList<Entity> entitiesOn;
 	
-	public RoadCase(boolean playerOn, Card card, ArrayList<Entity> entities) {
+	public RoadCase(Card card, ArrayList<Entity> entitiesOn) {
 		super(card);
-		this.entities = entities;
-		this.playerOn = playerOn;
-	}
-	
-	public RoadCase(boolean playerOn) {
-		super();
-		this.playerOn = playerOn;
-		this.entities = new ArrayList<>();
+		this.entitiesOn = entitiesOn;
 	}
 	
 	public RoadCase() {
-		this(false);
+		super();
+		this.entitiesOn = new ArrayList<>();
+	}
+	
+	public void spawn() {
+		Random rand = new Random();
+		int n = rand.nextInt(100);
+		
+		if (n < 5) {
+			entitiesOn.add(null);
+		}
 	}
 	
 	@Override
