@@ -1,6 +1,6 @@
 package inventory;
 
-import items.Item;
+import collectable.Item;
 
 public class Inventory {
 	private Item helmet;

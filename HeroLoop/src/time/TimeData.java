@@ -7,6 +7,7 @@ public class TimeData {
 	private boolean stopped;
 	public static double DAY_MILLISECONDS = 24_000;
 	public static int PLAYER_DELAY = 1500;
+	
 
 	private void tickTock() {
 		long tock = System.currentTimeMillis();

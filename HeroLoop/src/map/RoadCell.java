@@ -3,7 +3,8 @@ package map;
 
 import java.util.ArrayList;
 import java.util.Random;
-import Cards.Card;
+
+import collectable.Card;
 import entities.Monster;
 
 public class RoadCell extends Cell {
@@ -21,17 +22,17 @@ public class RoadCell extends Cell {
 	
 	@Override
 	public void spawn(Monster monster) {
+		entitiesOn.add(monster);
+	}
+	
+	public void spawn() {
 		
-		if (entitiesOn.size() < 4) 
-		{
-			Random rand = new Random();
-			int n = rand.nextInt(100);
-			
-			if (n < 5) {
-				entitiesOn.add(monster);
-				System.out.println("CA SPAWN !!!!!!!!!!!!!!!!!!!!!!");
-			}
-			return;
+		Random rand = new Random();
+		
+		int n = rand.nextInt(100);
+		
+		if (n < 5) {
+			entitiesOn.add(new Monster(13, 13, 3.3, 0.0, 0.0, 0, 0, 0, "ressources/Entities-Sprite/monsters/Slime.png"));
 		}
 	}
 	

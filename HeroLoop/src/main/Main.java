@@ -3,6 +3,8 @@ package main;
 import java.awt.Color;
 
 import Battle.BattleData;
+import collectable.Card;
+import data.GameData;
 import data.Range;
 import entities.Player;
 import fr.umlv.zen5.Application;
@@ -14,14 +16,17 @@ import map.Map;
 import time.TimeData;
 
 public class Main {
-	private final static TimeData timeData = new TimeData();
 	private final static Map m = new Map();
-	private final static Player player = new Player(0, new Inventory(), 250, 250.0, new Range(4, 6), 0.0, 0.0, 0, 0, 0);
+	private final static Player player = new Player(0, 250, new Range(4, 6), 0.0, 0.0, 0, 0, 0);
 	private final BattleData battleData = new BattleData();
+	private final static GameData gameData = new GameData(m);
+	private final static TimeData timeData = new TimeData();
+	private final static View view = new View(player, timeData, gameData);
+	
 	
 	public static void doKeyActionAndDraw(ApplicationContext context, Event event) {
 		doKeyAction(context, event);
-		View.drawScreen(context, m, player, timeData);
+		view.drawScreen(context);
 	}
 	
 	public static void doKeyAction(ApplicationContext context, Event event) {
@@ -44,6 +49,11 @@ public class Main {
 		if (timeData.elapsedPlayer() >= TimeData.PLAYER_DELAY) {
 			player.updatePosition();
 			timeData.resetElapsedBob();
+			
+			if (player.position() == 0) {
+				gameData.updateLoopCount();
+				player.heal(0.2);
+			}
 		}
 		
 		battleData.startBattle(m.getCase(m.getPlayerPos(player)), player);
@@ -51,20 +61,26 @@ public class Main {
 	}
 	
 	public void gameLoop(ApplicationContext context) {
-		m.generateLoop();
-		m.generateMap();
-		View.drawScreen(context, m, player, timeData);
+		
+		gameData.generateGameBoard();
+		view.drawScreen(context);
+		player.addCard(new Card("ressources/Card-Sprite/Landscape-Cards/Mountain.png"), 14);
+		
 		while (true) {
+			doTimeAction(context);
 			doPlayerAction(context);
 			doEventAction(context);
-			doTimeAction(context);
-			View.drawScreen(context, m, player, timeData);
+			view.drawScreen(context);
+			if (player.isDead()) {
+				context.exit(0);
+				break;
+			}
 		}
 	}
 	
 	public void doTimeAction(ApplicationContext context) {
 		if (timeData.timeFraction() > 0.95) { 
-			m.spawn();
+			gameData.spawn();
 		}
 	}
 	
@@ -77,12 +93,12 @@ public class Main {
 		}
 		
 		switch (event.getAction()) {
-		case KEY_PRESSED:
-			doKeyActionAndDraw(context, event);
-			break;
-			
-		default:
-			System.out.println("bravo nidal");
+			case KEY_PRESSED -> {
+				doKeyActionAndDraw(context, event);
+			}
+			default -> {
+				System.out.println("bravo nidal");
+			}
 		}
 	}
 	
@@ -90,5 +106,6 @@ public class Main {
 		
 		Main controller = new Main();
 		Application.run(Color.black, controller::gameLoop);
+		System.out.println("Perdu :(");
 	}
 }

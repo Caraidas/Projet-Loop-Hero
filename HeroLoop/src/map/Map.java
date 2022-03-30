@@ -72,13 +72,6 @@ public class Map {
 			map[pos.column()][pos.line()] = new RoadCell();
 		}
 	}
-	
-	public void spawn() {
-		Monster slime = new Monster(13, 13.0, 3.3, 0.0, 0.0, 0, 0, 0, "ressources/Entities-Sprite/monsters/Slime.png");
-		for (GridPosition g : loop) {
-			this.getCase(g.column(), g.line()).spawn(slime);
-		}
-	}
 
 	@Override
 	public String toString() {

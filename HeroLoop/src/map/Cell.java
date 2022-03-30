@@ -1,6 +1,8 @@
 package map;
 
-import Cards.Card;
+import java.util.ArrayList;
+
+import collectable.Card;
 import entities.Monster;
 
 

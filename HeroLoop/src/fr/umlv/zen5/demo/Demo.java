@@ -28,6 +28,7 @@ public class Demo {
       });
     }
   }
+
   
   public static void main(String[] args) {
     Application.run(Color.BLUE, context -> {
