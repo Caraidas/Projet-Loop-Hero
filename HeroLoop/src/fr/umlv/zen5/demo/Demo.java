@@ -61,6 +61,7 @@ public class Demo {
         Point2D.Float location = event.getLocation();
         area.draw(context, location.x, location.y);
       }
+      
     });
   }
 }
