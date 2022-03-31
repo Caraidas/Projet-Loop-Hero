@@ -36,6 +36,15 @@ public class RoadCell extends Cell {
 		}
 	}
 	
+	@Override 
+	public String sprite() {
+		if (super.card() != null) {
+			return card().sprite();
+		} 
+		
+		return "ressources/Map-Sprite/horizontal-road.png";
+	}
+	
 	public void clear() {
 		entitiesOn.clear();
 	}

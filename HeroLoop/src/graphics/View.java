@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,7 +15,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import collectable.Card;
 import data.GameData;
+import data.GridPosition;
 import entities.Monster;
 import entities.Player;
 import fr.umlv.zen5.ApplicationContext;
@@ -27,6 +30,11 @@ public class View {
 	private final Player player;
 	private final TimeData timeData;
 	private final GameData gameData;
+	private ApplicationContext context;
+	
+	double width = 0.0;
+	double height = 0.0;
+	int caseSize = 0;
 	
 	public View(Player player, TimeData timeData, GameData gameData) {
 		this.player = player;
@@ -34,24 +42,31 @@ public class View {
 		this.gameData = gameData;
 	}
 	
-	private  float getScreenWidth(ApplicationContext context) {
+	public void initContext(ApplicationContext context) {
+		this.context = context;
+		this.width = getScreenWidth();
+		this.height = getScreenHeight();
+		this.caseSize = (int) ((60 * width) / 1536);
+	}
+	
+	private  float getScreenWidth() {
 		ScreenInfo screenInfo = context.getScreenInfo();
 		return screenInfo.getWidth();
 	}
 	
-	private  float getScreenHeight(ApplicationContext context) {
+	private  float getScreenHeight() {
 		ScreenInfo screenInfo = context.getScreenInfo();
 		return screenInfo.getHeight();
 	}
 	
-	public  void drawPlayer(ApplicationContext context, Graphics2D graphics, int caseSize) {
+	public  void drawPlayer(Graphics2D graphics) {
 		Path path = Path.of("ressources/Entities-Sprite/Player.png");
 		int column = gameData.map().loop().get(player.position()).column();
 		int line = gameData.map().loop().get(player.position()).line();
-		drawImage(context, graphics, (int)((line * caseSize) + (caseSize * 0.25)), (int)((column * caseSize) + (caseSize * 1.25)), path, 30, 30);
+		drawImage(graphics, (int)((line * caseSize) + (caseSize * 0.25)), (int)((column * caseSize) + (caseSize * 1.25)), path, 30, 30);
 	}
 	
-	private  void drawImage(ApplicationContext context, Graphics2D graphics, int i, int j, Path path, int sizeW, int sizeH) {
+	private  void drawImage(Graphics2D graphics, int i, int j, Path path, int sizeW, int sizeH) {
 		try (InputStream in = Files.newInputStream(path)) {
 			BufferedImage img = ImageIO.read(in);
 			
@@ -69,15 +84,11 @@ public class View {
 		}
 	}
 	
-	public  void drawRoadCell(ApplicationContext context, Graphics2D graphics, int i, int j, int caseSize, Cell c) {
-		String pictureName = "ressources/Map-Sprite/horizontal-road.png";
-		Path path = Path.of(pictureName);
-		drawImage(context, graphics, i, j, path, caseSize, caseSize);
-		
+	public  void drawMonsters(Graphics2D graphics, int i, int j, Cell c) {		
 		int newI;
 		int newJ;
 		ArrayList<Monster> monsters = ((RoadCell)(c)).getEntities();
-		for (int index = 0; index < monsters.size(); index++) { // ((RoadCase)(c)).getEntities()
+		for (int index = 0; index < monsters.size(); index++) {
 			if (index % 2 != 0) {
 				newI = (int)(i + (caseSize * 0.75)) - 5;
 			} else {
@@ -89,31 +100,28 @@ public class View {
 			} else {
 				newJ = (int)(j + (caseSize * 0.75)) - 5;
 			}
-			drawImage(context, graphics, newI, newJ, Path.of(monsters.get(index).getSprite()), (int)(caseSize * 0.25), (int)(caseSize * 0.25));
+			drawImage(graphics, newI, newJ, Path.of(monsters.get(index).getSprite()), (int)(caseSize * 0.25), (int)(caseSize * 0.25));
 		}
 	}
 	
-	public  void drawCell(ApplicationContext context, Graphics2D graphics, int i, int j, Cell c, int caseSize) {
+	public void drawCell(Graphics2D graphics, int i, int j, Cell c) {
 		
+		drawImage(graphics, i, j, Path.of(c.sprite()), caseSize, caseSize);
 		if (c instanceof RoadCell) {
-			drawRoadCell(context, graphics, i, j, caseSize, c);
-		} else {
-			graphics.setColor(Color.white);
-			graphics.drawRect(i, j, 60, 60);
+			drawMonsters(graphics, i, j, c);
 		}
 	}
 	
-	public  void drawMap(ApplicationContext context, Graphics2D graphics, int caseSize) {
+	public  void drawMap(Graphics2D graphics) {
 		for (int i = 0; i < gameData.map().lines(); i++) {
 			for (int j = 0; j < gameData.map().columns(); j++) {
-				drawCell(context, graphics, j * caseSize, i * caseSize + caseSize, gameData.map().getCase(i, j), caseSize);
+				drawCell(graphics, j * caseSize, i * caseSize + caseSize, gameData.map().getCase(i, j));
 			}
 		}
 	}
 	
-	public void drawHudRight(ApplicationContext context, Graphics2D graphics, float width, int caseSize) {
+	public void drawHudRight(Graphics2D graphics) {
 		int HudWidth = (int)(width - (21 * caseSize));
-		float height = getScreenHeight(context);
 		
 		graphics.setColor(Color.gray);
 		graphics.fillRect((21 * caseSize), 0, HudWidth, (int) height);
@@ -125,12 +133,12 @@ public class View {
 		graphics.drawString(playerHp, (21 * caseSize) + 30, 150);
 	}
 	
-	public void drawHudTop(ApplicationContext context, Graphics2D graphics, float width, int caseSize) {
+	public void drawHudTop(Graphics2D graphics) {
 		graphics.setColor(Color.gray);
 		graphics.fillRect(0, 0, (int) width, caseSize);
 	}
 	
-	public void drawTimeBar(ApplicationContext context, Graphics2D graphics) {
+	public void drawTimeBar(Graphics2D graphics) {
 		graphics.setColor(Color.LIGHT_GRAY);
 		graphics.fillRect(10, 10, 400, 20);
 		graphics.setColor(Color.GREEN);
@@ -140,28 +148,57 @@ public class View {
 		graphics.drawString(gameData.getLoopCount() + " loops", 420, 30);
 	}
 	
-	public void drawHud(ApplicationContext context, Graphics2D graphics, float width, int caseSize) {
-		drawHudRight(context, graphics, width, caseSize);
-		drawHudTop(context, graphics, width, caseSize);
-		drawTimeBar(context, graphics);
+	public void drawHud(Graphics2D graphics) {
+		drawHudRight(graphics);
+		drawHudTop(graphics);
+		drawTimeBar(graphics);
 	}
 	
-	public void drawDeck(ApplicationContext context, Graphics2D graphics, int caseSize) {
+	public void drawDeck(Graphics2D graphics) {
 		for (int i = 0; i < player.deckSize(); i++) {
 			Path path = Path.of(player.deck().getCard(i).sprite());
-			drawImage(context, graphics, (int)(i * caseSize * 1.62), (int)(12 * caseSize + caseSize * 1.25), path, -1, -1);
-		}	
+			if (i == gameData.selectedCard()) {
+				drawImage(graphics, (int)(i * caseSize * 1.62), (int)(12 * caseSize), path, -1, -1);
+			} else {
+				drawImage(graphics, (int)(i * caseSize * 1.62), (int)(12 * caseSize + caseSize * 1.25), path, -1, -1);
+			}	
+		}
 	}
 	
-	public void drawScreen(ApplicationContext context) {
-		float width = getScreenWidth(context);
-		int caseSize = (int) ((60 * width) / 1536);
+	public boolean deposedCard(Point2D.Float location) {
+		return location.x >= 0 * caseSize && location.x < 21 * caseSize && location.y >= caseSize 
+				&& location.y < 12 * caseSize + caseSize && gameData.selectedCard() != -1;
+	}
+	
+	public void drawScreen() {
 		
 		context.renderFrame(graphics -> {
-			drawMap(context, graphics, caseSize);
-			drawHud(context, graphics, width, caseSize);
-			drawPlayer(context, graphics, caseSize);
-			drawDeck(context, graphics, caseSize);
+			drawMap(graphics);
+			drawHud(graphics);
+			drawPlayer(graphics);
+			drawDeck(graphics);
 		});
+	}
+	
+	public void blackScreen() {
+		context.renderFrame(graphics -> {
+			graphics.setColor(Color.black);
+			graphics.fillRect(0, (int)(12 * caseSize + caseSize), (int)(13 * caseSize * 1.62), (int)height);
+		});
+		
+	}
+	
+	public boolean clickedOnCards(Point2D.Float location) {
+		return location.x >= 0 && location.x < (int)(player.deckSize() * caseSize * 1.62) && location.y >= 
+				(int)(12 * caseSize + caseSize * 1.25) && location.y < height;
+	}
+	
+	public int toCardPos(Point2D.Float location) {
+		return (int)(location.x / (caseSize * 1.62));
+		
+	}
+	
+	public GridPosition toCellPos(Point2D.Float location) {
+		return new GridPosition((int)(location.x / caseSize), (int)(location.y / caseSize) - 1);
 	}
 }

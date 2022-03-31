@@ -25,6 +25,22 @@ public class Cell {
 		return;
 	}
 	
+	public void addCard(Card c) {
+		card = c;
+	}
+	
+	public Card card() {
+		return card;
+	}
+	
+	public String sprite() {
+		if (card != null) {
+			return card.sprite();
+		} 
+		
+		return "ressources/Map-Sprite/normalLand.png";
+	}
+	
 	@Override
 	public String toString() {
 		return "C";

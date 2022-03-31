@@ -29,4 +29,12 @@ public class Card {
 		return sprite;
 	}
 	
+	public String toString() {
+		return sprite;
+	}
+	
+	public ArrayList<CardState> cardState() {
+		return cardState;
+	}
+	
 }

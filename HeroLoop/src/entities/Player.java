@@ -68,5 +68,8 @@ public class Player extends AbstractEntity {
 		return false;
 	}
 	
+	public Card selectCard(int i) {
+		return deck.getCard(i);
+	}
 	
 }

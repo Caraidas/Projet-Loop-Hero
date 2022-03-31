@@ -1,10 +1,12 @@
 package main;
 
 import java.awt.Color;
+import java.awt.geom.Point2D;
 
 import Battle.BattleData;
 import collectable.Card;
 import data.GameData;
+import data.GridPosition;
 import data.Range;
 import entities.Player;
 import fr.umlv.zen5.Application;
@@ -23,10 +25,9 @@ public class Main {
 	private final static TimeData timeData = new TimeData();
 	private final static View view = new View(player, timeData, gameData);
 	
-	
 	public static void doKeyActionAndDraw(ApplicationContext context, Event event) {
 		doKeyAction(context, event);
-		view.drawScreen(context);
+		view.drawScreen();
 	}
 	
 	public static void doKeyAction(ApplicationContext context, Event event) {
@@ -62,15 +63,16 @@ public class Main {
 	
 	public void gameLoop(ApplicationContext context) {
 		
+		view.initContext(context);
 		gameData.generateGameBoard();
-		view.drawScreen(context);
+		view.drawScreen();
 		player.addCard(new Card("ressources/Card-Sprite/Landscape-Cards/Mountain.png"), 14);
 		
 		while (true) {
 			doTimeAction(context);
 			doPlayerAction(context);
 			doEventAction(context);
-			view.drawScreen(context);
+			view.drawScreen();
 			if (player.isDead()) {
 				context.exit(0);
 				break;
@@ -79,12 +81,32 @@ public class Main {
 	}
 	
 	public void doTimeAction(ApplicationContext context) {
-		if (timeData.timeFraction() > 0.95) { 
+		if (timeData.timeFraction() > 0.95 && !timeData.stopped()) { 
 			gameData.spawn();
 		}
 	}
 	
-	public void doEventAction(ApplicationContext context) {
+	public void doMouseAction(ApplicationContext context, Event event) {
+		Point2D.Float location = event.getLocation();
+		if (view.clickedOnCards(location)) {
+			gameData.selectCard((view.toCardPos(location)));
+			view.blackScreen();
+			timeData.stop();
+		} else if (view.deposedCard(location)) {
+			GridPosition pos = view.toCellPos(location);
+			System.out.println(pos);
+			gameData.depositCard(player.selectCard(gameData.selectedCard()), pos);
+			player.deck().remove(gameData.selectedCard());
+			gameData.selectCard(-1);
+		} else {
+			gameData.selectCard(-1);
+		}
+		
+		view.blackScreen();
+		view.drawScreen();
+	}
+	
+	public void doEventAction(ApplicationContext context) { // Réalise les actions liés à l'utilisateur
 		
 		Event event = context.pollOrWaitEvent(200);
 		
@@ -95,6 +117,10 @@ public class Main {
 		switch (event.getAction()) {
 			case KEY_PRESSED -> {
 				doKeyActionAndDraw(context, event);
+			}
+			
+			case POINTER_DOWN -> {
+				doMouseAction(context, event);
 			}
 			default -> {
 				System.out.println("bravo nidal");
