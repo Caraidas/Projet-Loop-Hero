@@ -1,5 +1,5 @@
 package collectable;
 
-public class Item {
+public class Item { // Phase 2
 
 }

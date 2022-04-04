@@ -4,6 +4,7 @@ public class TimeData {
 	private long tick = System.currentTimeMillis();
 	private long elapsedTotal = 0; 	// elapsed time since creation
 	private long elapsedPlayer = 0; 	// elapsed time since last Player reset()
+	private int dayCount;
 	private boolean stopped;
 	public static double DAY_MILLISECONDS = 24_000;
 	public static int PLAYER_DELAY = 1500;
@@ -34,10 +35,6 @@ public class TimeData {
 	public void resetElapsedBob() {
 		elapsedPlayer = 0;
 	}
-
-	public boolean stopped() {
-		return stopped;
-	}
 	
 	public void stop() {
 		tickTock();
@@ -64,5 +61,23 @@ public class TimeData {
 		}
 		PLAYER_DELAY = 1500 / factor;
 		DAY_MILLISECONDS = 24_000 / factor;
+	}
+	
+	public boolean dayPassed() {
+		return timeFraction() > 0.95 && !stopped();
+	}
+	
+	public void updateDayCount() {
+		dayCount++;
+	}
+	
+	public void addTime(int t) {
+		elapsedTotal += t;
+	}
+	
+	// Getters :
+	
+	public boolean stopped() {
+		return stopped;
 	}
 }

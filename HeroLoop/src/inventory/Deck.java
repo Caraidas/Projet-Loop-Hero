@@ -22,16 +22,18 @@ public class Deck {
 		cards.remove(i);
 	}
 	
-	public ArrayList<Card> cards() {
-		return cards;
-	}
-	
 	public int size() {
 		return cards.size();
 	}
 	
 	public Card getCard(int i) {
 		return cards.get(i);
+	}
+	
+	// Getters :
+	
+	public ArrayList<Card> cards() {
+		return cards;
 	}
 
 }

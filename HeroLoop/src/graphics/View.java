@@ -3,19 +3,10 @@ package graphics;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
-import collectable.Card;
+import collectable.CardState;
 import data.GameData;
 import data.GridPosition;
 import entities.Monster;
@@ -60,28 +51,14 @@ public class View {
 	}
 	
 	public  void drawPlayer(Graphics2D graphics) {
-		Path path = Path.of("ressources/Entities-Sprite/Player.png");
+		ImageConstructor playerImage = new ImageConstructor(Path.of("ressources/Entities-Sprite/Player.png"), (int)(caseSize * 0.5), (int)(caseSize * 0.5));
 		int column = gameData.map().loop().get(player.position()).column();
 		int line = gameData.map().loop().get(player.position()).line();
-		drawImage(graphics, (int)((line * caseSize) + (caseSize * 0.25)), (int)((column * caseSize) + (caseSize * 1.25)), path, 30, 30);
+		drawImage(graphics, (int)((line * caseSize) + (caseSize * 0.25)), (int)((column * caseSize) + (caseSize * 1.25)), playerImage);
 	}
 	
-	private  void drawImage(Graphics2D graphics, int i, int j, Path path, int sizeW, int sizeH) {
-		try (InputStream in = Files.newInputStream(path)) {
-			BufferedImage img = ImageIO.read(in);
-			
-			if (sizeW == -1 && sizeW == -1) {
-				sizeW = img.getWidth();
-				sizeH = img.getHeight();
-			}
-			
-			AffineTransformOp scaling = new AffineTransformOp(AffineTransform
-					.getScaleInstance(sizeW / (double) img.getWidth(), sizeH / (double) img.getHeight()),
-					AffineTransformOp.TYPE_BILINEAR);
-			graphics.drawImage(img, scaling, i, j);
-		} catch (IOException e) {
-			throw new RuntimeException("problème d'affichage : " + path.getFileName());
-		}
+	private  void drawImage(Graphics2D graphics, int i, int j, ImageConstructor imgConstructor) {
+		graphics.drawImage(imgConstructor.img(), imgConstructor.scaling(), i, j);
 	}
 	
 	public  void drawMonsters(Graphics2D graphics, int i, int j, Cell c) {		
@@ -89,6 +66,7 @@ public class View {
 		int newJ;
 		ArrayList<Monster> monsters = ((RoadCell)(c)).getEntities();
 		for (int index = 0; index < monsters.size(); index++) {
+			ImageConstructor monsterImage = new ImageConstructor(Path.of(monsters.get(index).getSprite()), (int)(caseSize * 0.25), (int)(caseSize * 0.25)) ;
 			if (index % 2 != 0) {
 				newI = (int)(i + (caseSize * 0.75)) - 5;
 			} else {
@@ -100,22 +78,38 @@ public class View {
 			} else {
 				newJ = (int)(j + (caseSize * 0.75)) - 5;
 			}
-			drawImage(graphics, newI, newJ, Path.of(monsters.get(index).getSprite()), (int)(caseSize * 0.25), (int)(caseSize * 0.25));
+			drawImage(graphics, newI, newJ, monsterImage);
 		}
 	}
 	
 	public void drawCell(Graphics2D graphics, int i, int j, Cell c) {
 		
-		drawImage(graphics, i, j, Path.of(c.sprite()), caseSize, caseSize);
+		if (c.card() == null) {
+			graphics.setColor(Color.BLACK);
+			graphics.fillRect(i, j, caseSize, caseSize);
+		} else {
+			ImageConstructor cellImage = new ImageConstructor(Path.of("ressources/Map-Sprite/Card-Sprites/" + c.sprite()), caseSize, caseSize);
+			drawImage(graphics, i, j, cellImage);
+		}
+		
 		if (c instanceof RoadCell) {
+			if (c.card() == null) {
+				ImageConstructor cellImage = new ImageConstructor(Path.of("ressources/Map-Sprite/Card-Sprites/horizontal-road.png"), caseSize, caseSize);
+				drawImage(graphics, i, j, cellImage);
+			} else {
+				ImageConstructor cellImage = new ImageConstructor(Path.of("ressources/Map-Sprite/Card-Sprites/" + c.sprite()), caseSize, caseSize);
+				drawImage(graphics, i, j, cellImage);
+			}
+			
 			drawMonsters(graphics, i, j, c);
+			
 		}
 	}
 	
 	public  void drawMap(Graphics2D graphics) {
 		for (int i = 0; i < gameData.map().lines(); i++) {
 			for (int j = 0; j < gameData.map().columns(); j++) {
-				drawCell(graphics, j * caseSize, i * caseSize + caseSize, gameData.map().getCase(i, j));
+				drawCell(graphics, j * caseSize, i * caseSize + caseSize, gameData.map().getCell(i, j));
 			}
 		}
 	}
@@ -127,10 +121,19 @@ public class View {
 		graphics.fillRect((21 * caseSize), 0, HudWidth, (int) height);
 		
 		
-		String playerHp = player.getHp() + " / " + ((int)player.getHpMax());
+		String playerHp = (int)(player.getHp()) + " / " + (int)(player.getHpMax());
 		graphics.setColor(Color.red);
 		graphics.setFont (new Font("TimesRoman", Font.BOLD, 40));
 		graphics.drawString(playerHp, (21 * caseSize) + 30, 150);
+		
+		graphics.setColor(Color.black);
+		graphics.setFont (new Font("TimesRoman", Font.BOLD, 20));
+		
+		int i = 1;
+		for (String s : player.ressources().keySet()) {
+			graphics.drawString(s + " : " + player.ressources().get(s), (21 * caseSize) + 30, (int)(150 + (caseSize * 0.5) * i));
+			i++;
+		}
 	}
 	
 	public void drawHudTop(Graphics2D graphics) {
@@ -156,24 +159,56 @@ public class View {
 	
 	public void drawDeck(Graphics2D graphics) {
 		for (int i = 0; i < player.deckSize(); i++) {
-			Path path = Path.of(player.deck().getCard(i).sprite());
+			Path path = Path.of("ressources/Card-Sprite/" + player.deck().getCard(i).sprite());
+			ImageConstructor cardImage = new ImageConstructor(path, -1, -1);
 			if (i == gameData.selectedCard()) {
-				drawImage(graphics, (int)(i * caseSize * 1.62), (int)(12 * caseSize), path, -1, -1);
+				drawImage(graphics, (int)(i * caseSize * 1.62), (int)(12 * caseSize), cardImage);
 			} else {
-				drawImage(graphics, (int)(i * caseSize * 1.62), (int)(12 * caseSize + caseSize * 1.25), path, -1, -1);
+				drawImage(graphics, (int)(i * caseSize * 1.62), (int)(12 * caseSize + caseSize * 1.25), cardImage);
 			}	
 		}
 	}
 	
 	public boolean deposedCard(Point2D.Float location) {
-		return location.x >= 0 * caseSize && location.x < 21 * caseSize && location.y >= caseSize 
-				&& location.y < 12 * caseSize + caseSize && gameData.selectedCard() != -1;
+		
+		if (!(location.x >= 0 * caseSize && location.x < 21 * caseSize && location.y >= caseSize 
+				&& location.y < 12 * caseSize + caseSize && gameData.selectedCard() != -1)) 
+		{
+			return false;
+		}
+		
+		for (CardState c : player.selectedCard(gameData.selectedCard()).cardState()) {
+			if (c != gameData.map().getCell(toCellPos(location)).acceptableCardState()) {
+				return false;
+			}
+		}
+		
+		if (gameData.map().getCell(toCellPos(location)).card() != null || gameData.map().getCell(toCellPos(location))
+				== gameData.map().getCell(gameData.map().loop().get(0))) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public void drawCliquableCells(Graphics2D graphics) {
+		ImageConstructor selectable = new ImageConstructor(Path.of("ressources/Map-Sprite/selectable.png"), caseSize, caseSize);
+		if (gameData.selectedCard() != -1) {
+			for (int i = 0; i < gameData.map().lines(); i++) {
+				for (int j = 0; j < gameData.map().columns(); j++) {
+					if (player.deck().getCard(gameData.selectedCard()).contains(gameData.map().getCell(i, j).acceptableCardState()) && gameData.map().getCell(i, j).card() == null) {
+						drawImage(graphics, j * caseSize, i * caseSize + caseSize, selectable);
+					}
+				}
+			}
+		}
 	}
 	
 	public void drawScreen() {
 		
 		context.renderFrame(graphics -> {
 			drawMap(graphics);
+			drawCliquableCells(graphics);
 			drawHud(graphics);
 			drawPlayer(graphics);
 			drawDeck(graphics);

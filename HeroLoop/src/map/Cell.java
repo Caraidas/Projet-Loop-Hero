@@ -1,27 +1,32 @@
 package map;
 
-import java.util.ArrayList;
-
 import collectable.Card;
+import collectable.CardState;
 import entities.Monster;
 
 
 public class Cell {
 	private Card card;
+	private CardState acceptableCardState;
 	
-	public Cell(Card card) {
+	public Cell(Card card, CardState acceptableCardState) {
 		this.card = card;
+		this.acceptableCardState = acceptableCardState;
 	}
 	
 	public Cell() {
-		this(null);
+		this(null, null);
+	}
+	
+	public void addCardState(CardState c) {
+		acceptableCardState = c;
 	}
 	
 	public void spawn(Monster monster) {
 		return;
 	}
 	
-	public void clear() {
+	public void clear() { // clears a cell from the monster on it
 		return;
 	}
 	
@@ -29,20 +34,18 @@ public class Cell {
 		card = c;
 	}
 	
+	// Getters :
+	
 	public Card card() {
 		return card;
 	}
 	
-	public String sprite() {
-		if (card != null) {
-			return card.sprite();
-		} 
-		
-		return "ressources/Map-Sprite/normalLand.png";
+	public CardState acceptableCardState() {
+		return acceptableCardState;
 	}
 	
-	@Override
-	public String toString() {
-		return "C";
+	public String sprite() {
+		return card.sprite();
 	}
+	
 }

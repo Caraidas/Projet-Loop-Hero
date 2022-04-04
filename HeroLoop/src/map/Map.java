@@ -2,8 +2,8 @@ package map;
 
 import java.util.ArrayList;
 
+import collectable.CardState;
 import data.GridPosition;
-import entities.Monster;
 import entities.Player;
 
 public class Map {
@@ -26,16 +26,12 @@ public class Map {
 		return map[0].length;
 	}
 	
-	public ArrayList<GridPosition> loop() {
-		return loop;
-	}
-	
-	public Cell getCase(int i, int j) {
+	public Cell getCell(int i, int j) {
 		return map[i][j];
 	}
 	
-	public Cell getCase(GridPosition g) {
-		return this.getCase(g.column(), g.line());
+	public Cell getCell(GridPosition g) {
+		return this.getCell(g.column(), g.line());
 	}
 	
 	public GridPosition getPlayerPos(Player p) {
@@ -71,18 +67,54 @@ public class Map {
 		for (GridPosition pos : loop) {
 			map[pos.column()][pos.line()] = new RoadCell();
 		}
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder s = new StringBuilder();
+		
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
-				s.append(map[i][j].toString());
-				s.append(", ");
-			}
-			s.append("\n");
+				map[i][j].addCardState(determinateCardState(i, j));
+			}	
 		}
-		return s.toString();
+		
 	}
+	
+	private CardState determinateCardState(int i, int j) {
+		
+		if (map[i][j] instanceof RoadCell) {
+			return CardState.ROAD;
+		}
+		
+		ArrayList<Integer> lst = new ArrayList<>();
+		lst.add(1);
+		lst.add(-1);
+		
+		if (i == 0 || j == 0 )  {
+			lst.remove(1);
+		}
+		
+		if (i == map.length - 1 || j == map[0].length - 1) {
+			lst.remove(0);
+		}
+		
+		
+		for (int k : lst) {
+			if (map[i][j + k] instanceof RoadCell) {
+				return CardState.ROADSIDE; 
+			} 
+			
+			if (map[i + k][j] instanceof RoadCell) {
+				return CardState.ROADSIDE;
+			}
+		}
+		return CardState.LANDSCAPE;
+	}
+	
+	public Cell playerCell(Player player) {
+		return this.getCell(this.getPlayerPos(player));
+	}
+	
+	// Getters :
+	
+	public ArrayList<GridPosition> loop() {
+		return loop;
+	}
+	
 }

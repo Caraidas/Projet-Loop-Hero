@@ -2,7 +2,7 @@ package inventory;
 
 import collectable.Item;
 
-public class Inventory {
+public class Inventory { // Phase 2
 	private Item helmet;
 	private Item armor;
 	private Item sword;

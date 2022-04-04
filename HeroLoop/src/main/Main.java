@@ -2,25 +2,23 @@ package main;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
-
+import java.util.HashMap;
 import Battle.BattleData;
 import collectable.Card;
 import data.GameData;
 import data.GridPosition;
-import data.Range;
 import entities.Player;
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
 import graphics.View;
-import inventory.Inventory;
 import map.Map;
 import time.TimeData;
 
 public class Main {
 	private final static Map m = new Map();
-	private final static Player player = new Player(0, 250, new Range(4, 6), 0.0, 0.0, 0, 0, 0);
-	private final BattleData battleData = new BattleData();
+	private final static Player player = new Player(0, new HashMap<>());
+	private final BattleData battleData = new BattleData(gameData, timeData);
 	private final static GameData gameData = new GameData(m);
 	private final static TimeData timeData = new TimeData();
 	private final static View view = new View(player, timeData, gameData);
@@ -28,6 +26,14 @@ public class Main {
 	public static void doKeyActionAndDraw(ApplicationContext context, Event event) {
 		doKeyAction(context, event);
 		view.drawScreen();
+	}
+	
+	public void doTimeAction(ApplicationContext context) {
+		if (timeData.dayPassed()) { 
+			gameData.spawn();
+			gameData.applyDailyBoosts(player);
+			timeData.updateDayCount();
+		}
 	}
 	
 	public static void doKeyAction(ApplicationContext context, Event event) {
@@ -41,9 +47,36 @@ public class Main {
 		case A -> timeData.accelerateTime(1);
 		case Z -> timeData.accelerateTime(2);
 		case E -> timeData.accelerateTime(4);
+		case R -> timeData.accelerateTime(8);
 		
 		default -> System.out.println("Touche inactive : " + event.getKey());
 		}
+	}
+	
+	public void doMouseAction(ApplicationContext context, Event event) {
+		Point2D.Float location = event.getLocation();
+		
+		if (view.clickedOnCards(location)) {
+			gameData.selectCard((view.toCardPos(location)));
+			timeData.stop(); // plannification mode
+			
+		} else if (view.deposedCard(location)) {
+			Card deposedCard = player.selectCard(gameData.selectedCard());		
+			
+			player.boostStat(deposedCard);
+			player.giveRessource(deposedCard);
+			
+			GridPosition pos = view.toCellPos(location);
+			gameData.depositCard(deposedCard, pos);
+			player.deck().remove(gameData.selectedCard());
+			gameData.selectCard(-1); 
+			
+		} else {
+			gameData.selectCard(-1);
+		}
+		
+		view.blackScreen();
+		view.drawScreen();
 	}
 	
 	private void doPlayerAction(ApplicationContext context) {
@@ -55,55 +88,11 @@ public class Main {
 				gameData.updateLoopCount();
 				player.heal(0.2);
 			}
+			player.giveRessourcesWhenCrossed(m.playerCell(player).card());
 		}
 		
-		battleData.startBattle(m.getCase(m.getPlayerPos(player)), player);
-		m.getCase(m.getPlayerPos(player)).clear();
-	}
-	
-	public void gameLoop(ApplicationContext context) {
-		
-		view.initContext(context);
-		gameData.generateGameBoard();
-		view.drawScreen();
-		player.addCard(new Card("ressources/Card-Sprite/Landscape-Cards/Mountain.png"), 14);
-		
-		while (true) {
-			doTimeAction(context);
-			doPlayerAction(context);
-			doEventAction(context);
-			view.drawScreen();
-			if (player.isDead()) {
-				context.exit(0);
-				break;
-			}
-		}
-	}
-	
-	public void doTimeAction(ApplicationContext context) {
-		if (timeData.timeFraction() > 0.95 && !timeData.stopped()) { 
-			gameData.spawn();
-		}
-	}
-	
-	public void doMouseAction(ApplicationContext context, Event event) {
-		Point2D.Float location = event.getLocation();
-		if (view.clickedOnCards(location)) {
-			gameData.selectCard((view.toCardPos(location)));
-			view.blackScreen();
-			timeData.stop();
-		} else if (view.deposedCard(location)) {
-			GridPosition pos = view.toCellPos(location);
-			System.out.println(pos);
-			gameData.depositCard(player.selectCard(gameData.selectedCard()), pos);
-			player.deck().remove(gameData.selectedCard());
-			gameData.selectCard(-1);
-		} else {
-			gameData.selectCard(-1);
-		}
-		
-		view.blackScreen();
-		view.drawScreen();
+		battleData.startBattle(m.playerCell(player), player);
+		m.playerCell(player).clear();
 	}
 	
 	public void doEventAction(ApplicationContext context) { // Réalise les actions liés à l'utilisateur
@@ -123,7 +112,32 @@ public class Main {
 				doMouseAction(context, event);
 			}
 			default -> {
-				System.out.println("bravo nidal");
+				System.out.println("pas une action");
+			}
+		}
+	}
+	
+	public void gameLoop(ApplicationContext context) {
+		
+		view.initContext(context);
+		gameData.generateGameBoard();
+		view.drawScreen();
+		Card rock = Card.createCard("Rock");
+		Card grove = Card.createCard("Grove");
+		Card meadow = Card.createCard("Meadow");
+		
+		player.addCard(grove, 1);
+		player.addCard(rock, 1);
+		player.addCard(meadow, 1);
+		
+		while (true) {
+			doTimeAction(context);
+			doPlayerAction(context);
+			doEventAction(context);
+			view.drawScreen();
+			if (player.isDead()) {
+				context.exit(0);
+				break;
 			}
 		}
 	}

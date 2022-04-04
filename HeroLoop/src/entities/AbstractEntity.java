@@ -1,54 +1,62 @@
 package entities;
 
+import java.util.HashMap;
 
 abstract class AbstractEntity implements Entity {
-	private double def;
-	private double regen;
-	private int damageToAll;
-	private int vampirism;
-	private int evasivness;
-	private int hpMax;
-	private int hp;
+	private final HashMap<String, Double> basicStats; // all the stat shared by the player and the monsters
 	
 	private final String sprite;
 
-	public AbstractEntity(int hpMax, int hp, double def, double regen, int damageToAll, int vampirism, int evasivness,
-			String sprite) {
-		
-		this.hp = hp;
-		this.hpMax = hpMax;
-		this.def = def;
-		this.regen = regen;
-		this.damageToAll = damageToAll;
-		this.vampirism = vampirism;
-		this.evasivness = evasivness;
+	public AbstractEntity(HashMap<String, Double> basicStats, String sprite) {
+		this.basicStats = basicStats;
 		this.sprite = sprite;
 	}
 	
 	@Override 
 	public void takeDamage(int damage) {
-		hp -= damage;
+		basicStats.replace("hp", basicStats.get("hp") - damage);
 	}
 	
 	@Override 
-	public void heal(double percentage) {
-		hp += percentage * hpMax; 
+	public void heal(double percentage) { 
+		basicStats.replace("hp", basicStats.get("hp") +  basicStats.get("hpMax") * percentage);
 		
-		if (hp >= hpMax) {
-			hp = hpMax;
+		if (basicStats.get("hp") >= basicStats.get("hpMax")) {
+			basicStats.replace("hp", basicStats.get("hpMax"));
 		}
  	}
-
+	
+	@Override
+	public void addStat(String name, double value) {
+		basicStats.put(name, value);
+	}
+	
+	@Override
+	public void boostStat(String stat, Double factor) { // for percentage based boosts
+		basicStats.replace(stat, basicStats.get(stat) + basicStats.get(stat) * factor);
+	}
+	
+	@Override
+	public void boostStat(String stat, int factor) { // for point based boosts
+		basicStats.replace(stat, basicStats.get(stat) + factor);
+	}
+	
+	// Getters :
+	
+	public HashMap<String, Double> basicStats() {
+		return basicStats;
+	}
+	
 	public String getSprite() {
 		return sprite;
 	}
 	
-	public int getHp() {
-		return hp; 
+	public double getHp() {
+		return basicStats.get("hp"); 
 	}
 	
-	public int getHpMax() {
-		return hpMax;
+	public double getHpMax() {
+		return basicStats.get("hpMax");
 	}
 	
 }
