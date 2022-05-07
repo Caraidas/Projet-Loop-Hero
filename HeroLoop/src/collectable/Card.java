@@ -6,8 +6,7 @@ import entities.Monster;
 
 public class Card { 
 	private final ArrayList<CardState> cardState; // A card can be ROAD, LANSCAPE and / or ROADSIDE
-	private final HashMap<Monster, Integer> spawnableMonsters; // Monster is the monster that can spawn, Integer is the rate of spawn in days
-	private final int moveWhenspawn; // the distance the monster moves when it spawns
+	private final HashMap<String, Integer> spawnableMonster; //String is the monster that can spawn, Integer is the rate of spawn in days
 	
 	private final HashMap<String, Double> boostedStats; // The stats that the card boosts upon being placed
 	private final HashMap<String, Integer> dailyStatBoost; // The stats that the card boosts every day
@@ -20,11 +19,10 @@ public class Card {
 		this.sprite = sprite;
 		this.ressourceGiven = ressourceGiven;
 		this.ressourceGivenWhenCrossed = ressourceGivenWhenCrossed;
-		this.moveWhenspawn = moveWhenSpawn;
 		
 		this.cardState = new ArrayList<>();
-		this.spawnableMonsters = new HashMap<>();
 		this.boostedStats = new HashMap<>();
+		this.spawnableMonster = new HashMap<>();
 		this.dailyStatBoost = new HashMap<>();
 	}
 	
@@ -40,6 +38,7 @@ public class Card {
 		case "Grove" -> {
 			Card card = new Card("Grove.png", "", "Stick", 1);
 			card.addCardState(CardState.ROAD);
+			card.addSpawnableMonster("RatWolf", 2);
 			return card;
 		}
 		
@@ -67,8 +66,8 @@ public class Card {
 		cardState.add(c);
 	}
 	
-	public void addSpawnableMonster(Monster m, int rate) {
-		spawnableMonsters.put(m, rate);
+	public void addSpawnableMonster(String m, int rate) {
+		spawnableMonster.put(m, rate);
 	}
 	
 	public void addBoostedStat(String name, double value) {
@@ -105,8 +104,8 @@ public class Card {
 		return ressourceGivenWhenCrossed;
 	}
 	
-	public HashMap<Monster, Integer> spawnableMonsters() {
-		return spawnableMonsters;
+	public HashMap<String, Integer> spawnableMonster() {
+		return spawnableMonster;
 	}
 	
 }

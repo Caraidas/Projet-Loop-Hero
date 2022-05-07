@@ -64,7 +64,12 @@ public class TimeData {
 	}
 	
 	public boolean dayPassed() {
-		return timeFraction() > 0.95 && !stopped();
+		if (timeFraction() > 0.95 && !stopped()) {
+			updateDayCount();
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public void updateDayCount() {
@@ -72,12 +77,19 @@ public class TimeData {
 	}
 	
 	public void addTime(int t) {
-		elapsedTotal += t;
+		for (int i = 1; i <= t; i++) { 
+			elapsedTotal += 1;
+			dayPassed();
+		}	
 	}
 	
 	// Getters :
 	
 	public boolean stopped() {
 		return stopped;
+	}
+	
+	public int dayCount() {
+		return dayCount;
 	}
 }

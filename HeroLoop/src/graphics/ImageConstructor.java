@@ -12,12 +12,12 @@ import javax.imageio.ImageIO;
 
 public class ImageConstructor { // This Class is used in View.java to optimize the display.
 	private final Path path;
-	private int sizeW;
-	private int sizeH;
+	private double sizeW;
+	private double sizeH;
 	private BufferedImage img;
 	private AffineTransformOp scaling;
 	
-	public ImageConstructor(Path path, int sizeW, int sizeH) {
+	public ImageConstructor(Path path, double sizeW, double sizeH) {
 		this.path = path;
 		this.sizeW = sizeW;
 		this.sizeH = sizeH;
@@ -38,9 +38,9 @@ public class ImageConstructor { // This Class is used in View.java to optimize t
 	}
 	
 	private void makeScaling() {			
-		if (sizeW == -1 && sizeW == -1) {
-			sizeW = img.getWidth();
-			sizeH = img.getHeight();
+		if (sizeW < 0 && sizeW < 0) {
+			sizeW = img.getWidth() * -sizeW;
+			sizeH = img.getHeight() * -sizeH;
 		}
 		
 		scaling = new AffineTransformOp(AffineTransform

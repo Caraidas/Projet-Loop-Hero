@@ -6,15 +6,21 @@ import java.util.ArrayList;
 import java.util.Random;
 import map.Map;
 import map.RoadCell;
+import time.TimeData;
 
 public class GameData { // Takes care of all the data in the game that should be memorized
 	private final Map map;
-	private int loopCount = 0;
+	private int loopCount = 1;
 	private int selectedCard = -1; // -1 means no card selected
+	private int selectedItem = -1;
 	private ArrayList<Card> drawPile = new ArrayList<>();
+	private final TimeData timeData;
 	
-	public GameData(Map map) {
+	private boolean inBattle = false;
+	
+	public GameData(Map map, TimeData timeData) {
 		this.map = map;
+		this.timeData = timeData;
 		this.addCardToDrawPile(Card.createCard("Rock"), 12);
 		this.addCardToDrawPile(Card.createCard("Grove"), 4);
 		this.addCardToDrawPile(Card.createCard("Meadow"), 14);
@@ -33,7 +39,7 @@ public class GameData { // Takes care of all the data in the game that should be
 	public void spawn() {
 		for (int i = 0; i < map.loop().size();i++) {
 			if (i != 0) {
-				((RoadCell) map.getCell(map.loop().get(i).column(), map.loop().get(i).line())).spawn();
+				((RoadCell) map.getCell(map.loop().get(i).column(), map.loop().get(i).line())).spawn(timeData.dayCount(), loopCount);
 			}
 		}
 	}
@@ -45,6 +51,10 @@ public class GameData { // Takes care of all the data in the game that should be
 	
 	public void selectCard(int i) {
 		selectedCard = i;
+	}
+	
+	public void selectItem(int i) {
+		selectedItem = i;
 	}
 	
 	public Card drawCard() { // draws a random card
@@ -70,7 +80,21 @@ public class GameData { // Takes care of all the data in the game that should be
 		}
 	}
 	
+	public void switchGameState() { 
+		if (inBattle) {
+			inBattle = false;
+			timeData.start();
+		} else {
+			inBattle = true;
+			timeData.stop();
+		}
+	}
+	
 	// Getters :
+	
+	public boolean inBattle() {
+		return inBattle;
+	}
 	
 	public int getLoopCount() {
 		return loopCount;
@@ -82,6 +106,10 @@ public class GameData { // Takes care of all the data in the game that should be
 	
 	public int selectedCard() {
 		return selectedCard;
+	}
+	
+	public int selectedItem() {
+		return selectedItem;
 	}
 
 }

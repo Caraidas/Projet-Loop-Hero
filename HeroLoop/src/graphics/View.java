@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import collectable.CardState;
 import data.GameData;
 import data.GridPosition;
+import entities.Entity;
 import entities.Monster;
 import entities.Player;
 import fr.umlv.zen5.ApplicationContext;
@@ -51,7 +52,7 @@ public class View {
 	}
 	
 	public  void drawPlayer(Graphics2D graphics) {
-		ImageConstructor playerImage = new ImageConstructor(Path.of("ressources/Entities-Sprite/Player.png"), (int)(caseSize * 0.5), (int)(caseSize * 0.5));
+		ImageConstructor playerImage = new ImageConstructor(Path.of("ressources/Entities-Sprite/outOfBattle/Player.png"), (int)(caseSize * 0.5), (int)(caseSize * 0.5));
 		int column = gameData.map().loop().get(player.position()).column();
 		int line = gameData.map().loop().get(player.position()).line();
 		drawImage(graphics, (int)((line * caseSize) + (caseSize * 0.25)), (int)((column * caseSize) + (caseSize * 1.25)), playerImage);
@@ -66,7 +67,7 @@ public class View {
 		int newJ;
 		ArrayList<Monster> monsters = ((RoadCell)(c)).getEntities();
 		for (int index = 0; index < monsters.size(); index++) {
-			ImageConstructor monsterImage = new ImageConstructor(Path.of(monsters.get(index).getSprite()), (int)(caseSize * 0.25), (int)(caseSize * 0.25)) ;
+			ImageConstructor monsterImage = new ImageConstructor(Path.of("ressources/Entities-Sprite/outOfBattle/monsters/" + monsters.get(index).getSprite()), (int)(caseSize * 0.25), (int)(caseSize * 0.25)) ;
 			if (index % 2 != 0) {
 				newI = (int)(i + (caseSize * 0.75)) - 5;
 			} else {
@@ -124,15 +125,65 @@ public class View {
 		String playerHp = (int)(player.getHp()) + " / " + (int)(player.getHpMax());
 		graphics.setColor(Color.red);
 		graphics.setFont (new Font("TimesRoman", Font.BOLD, 40));
-		graphics.drawString(playerHp, (21 * caseSize) + 30, 150);
+		graphics.drawString(playerHp, (21 * caseSize) + 60, 100);
 		
 		graphics.setColor(Color.black);
 		graphics.setFont (new Font("TimesRoman", Font.BOLD, 20));
 		
-		int i = 1;
+		String playerDamage = "damage : " + player.damageString();
+		graphics.drawString(playerDamage, (21 * caseSize) + 60, 125);
+		
+		int i = 0;
+		for (String stat : player.basicStats().keySet()) {
+			if (!(stat.equals("hp") || stat.equals("hpMax"))) {
+				i++;
+				graphics.drawString(stat + " : " + (player.basicStats().get(stat)), (21 * caseSize) + 60, 125 + 25 * i);
+			}
+		}
+		
+		i = 1;
 		for (String s : player.ressources().keySet()) {
-			graphics.drawString(s + " : " + player.ressources().get(s), (21 * caseSize) + 30, (int)(150 + (caseSize * 0.5) * i));
+			graphics.drawString(s + " : " + player.ressources().get(s), (21 * caseSize) + 30, (int)(550 + (caseSize * 0.5) * i));
 			i++;
+		}
+		
+		drawItems(graphics);
+		drawInventory(graphics);
+		
+	}
+	
+	public void drawItems(Graphics2D graphics) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 4; j++) {
+				graphics.setColor(Color.DARK_GRAY);
+				graphics.fillRect((21 * caseSize + (j * caseSize)) + 20, (int)(200 + (caseSize * i)), caseSize -1, caseSize -1);
+				if (!(player.items().get((i * 4) + j) == null)) {
+					ImageConstructor itemImage = new ImageConstructor(Path.of(player.items().get((i * 4) + j).sprite()), (double)(caseSize -1), (double)(caseSize -1));
+					drawImage(graphics, (21 * caseSize + (j * caseSize)) + 20, (int)(200 + (caseSize * i)), itemImage);
+				}
+			}
+		}
+	}
+	
+	public void drawInventory(Graphics2D graphics) {
+		for (int i = 0; i < 3; i++) {
+			graphics.setColor(Color.DARK_GRAY);
+			graphics.fillRect((21 * caseSize + (i * caseSize)) + 50, 400 + caseSize, caseSize -1, caseSize -1);
+		}
+		
+		if (player.inventory().hasWeapon()) {
+			ImageConstructor itemImage = new ImageConstructor(Path.of(player.inventory().weapon().sprite()), (double)(caseSize), (double)(caseSize));
+			drawImage(graphics, (21 * caseSize + (0 * caseSize)) + 50, 400 + caseSize, itemImage);
+		}
+		
+		if (player.inventory().hasArmor()) {
+			ImageConstructor itemImage = new ImageConstructor(Path.of(player.inventory().armor().sprite()), (double)(caseSize), (double)(caseSize));
+			drawImage(graphics, (21 * caseSize + (1 * caseSize)) + 50, 400 + caseSize, itemImage);
+		}
+		
+		if (player.inventory().hasShield()) {
+			ImageConstructor itemImage = new ImageConstructor(Path.of(player.inventory().shield().sprite()), (double)(caseSize), (double)(caseSize));
+			drawImage(graphics, (21 * caseSize + (2 * caseSize)) + 50, 400 + caseSize, itemImage);
 		}
 	}
 	
@@ -149,11 +200,12 @@ public class View {
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(gameData.getLoopCount() + " loops", 420, 30);
+		graphics.drawString("day " + timeData.dayCount(), 500, 30);
 	}
 	
 	public void drawHud(Graphics2D graphics) {
-		drawHudRight(graphics);
 		drawHudTop(graphics);
+		drawHudRight(graphics);
 		drawTimeBar(graphics);
 	}
 	
@@ -204,14 +256,76 @@ public class View {
 		}
 	}
 	
+	public void drawBattle(Graphics2D graphics) { 
+		graphics.setColor(Color.black);
+		graphics.fillRect((int)(width / 5), (int)(height / 6), (int)(width / 2), (int)(height * 0.7));
+		graphics.setColor(Color.gray);
+		graphics.drawRect((int)(width / 5), (int)(height / 6), (int)(width / 2), (int)(height * 0.7));
+		drawMonstersInBattle(graphics, (RoadCell)(gameData.map().getCell(gameData.map().getPlayerPos(player))));
+	}
+	
+	public void drawMonstersInBattle(Graphics2D graphics, RoadCell c) {
+		int i = 0;
+		for (Monster m : c.getEntities()) {
+			ImageConstructor mnstrImage = new ImageConstructor(Path.of("ressources/Entities-Sprite/InBattle/monsters/" + m.getSprite()), -0.15, -0.15);
+			drawImageInBattle(graphics, i, mnstrImage); 
+			drawMonsterStat(graphics, i, m);
+			i++;
+		}
+		
+		ImageConstructor pImage = new ImageConstructor(Path.of("ressources/Entities-Sprite/InBattle/" + player.getSprite()), -0.2, -0.2);
+		drawImageInBattle(graphics, -1, pImage);
+	}
+	
+	public void drawMonsterStat(Graphics2D graphics, int i, Monster m) {
+		int index = 1;
+		for (String stat : m.basicStats().keySet()) {
+			if (stat != "hpMax") {
+				if (stat == "hp")
+				{
+					String s = stat + " : " + m.basicStats().get(stat) + "/" + m.getHpMax();
+					graphics.setColor(Color.red);
+					graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
+					graphics.drawString(s, (int)(3 * (width / 6)) + 2 * caseSize, (int)(i * 2 * caseSize + (height / 6) + caseSize) + caseSize);
+				} else {
+					String s = stat + " : " + m.basicStats().get(stat);
+					graphics.setColor(Color.white);
+					graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
+					graphics.drawString(s, (int)(3 * (width / 6)) + 2 * caseSize, (int)(i * 2 * caseSize + (height / 6) + caseSize) + caseSize + index * 20);
+					index++;
+				}
+				
+			}
+		}
+		String s = "Strength : " + m.strength();
+		graphics.setColor(Color.white);
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
+		graphics.drawString(s, (int)(3 * (width / 6)) + 2 * caseSize, (int)(i * 2 * caseSize + (height / 6) + caseSize) + caseSize + index * 20);
+		
+	}
+	
+	public void drawImageInBattle(Graphics2D graphics, int i, ImageConstructor imgConstructor) {
+		if (i != -1) {
+			graphics.drawImage(imgConstructor.img(), imgConstructor.scaling(), (int)(3 * (width / 6)), (int)(i * 2 * caseSize + (height / 6) + caseSize));
+		} else {
+			graphics.drawImage(imgConstructor.img(), imgConstructor.scaling(), (int)(1.5* (width / 6)), (int)(height / 2));
+		}
+	}
+	
 	public void drawScreen() {
 		
 		context.renderFrame(graphics -> {
-			drawMap(graphics);
-			drawCliquableCells(graphics);
-			drawHud(graphics);
-			drawPlayer(graphics);
-			drawDeck(graphics);
+			if (gameData.inBattle()) {
+				drawBattle(graphics);
+				drawHud(graphics);
+			} else {
+				drawMap(graphics);
+				drawCliquableCells(graphics);
+				drawHud(graphics);
+				drawPlayer(graphics);
+				drawDeck(graphics);
+			}
+			
 		});
 	}
 	
@@ -228,9 +342,19 @@ public class View {
 				(int)(12 * caseSize + caseSize * 1.25) && location.y < height;
 	}
 	
+	public boolean clickedOnItems(Point2D.Float location) {
+		return (location.x >= (21 * caseSize + (0 * caseSize)) + 20 && location.x < width && location.y >= 
+				(int)(200 + (caseSize * 0)) && location.y < (int)(200 + (caseSize * 3))) && timeData.stopped();
+	}
+	
 	public int toCardPos(Point2D.Float location) {
-		return (int)(location.x / (caseSize * 1.62));
-		
+		return (int)(location.x / (caseSize * 1.62));	
+	}
+	
+	public int toItemPos(Point2D.Float location) {
+		int x = (int)(location.x - ((21 * caseSize) + 20)) / (caseSize);
+		int y =(int)(location.y - (int)(200)) / (caseSize);
+		return (int)(x + (y * 4));
 	}
 	
 	public GridPosition toCellPos(Point2D.Float location) {

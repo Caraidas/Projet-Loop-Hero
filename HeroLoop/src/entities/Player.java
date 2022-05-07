@@ -2,6 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import collectable.Card;
 import collectable.Item;
@@ -17,20 +18,27 @@ public class Player extends AbstractEntity {
 	private final ArrayList<Item> items;
 	private Range damage;
 
-	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats) {
+	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage) {
 		
-		super(basicStats, "ressources/Entities-Sprite/Player.png");
+		super(basicStats, "Player.png");
 		this.position = position;
 		this.inventory = inventory;
 		this.deck = deck;
 		this.items = items;
+		
+		for (int i = 0; i < 12; i++) {
+			items.add(null);
+		}
+		
 		this.ressources = ressources;
+		this.damage = damage;
 	}
 	
-	public Player(int position, HashMap<String, Double> basicStats) {
-		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats);
+	public Player(int position, HashMap<String, Double> basicStats, Range damage) {
+		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage);
 		this.addStat("hp", 250);
 		this.addStat("hpMax", 250);
+		this.addStat("def", 0);
 	}
 	
 	public Card selectedCard(int selected) {
@@ -70,8 +78,19 @@ public class Player extends AbstractEntity {
 		}
 	}
 	
+	public void addItemInInventory(Item item) {
+		if (items.size() == 12) {
+			items.remove(0);
+		}
+		items.add(item);
+	}
+	
 	public Card selectCard(int i) {
 		return deck.getCard(i);
+	}
+	
+	public Item selectItem(int i) {
+		return items.get(i);
 	}
 	
 	public void boostStat(Card c) {
@@ -112,6 +131,45 @@ public class Player extends AbstractEntity {
 		}
 	}
 	
+	public void equipItem(int itemIndex) {
+		if (items.get(itemIndex).isArmor()) {
+			if (!(inventory.armor() == null)) {
+				boostStat("hpMax", -(inventory.armor().stat())); // We get rid of the stats of the item that was here before
+			}
+			inventory.setArmor(items.get(itemIndex));
+			boostStat("hpMax", items.get(itemIndex).stat());
+			
+		} else if (items.get(itemIndex).isWeapon()) {
+			if (!(inventory.weapon() == null)) {
+				damage.boost(-(inventory.weapon().stat())); // We get rid of the stats of the item that was here before
+			}			
+			inventory.setWeapon(items.get(itemIndex));
+			damage.boost(items.get(itemIndex).stat());
+			
+		} else if (items.get(itemIndex).isShield()) {
+			if (!(inventory.shield() == null)) {
+				boostStat("def", -(inventory.shield().stat())); // We get rid of the stats of the item that was here before
+			}
+			inventory.setShield(items.get(itemIndex));
+			boostStat("def", items.get(itemIndex).stat());
+		}
+		
+		destroyItem(itemIndex);
+		
+	}
+	
+	public void destroyItem(int i) {
+		items.set(i, null);
+ 	}
+	
+	public int damage() {
+		return damage.damage();
+	}
+	
+	public String damageString() {
+		return damage.toString();
+	}
+	
 	// Getters :
 	
 	public int position() {
@@ -122,15 +180,15 @@ public class Player extends AbstractEntity {
 		return deck;
 	}
 	
-	public double getHp() {
-		return super.getHp();
-	}
-	
-	public double getHpMax() {
-		return super.getHpMax();
-	}
-	
 	public HashMap<String, Integer> ressources() {
 		return ressources;
+	}
+	
+	public Inventory inventory() {
+		return inventory;
+	}
+	
+	public ArrayList<Item> items() {
+		return items;
 	}
 }

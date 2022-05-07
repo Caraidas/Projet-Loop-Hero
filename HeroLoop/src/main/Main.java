@@ -5,8 +5,10 @@ import java.awt.geom.Point2D;
 import java.util.HashMap;
 import Battle.BattleData;
 import collectable.Card;
+import collectable.Item;
 import data.GameData;
 import data.GridPosition;
+import data.Range;
 import entities.Player;
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
@@ -17,11 +19,11 @@ import time.TimeData;
 
 public class Main {
 	private final static Map m = new Map();
-	private final static Player player = new Player(0, new HashMap<>());
-	private final BattleData battleData = new BattleData(gameData, timeData);
-	private final static GameData gameData = new GameData(m);
+	private final static Player player = new Player(0, new HashMap<>(), new Range(4, 6));
 	private final static TimeData timeData = new TimeData();
+	private final static GameData gameData = new GameData(m, timeData);
 	private final static View view = new View(player, timeData, gameData);
+	private final BattleData battleData = new BattleData(gameData, timeData, view);
 	
 	public static void doKeyActionAndDraw(ApplicationContext context, Event event) {
 		doKeyAction(context, event);
@@ -32,7 +34,6 @@ public class Main {
 		if (timeData.dayPassed()) { 
 			gameData.spawn();
 			gameData.applyDailyBoosts(player);
-			timeData.updateDayCount();
 		}
 	}
 	
@@ -43,11 +44,16 @@ public class Main {
 			context.exit(0);
 			throw new AssertionError("ne devrait pas arriver");
 		}
-		case S -> timeData.timeControl();
+		case S -> {
+			if (!gameData.inBattle()) {
+				timeData.timeControl();
+				view.blackScreen();
+				gameData.selectCard(-1);
+			}		
+		}
 		case A -> timeData.accelerateTime(1);
 		case Z -> timeData.accelerateTime(2);
 		case E -> timeData.accelerateTime(4);
-		case R -> timeData.accelerateTime(8);
 		
 		default -> System.out.println("Touche inactive : " + event.getKey());
 		}
@@ -58,7 +64,7 @@ public class Main {
 		
 		if (view.clickedOnCards(location)) {
 			gameData.selectCard((view.toCardPos(location)));
-			timeData.stop(); // plannification mode
+			timeData.stop(); // planification mode
 			
 		} else if (view.deposedCard(location)) {
 			Card deposedCard = player.selectCard(gameData.selectedCard());		
@@ -71,6 +77,11 @@ public class Main {
 			player.deck().remove(gameData.selectedCard());
 			gameData.selectCard(-1); 
 			
+		} else if (view.clickedOnItems(location)) {
+			System.out.println("clicked on items");
+			gameData.selectItem(view.toItemPos(location));
+			player.equipItem(gameData.selectedItem());
+			gameData.selectItem(-1);
 		} else {
 			gameData.selectCard(-1);
 		}
@@ -95,7 +106,7 @@ public class Main {
 		m.playerCell(player).clear();
 	}
 	
-	public void doEventAction(ApplicationContext context) { // Réalise les actions liés à l'utilisateur
+	public void doEventAction(ApplicationContext context) { 
 		
 		Event event = context.pollOrWaitEvent(200);
 		
@@ -111,6 +122,11 @@ public class Main {
 			case POINTER_DOWN -> {
 				doMouseAction(context, event);
 			}
+			
+			case POINTER_UP ->{
+				
+			}
+			
 			default -> {
 				System.out.println("pas une action");
 			}

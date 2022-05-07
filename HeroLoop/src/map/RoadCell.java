@@ -22,30 +22,26 @@ public class RoadCell extends Cell {
 	
 	@Override
 	public void spawn(Monster monster) {
-		entitiesOn.add(monster);
+		if (entitiesOn.size() != 4) {
+			entitiesOn.add(monster);
+		}	
 	}
 	
-	public void spawn() {
-		
+	public void spawn(int dayCount, int loopCount) {
 		if (this.card() == null) {
 			Random rand = new Random();
 			
 			int n = rand.nextInt(100);
 			
 			if (n < 5) { // 5% chance
-				ArrayList<String> dropableRessources = new ArrayList<>();
-				dropableRessources.add("Shapeless Mass");
-				dropableRessources.add("Craft Fragment");
-				Monster slime = new Monster(new HashMap<>(), dropableRessources, 3.3, 35, "ressources/Entities-Sprite/monsters/Slime.png");
-				slime.addStat("hp", 13);
-				slime.addStat("hpMax", 13);
-				slime.addStat("def", 0);
-				slime.addStat("evasiveness", 0);
-				slime.addStat("vampirism", 0);
-				entitiesOn.add(slime);
+				spawn(Monster.createMonster("Slime", loopCount));
 			}
 		} else {
-			// Spawn an other monster
+			for (String m : this.card().spawnableMonster().keySet()) {
+				if (dayCount % this.card().spawnableMonster().get(m) == 0) {
+					spawn(Monster.createMonster(m, loopCount));
+				}
+			}
 		}
 	}
 	
@@ -55,7 +51,7 @@ public class RoadCell extends Cell {
 			return card().sprite();
 		}
 		
-		return "horizontal-road.png"; // will be replaced by a method tha determinates the direction of the road
+		return "horizontal-road.png"; // will be replaced by a method that determinates the direction of the road
 	}
 	
 	public void clear() {
