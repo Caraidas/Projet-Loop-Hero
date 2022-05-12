@@ -2,7 +2,6 @@ package collectable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import entities.Monster;
 
 public class Card { 
 	private final ArrayList<CardState> cardState; // A card can be ROAD, LANSCAPE and / or ROADSIDE

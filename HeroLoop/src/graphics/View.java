@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import collectable.CardState;
 import data.GameData;
 import data.GridPosition;
-import entities.Entity;
 import entities.Monster;
 import entities.Player;
 import fr.umlv.zen5.ApplicationContext;

@@ -1,7 +1,6 @@
 package map;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 import collectable.Card;
 import collectable.CardState;
