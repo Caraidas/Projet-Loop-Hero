@@ -18,7 +18,7 @@ import time.TimeData;
 
 public class Main {
 	private final static Map m = new Map();
-	private final static Player player = new Player(0, new HashMap<>(), new Range(4, 6));
+	private final static Player player = new Player(0, new HashMap<>(), new Range(4, 6), 0);
 	private final static TimeData timeData = new TimeData();
 	private final static GameData gameData = new GameData(m, timeData);
 	private final static View view = new View(player, timeData, gameData);

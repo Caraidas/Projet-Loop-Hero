@@ -21,12 +21,20 @@ public interface Entity {
 	}
 	
 	default void heal(double percentage) { 
-		basicStats().replace("hp", basicStats().get("hp") +  basicStats().get("hpMax") * percentage);
+		globalheal(basicStats().get("hpMax") * percentage);
+ 	}
+	
+	default void lifeSteal(double percentage, int damage) {
+		globalheal(damage * percentage);
+	}
+	
+	default void globalheal(double value) {
+		basicStats().replace("hp", basicStats().get("hp") +  value);
 		
 		if (basicStats().get("hp") >= basicStats().get("hpMax")) {
 			basicStats().replace("hp", basicStats().get("hpMax"));
 		}
- 	}
+	}
 	
 	default boolean isDead() {
 		return basicStats().get("hp") <= 0;

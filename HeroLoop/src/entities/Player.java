@@ -16,8 +16,9 @@ public class Player extends AbstractEntity {
 	private final Deck deck;
 	private final ArrayList<Item> items;
 	private Range damage;
+	private int pureDamage;
 
-	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage) {
+	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage, int pureDamage) {
 		
 		super(basicStats, "Player.png");
 		this.position = position;
@@ -31,13 +32,16 @@ public class Player extends AbstractEntity {
 		
 		this.ressources = ressources;
 		this.damage = damage;
+		this.pureDamage = pureDamage;
+		
 	}
 	
-	public Player(int position, HashMap<String, Double> basicStats, Range damage) {
-		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage);
+	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage) {
+		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage, pureDamage);
 		this.addStat("hp", 250);
 		this.addStat("hpMax", 250);
 		this.addStat("def", 0);
+		this.addStat("pureDamage", 0);
 	}
 	
 	public Card selectedCard(int selected) {
@@ -189,5 +193,9 @@ public class Player extends AbstractEntity {
 	
 	public ArrayList<Item> items() {
 		return items;
+	}
+	
+	public int pureDamage() {
+		return pureDamage;
 	}
 }

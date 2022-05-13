@@ -30,4 +30,5 @@ abstract class AbstractEntity implements Entity {
 		return basicStats.get("hpMax");
 	}
 	
+	
 }

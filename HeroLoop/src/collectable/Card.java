@@ -2,6 +2,7 @@ package collectable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Card { 
 	private final ArrayList<CardState> cardState; // A card can be ROAD, LANSCAPE and / or ROADSIDE
@@ -11,10 +12,10 @@ public class Card {
 	private final HashMap<String, Integer> dailyStatBoost; // The stats that the card boosts every day
 	
 	private final String ressourceGiven; // ressources given when the card is placed
-	private final String ressourceGivenWhenCrossed; // ressources given when the tile is crossed
+	private final ArrayList<String> ressourceGivenWhenCrossed; // ressources given when the tile is crossed
 	private final String sprite; 
 	
-	public Card(String sprite, String ressourceGiven, String ressourceGivenWhenCrossed, int moveWhenSpawn) {
+	public Card(String sprite, String ressourceGiven, ArrayList<String> ressourceGivenWhenCrossed, int moveWhenSpawn) {
 		this.sprite = sprite;
 		this.ressourceGiven = ressourceGiven;
 		this.ressourceGivenWhenCrossed = ressourceGivenWhenCrossed;
@@ -28,23 +29,36 @@ public class Card {
 	public static Card createCard(String name) { // this method is used to easily create cards
 		switch (name) {
 		case "Rock" -> {
-			Card card = new Card("Rock.png", "Pebble", "", 0);
+			ArrayList<String> ressources = new ArrayList<String>();
+			Card card = new Card("Rock.png", "Pebbles", ressources, 0);
 			card.addCardState(CardState.LANDSCAPE);
 			card.addBoostedStat("hpMax", 0.01);
 			return card;
 		}
 		
 		case "Grove" -> {
-			Card card = new Card("Grove.png", "", "Stick", 1);
+			ArrayList<String> ressources = new ArrayList<String>();
+			ressources.add("Stick");
+			Card card = new Card("Grove.png", "", ressources, 1);
 			card.addCardState(CardState.ROAD);
 			card.addSpawnableMonster("RatWolf", 2);
 			return card;
 		}
 		
 		case "Meadow" -> {
-			Card card = new Card("Meadow.png", "Ration", "", 0);
+			ArrayList<String> ressources = new ArrayList<String>();
+			Card card = new Card("Meadow.png", "Ration", ressources, 0);
 			card.addCardState(CardState.LANDSCAPE);
 			card.addDailyStatBoost("hp", 2);
+			return card;
+		}
+		case "Cemetery" -> {
+			ArrayList<String> ressources = new ArrayList<String>();
+			ressources.add("Preserved Pebbles");
+			ressources.add("Memory Fragment");
+			Card card = new Card("Cemetery.png", "", ressources, 0);
+			card.addCardState(CardState.ROADSIDE);
+			card.addSpawnableMonster("Skeleton", 3);
 			return card;
 		}
 		
@@ -100,7 +114,9 @@ public class Card {
 	}
 	
 	public String ressourceGivenWhenCrossed() {
-		return ressourceGivenWhenCrossed;
+		Random random = new Random();
+		int randomIndex = random.nextInt(ressourceGivenWhenCrossed.size());
+		return ressourceGivenWhenCrossed.get(randomIndex);
 	}
 	
 	public HashMap<String, Integer> spawnableMonster() {

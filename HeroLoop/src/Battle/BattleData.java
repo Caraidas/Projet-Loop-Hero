@@ -77,7 +77,7 @@ public class BattleData { // this class takes care of all the battle related ope
 		if (attacker instanceof Monster) {
 			base = ((Monster)attacker).strength();
 		} else {
-			victim.takeDamage((int)(((Player)attacker).damage() - victim.basicStats().get("def")));
+			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
 			return;
 		}
 		
