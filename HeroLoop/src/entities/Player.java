@@ -42,6 +42,7 @@ public class Player extends AbstractEntity {
 		this.addStat("hpMax", 250);
 		this.addStat("def", 0);
 		this.addStat("pureDamage", 0);
+		this.addStat("lifeSteal", 0);
 	}
 	
 	public Card selectedCard(int selected) {
@@ -198,4 +199,6 @@ public class Player extends AbstractEntity {
 	public int pureDamage() {
 		return pureDamage;
 	}
+	
+
 }

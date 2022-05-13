@@ -16,6 +16,10 @@ public interface Entity {
 		return basicStats().get("hpMax");
 	}
 	
+	default double getLifeSteal() {
+		return basicStats().get("lifeSteal");
+	}
+	
 	default void takeDamage(int damage) {
 		basicStats().replace("hp", basicStats().get("hp") - damage);
 	}

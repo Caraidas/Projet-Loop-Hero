@@ -30,5 +30,8 @@ abstract class AbstractEntity implements Entity {
 		return basicStats.get("hpMax");
 	}
 	
+	public double getLifeSteal() {
+		return basicStats.get("lifeSteal");
+	}
 	
 }

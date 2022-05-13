@@ -75,8 +75,10 @@ public class BattleData { // this class takes care of all the battle related ope
 	public void dealDamage(Entity victim, Entity attacker) {
 		double base;
 		if (attacker instanceof Monster) {
+			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Monster)attacker).strength());
 			base = ((Monster)attacker).strength();
 		} else {
+			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Player)attacker).damage());
 			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
 			return;
 		}

@@ -7,6 +7,21 @@ public class Item {
 	private final String sprite;
 	private final String type;
 	private int stat = 0;
+	private int rarity;
+	
+	private void setRarity() {
+		Random rand = new Random();
+		int r = rand.nextInt(100);
+		if (r < 35) {
+			rarity = 0;
+		}else if(r < 65){
+			rarity = 1;
+		}else if(r < 85){
+			rarity = 2;
+		}else {
+			rarity = 3;
+		}
+	}
 	
 	public Item() {		
 		Random rand = new Random();
@@ -22,6 +37,7 @@ public class Item {
 	}
 	
 	public void setStats(int lvl) {
+		setRarity();
 		switch (type) {
 		case "Weapon":
 			Random rand = new Random();
@@ -64,5 +80,10 @@ public class Item {
 	
 	public int stat() {
 		return stat;
+	}
+	
+	public int getRarity() {
+		setRarity();
+		return rarity;
 	}
 }
