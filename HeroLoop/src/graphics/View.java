@@ -147,17 +147,17 @@ public class View {
 		graphics.setColor(Color.white);
 		graphics.drawRect((21 * caseSize), 550, HudWidth, (int)(height - 550));
 		
-		int i = 7;
+		int i = 5;
 		for (String s : player.basicStats().keySet()) {
 			if (s != "hp" && s != "hpMax") {
-				graphics.drawString(s + " : " + player.basicStats().get(s), (21 * caseSize) + 30, (int)(550 + (20 * i)));
+				graphics.drawString(s + " : " + (player.basicStats().get(s)), (21 * caseSize) + 50, (int)(550 + (20 * i)));
 				i++;
 			}
 		}
 		
-		graphics.setFont(new Font("TimesRoman", Font.BOLD, 25));
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 21));
 		String playerDamage = "damage : " + player.damageString();
-		graphics.drawString(playerDamage, (21 * caseSize) + 30, (int)(height - 230));
+		graphics.drawString(playerDamage, (21 * caseSize) + 50, (int)(height - 235));
 	}
 	
 	public void drawItemStats(Graphics2D graphics) {

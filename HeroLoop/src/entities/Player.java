@@ -15,11 +15,13 @@ public class Player extends AbstractEntity {
 	private Inventory inventory; 
 	private final Deck deck;
 	private final ArrayList<Item> items;
+	
 	private Range damage;
 	private int pureDamage;
 	private int counter;
+	private double regen;
 
-	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter) {
+	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen) {
 		
 		super(basicStats, "Player.png");
 		this.position = position;
@@ -35,10 +37,11 @@ public class Player extends AbstractEntity {
 		this.damage = damage;
 		this.pureDamage = pureDamage;
 		this.counter = counter;
+		this.regen = regen;
 	}
 	
-	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter) {
-		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage, pureDamage, counter);
+	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen) {
+		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage, pureDamage, counter, regen);
 		this.addStat("hp", 250);
 		this.addStat("hpMax", 250);
 		this.addStat("def", 0);
@@ -46,6 +49,7 @@ public class Player extends AbstractEntity {
 		this.addStat("counter", counter);
 		this.addStat("lifeSteal", 0);
 		this.addStat("evade", 0);
+		this.addStat("regen", regen);
 	}
 	
 	public Card selectedCard(int selected) {
