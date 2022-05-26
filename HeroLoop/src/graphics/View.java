@@ -129,17 +129,6 @@ public class View {
 		graphics.setColor(Color.black);
 		graphics.setFont (new Font("TimesRoman", Font.BOLD, 20));
 		
-		String playerDamage = "damage : " + player.damageString();
-		graphics.drawString(playerDamage, (21 * caseSize) + 60, 125);
-		
-		int i = 0;
-		for (String stat : player.basicStats().keySet()) {
-			if (!(stat.equals("hp") || stat.equals("hpMax"))) {
-				i++;
-				graphics.drawString(stat + " : " + (player.basicStats().get(stat)), (21 * caseSize) + 60, 125 + 25 * i);
-			}
-		}
-		
 		drawItems(graphics);
 		drawInventory(graphics);
 		
@@ -158,11 +147,17 @@ public class View {
 		graphics.setColor(Color.white);
 		graphics.drawRect((21 * caseSize), 550, HudWidth, (int)(height - 550));
 		
-		int i = 1;
+		int i = 7;
 		for (String s : player.basicStats().keySet()) {
-			graphics.drawString(s + " : " + player.basicStats(), (21 * caseSize) + 30, (int)(550 + (caseSize * 0.5) * i));
-			i++;
+			if (s != "hp" && s != "hpMax") {
+				graphics.drawString(s + " : " + player.basicStats().get(s), (21 * caseSize) + 30, (int)(550 + (20 * i)));
+				i++;
+			}
 		}
+		
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 25));
+		String playerDamage = "damage : " + player.damageString();
+		graphics.drawString(playerDamage, (21 * caseSize) + 30, (int)(height - 230));
 	}
 	
 	public void drawItemStats(Graphics2D graphics) {
