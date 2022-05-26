@@ -35,7 +35,6 @@ public class Player extends AbstractEntity {
 		this.damage = damage;
 		this.pureDamage = pureDamage;
 		this.counter = counter;
-		
 	}
 	
 	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter) {
@@ -43,7 +42,8 @@ public class Player extends AbstractEntity {
 		this.addStat("hp", 250);
 		this.addStat("hpMax", 250);
 		this.addStat("def", 0);
-		this.addStat("pureDamage", 0);
+		this.addStat("pureDamage", pureDamage);
+		this.addStat("counter", counter);
 		this.addStat("lifeSteal", 0);
 		this.addStat("evade", 0);
 	}
