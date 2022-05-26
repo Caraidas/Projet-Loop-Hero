@@ -43,6 +43,7 @@ public class Player extends AbstractEntity {
 		this.addStat("def", 0);
 		this.addStat("pureDamage", 0);
 		this.addStat("lifeSteal", 0);
+		this.addStat("evade", 0);
 	}
 	
 	public Card selectedCard(int selected) {

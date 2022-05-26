@@ -74,18 +74,27 @@ public class BattleData { // this class takes care of all the battle related ope
 	
 	public void dealDamage(Entity victim, Entity attacker) {
 		double base;
+		Random rand = new Random();
+		int r = rand.nextInt(100);
 		if (attacker instanceof Monster) {
-			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Monster)attacker).strength());
-			base = ((Monster)attacker).strength();
-		} else {
+			if (r > victim.getEvade()) {
+				attacker.lifeSteal(attacker.getLifeSteal(), (int)((Monster)attacker).strength());
+				base = ((Monster)attacker).strength();
+				int lvl = gameData.getLoopCount();
+				double damage = base * lvl * 0.95 * (1 + (lvl - 1) * 0.02);
+				victim.takeDamage((int)(damage - victim.basicStats().get("def")));
+			}
+			else {
+				System.out.println("ouaaaah la veski du turfu");
+			}
+		} else if (r > victim.getEvade()){
 			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Player)attacker).damage());
 			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
 			return;
+		} else {
+			System.out.println("ouaaaah la veski du turfu");
 		}
 		
-		int lvl = gameData.getLoopCount();
-		double damage = base * lvl * 0.95 * (1 + (lvl - 1) * 0.02);
-		victim.takeDamage((int)(damage - victim.basicStats().get("def")));
 	}
 	
 	private void waitSeconds(int s) {
