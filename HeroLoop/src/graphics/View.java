@@ -140,17 +140,28 @@ public class View {
 			}
 		}
 		
-		i = 1;
-		for (String s : player.ressources().keySet()) {
-			graphics.drawString(s + " : " + player.ressources().get(s), (21 * caseSize) + 30, (int)(550 + (caseSize * 0.5) * i));
-			i++;
-		}
-		
 		drawItems(graphics);
 		drawInventory(graphics);
 		
 		if (gameData.selectedItem() != -1) {
 			drawItemStats(graphics);
+		} else {
+			drawPlayerStats(graphics);
+		}
+	}
+	
+	public void drawPlayerStats(Graphics2D graphics) {
+		int HudWidth = (int)(width - (21 * caseSize));
+		
+		graphics.setColor(Color.decode("#763B2D"));
+		graphics.fillRect((21 * caseSize), 550, HudWidth, (int)(height - 550));
+		graphics.setColor(Color.white);
+		graphics.drawRect((21 * caseSize), 550, HudWidth, (int)(height - 550));
+		
+		int i = 1;
+		for (String s : player.basicStats().keySet()) {
+			graphics.drawString(s + " : " + player.basicStats(), (21 * caseSize) + 30, (int)(550 + (caseSize * 0.5) * i));
+			i++;
 		}
 	}
 	
@@ -161,14 +172,25 @@ public class View {
 		graphics.fillRect((21 * caseSize), (int)(height - (height / 3)), HudWidth, (int) height);
 		
 		graphics.setColor(Color.white);
-		graphics.fillRect((21 * caseSize), (int)(height - (height / 8)), HudWidth, (int) height);
+		graphics.drawRect((21 * caseSize), (int)(height - (height / 3)), HudWidth, (int) height);
+		graphics.drawRect((21 * caseSize) + 50, (int)(height - (height / 15)), 175, 50);
+		graphics.drawString("Equiper", (21 * caseSize) + 100, (int)(height - (height / 15)) + 30);
+		
+		// stats
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
+		int compt = 2;
+		for (String stat : player.items().get(gameData.selectedItem()).stats().keySet()) {
+			String line = stat + " : " + player.items().get(gameData.selectedItem()).stats().get(stat);
+			graphics.drawString(line, (21 * caseSize) + 50, (int)(height - (height / 3)) + (compt * 20));
+			compt++;
+		}	
 	}
 	
 	public boolean deposedItem(Point2D.Float location) {
-		int HudWidth = (int)(width - (21 * caseSize));
-		return (location.x >= (21 * caseSize) && location.x < width && location.y >= 
-				(int)(HudWidth - (HudWidth / 15)) && location.y < height && timeData.stopped() && 
-				gameData.selectedCard() != -1);
+		
+		return (location.x >= (21 * caseSize) - 50 && location.x < width - 50 && location.y >= 
+				(int)(height - (height / 15)) && location.y < height) && (gameData.selectedItem() != -1) 
+				&& (player.items().get(gameData.selectedItem()) != null);
 	}
 	
 	public void drawItems(Graphics2D graphics) {
@@ -386,7 +408,7 @@ public class View {
 	
 	public int toItemPos(Point2D.Float location) {
 		int x = (int)(location.x - ((21 * caseSize) + 20)) / (caseSize);
-		int y =(int)(location.y - (int)(200)) / (caseSize);
+		int y = (int)(location.y - (int)(200)) / (caseSize);
 		return (int)(x + (y * 4));
 	}
 	

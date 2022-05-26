@@ -75,7 +75,7 @@ public class Main {
 			GridPosition pos = view.toCellPos(location);
 			gameData.depositCard(deposedCard, pos);
 			player.deck().remove(gameData.selectedCard());
-			gameData.selectCard(-1); 
+			gameData.selectCard(-1);
 			
 		} else if (view.clickedOnItems(location)) {
 			gameData.selectItem(view.toItemPos(location));
@@ -84,6 +84,7 @@ public class Main {
 			gameData.selectItem(-1);
 		} else {
 			gameData.selectCard(-1);
+			gameData.selectItem(-1);
 		}
 		
 		view.blackScreen();
