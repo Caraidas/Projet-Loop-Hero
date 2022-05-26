@@ -223,6 +223,13 @@ public class Item {
 		return type.equals("Shield");
 	}
 	
+	public static Item debugItem(int lvl) {
+		Item item = new Item();
+		item.setStats(lvl);
+		
+		return item;
+	}
+	
 	// getters :
 	
 	public String sprite() {

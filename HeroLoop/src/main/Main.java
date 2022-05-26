@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import java.util.HashMap;
 import Battle.BattleData;
 import collectable.Card;
+import collectable.Item;
 import data.GameData;
 import data.GridPosition;
 import data.Range;
@@ -18,7 +19,7 @@ import time.TimeData;
 
 public class Main {
 	private final static Map m = new Map();
-	private final static Player player = new Player(0, new HashMap<>(), new Range(4, 6), 0, 0, 0);
+	private final static Player player = new Player(0, new HashMap<>(), new Range(4, 6), 0, 0, 0, 0);
 	private final static TimeData timeData = new TimeData();
 	private final static GameData gameData = new GameData(m, timeData);
 	private final static View view = new View(player, timeData, gameData);
@@ -34,6 +35,11 @@ public class Main {
 			gameData.spawn();
 			gameData.applyDailyBoosts(player);
 		}
+		
+		if (timeData.elapsedRegen() >= TimeData.REGEN_DELAY) {
+			player.globalheal(player.getStat("regen"));
+			timeData.resetElapsedRegen();
+		}
 	}
 	
 	public static void doKeyAction(ApplicationContext context, Event event) {
@@ -48,11 +54,22 @@ public class Main {
 				timeData.timeControl();
 				view.blackScreen();
 				gameData.selectCard(-1);
-			}		
+			}	
 		}
+		
 		case A -> timeData.accelerateTime(1);
 		case Z -> timeData.accelerateTime(2);
 		case E -> timeData.accelerateTime(4);
+		
+		case D -> {
+			player.addItemInInventory(Item.debugItem(gameData.getLoopCount()));
+			view.drawScreen();
+		}
+		
+		case C -> {
+			player.clearInventory();
+			view.drawScreen();
+		}
 		
 		default -> System.out.println("Touche inactive : " + event.getKey());
 		}

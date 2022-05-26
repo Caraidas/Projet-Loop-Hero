@@ -114,6 +114,16 @@ public class View {
 		}
 	}
 	
+	public void drawHealthBar(Graphics2D graphics) {
+		int HudWidth = (int)(width - (21 * caseSize));
+		graphics.setColor(Color.DARK_GRAY);
+		graphics.fillRect((21 * caseSize) + 20, 120, HudWidth - 35, 20);
+		
+		graphics.setColor(Color.decode("#A5B750"));
+		double hpWidth = ((player.getHp() / player.getHpMax())) * (HudWidth - 45);
+		graphics.fillRect((21 * caseSize) + 25, 125, (int)hpWidth, 10);
+	}
+	
 	public void drawHudRight(Graphics2D graphics) {
 		int HudWidth = (int)(width - (21 * caseSize));
 		
@@ -122,9 +132,11 @@ public class View {
 		
 		
 		String playerHp = (int)(player.getHp()) + " / " + (int)(player.getHpMax());
-		graphics.setColor(Color.red);
-		graphics.setFont (new Font("TimesRoman", Font.BOLD, 40));
-		graphics.drawString(playerHp, (21 * caseSize) + 60, 100);
+		graphics.setColor(Color.decode("#A5B750"));
+		graphics.setFont (new Font("TimesRoman", Font.BOLD, 30));
+		graphics.drawString(playerHp, (21 * caseSize) + 75, 115);
+		
+		drawHealthBar(graphics);
 		
 		graphics.setColor(Color.black);
 		graphics.setFont (new Font("TimesRoman", Font.BOLD, 20));
@@ -147,7 +159,7 @@ public class View {
 		graphics.setColor(Color.white);
 		graphics.drawRect((21 * caseSize), 550, HudWidth, (int)(height - 550));
 		
-		int i = 5;
+		int i = 8;
 		for (String s : player.basicStats().keySet()) {
 			if (s != "hp" && s != "hpMax") {
 				graphics.drawString(s + " : " + (player.basicStats().get(s)), (21 * caseSize) + 50, (int)(550 + (20 * i)));
@@ -157,7 +169,10 @@ public class View {
 		
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 21));
 		String playerDamage = "damage : " + player.damageString();
-		graphics.drawString(playerDamage, (21 * caseSize) + 50, (int)(height - 235));
+		graphics.drawString(playerDamage, (21 * caseSize) + 50, (int)(height - 175));
+		
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 45));
+		graphics.drawString("Statistiques", (21 * caseSize) + 30, (int)(height - 250));
 	}
 	
 	public void drawItemStats(Graphics2D graphics) {
@@ -243,14 +258,14 @@ public class View {
 	}
 	
 	public void drawTimeBar(Graphics2D graphics) {
-		graphics.setColor(Color.LIGHT_GRAY);
+		graphics.setColor(Color.DARK_GRAY);
 		graphics.fillRect(10, 10, 400, 20);
-		graphics.setColor(Color.GREEN);
+		graphics.setColor(Color.decode("#A5B750"));
 		graphics.fillRect(15, 15, (int)(390 * timeData.timeFraction()), 10);
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		graphics.setColor(Color.BLACK);
-		graphics.drawString(gameData.getLoopCount() + " loops", 420, 30);
-		graphics.drawString("day " + timeData.dayCount(), 500, 30);
+		graphics.drawString(gameData.getLoopCount() + " loops", 420, 27);
+		graphics.drawString("day " + timeData.dayCount(), 500, 27);
 	}
 	
 	public void drawHud(Graphics2D graphics) {

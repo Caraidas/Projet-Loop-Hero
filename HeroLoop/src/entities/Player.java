@@ -20,8 +20,9 @@ public class Player extends AbstractEntity {
 	private int pureDamage;
 	private int counter;
 	private double regen;
+	private int damageToAll;
 
-	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen) {
+	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {
 		
 		super(basicStats, "Player.png");
 		this.position = position;
@@ -40,16 +41,17 @@ public class Player extends AbstractEntity {
 		this.regen = regen;
 	}
 	
-	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen) {
-		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage, pureDamage, counter, regen);
+	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {
+		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage, pureDamage, counter, regen, damageToAll);
 		this.addStat("hp", 250);
 		this.addStat("hpMax", 250);
 		this.addStat("def", 0);
 		this.addStat("pureDamage", pureDamage);
 		this.addStat("counter", counter);
-		this.addStat("lifeSteal", 0);
+		this.addStat("vampirism", 0);
 		this.addStat("evade", 0);
 		this.addStat("regen", regen);
+		this.addStat("damageToAll", 0);
 	}
 	
 	public Card selectedCard(int selected) {
@@ -112,7 +114,7 @@ public class Player extends AbstractEntity {
 	
 	public void dailyStatBoost(Card c) {
 		for (String stat : c.dailyStatBoost().keySet()) {
-			boostStat(stat, c.dailyStatBoost().get(stat));
+			boostStat(stat, (double)c.dailyStatBoost().get(stat));
 			
 			this.heal(0);
 		}
@@ -143,26 +145,45 @@ public class Player extends AbstractEntity {
 	}
 	
 	public void equipItem(int itemIndex) {
-		if (items.get(itemIndex).isArmor()) {
+		
+		Item item = items.get(itemIndex);
+		
+		if (item.isArmor()) {	
 			if (!(inventory.armor() == null)) {
-				boostStat("hpMax", -(inventory.armor().stats().get("hpMax"))); // We get rid of the stats of the item that was here before
-			}
-			inventory.setArmor(items.get(itemIndex));
-			boostStat("hpMax", items.get(itemIndex).stats().get("hpMax"));
+				for (String stat : inventory().armor().stats().keySet()) {	
+					boostStat(stat, -(inventory.armor().stats().get(stat))); // We get rid of the stats of the item that was here before
+				}
+			}	
+			inventory.setArmor(item);
 			
-		} else if (items.get(itemIndex).isWeapon()) {
+		} else if (item.isWeapon()) {	
 			if (!(inventory.weapon() == null)) {
-				damage.boost(-(inventory.weapon().stats().get("damage"))); // We get rid of the stats of the item that was here before
-			}			
-			inventory.setWeapon(items.get(itemIndex));
-			damage.boost(items.get(itemIndex).stats().get("damage"));
-			
-		} else if (items.get(itemIndex).isShield()) {
-			if (!(inventory.shield() == null)) {
-				boostStat("def", -(inventory.shield().stats().get("def"))); // We get rid of the stats of the item that was here before
+				for (String stat : inventory().weapon().stats().keySet()) {	
+					if (stat.equals("damage")) {
+						damage.boost(-(inventory.weapon().stats().get("damage"))); // We get rid of the stats of the item that was here 
+					} else {
+						boostStat(stat, -(inventory.weapon().stats().get(stat))); // We get rid of the stats of the item that was here before
+					}
+				}
 			}
-			inventory.setShield(items.get(itemIndex));
-			boostStat("def", items.get(itemIndex).stats().get("def"));
+			inventory.setWeapon(items.get(itemIndex));
+			
+		} else if (item.isShield()) {
+			if (!(inventory.shield() == null)) {
+				for (String stat : inventory().shield().stats().keySet()) {	
+					boostStat(stat, -(inventory.shield().stats().get(stat))); // We get rid of the stats of the item that was here before
+				}
+			}
+			inventory.setShield(item);
+		}
+		
+		for (String stat : item.stats().keySet()) {
+			
+			if (stat.equals("damage")) {
+				damage.boost(item.stats().get(stat));
+			} else {
+				this.boostStat(stat, item.stats().get(stat));
+			}
 		}
 		
 		destroyItem(itemIndex);
@@ -178,6 +199,12 @@ public class Player extends AbstractEntity {
 	
 	public String damageString() {
 		return damage.toString();
+	}
+	
+	public void clearInventory() {
+		for (int i = 0; i < 12; i++) {
+			items.set(i, null);
+		}
 	}
 	
 	// Getters :

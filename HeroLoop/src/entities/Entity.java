@@ -1,12 +1,18 @@
 package entities;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public interface Entity {
 	
 	HashMap<String, Double> basicStats();
 	
 	String getSprite();
+	
+	default double getStat(String s) {
+		Objects.requireNonNull(s);
+		return basicStats().get(s);
+	}
 	
 	default double getHp() {
 		return basicStats().get("hp"); 
@@ -52,11 +58,7 @@ public interface Entity {
 		basicStats().put(name, value);
 	}
 	
-	default void boostStat(String stat, Double factor) { // for percentage based boosts
-		basicStats().replace(stat, basicStats().get(stat) + basicStats().get(stat) * factor);
-	}
-	
-	default void boostStat(String stat, int factor) { // for point based boosts
+	default void boostStat(String stat, Double factor) {
 		basicStats().replace(stat, basicStats().get(stat) + factor);
 	}
 }
