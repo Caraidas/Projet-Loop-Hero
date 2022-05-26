@@ -94,6 +94,8 @@ public class Item {
 				
 				if (rarity == 1) {
 					stat = stat / 3;
+					if (stat < 1)
+						stat = 1;
 				} else {
 					if (i == 2) {
 						stat = 4 * (lvl - 2);
@@ -162,11 +164,15 @@ public class Item {
 				
 				if (rarity == 1) {
 					stat = stat / 3;
+					if (stat < 1) 
+						stat = 1;
 				} else {
-					if (i == 2) {
+					if (i == 2) 
 						stat = lvl - 2;
-					} else {
+					else {
 						stat = stat / 2;
+						if (stat < 1) 
+							stat = 1;
 					}
 				}
 				
@@ -178,6 +184,8 @@ public class Item {
 				
 				if (rarity == 1) {
 					stat = stat / 3;
+					if (stat < 1)
+						stat = 1;
 				} else {
 					if (i == 2) {
 						stat = 8 + ((lvl - 2) - 1) * 2;
@@ -194,6 +202,8 @@ public class Item {
 				
 				if (rarity == 1) {
 					stat = stat / 3;
+					if (stat < 1)
+						stat = 1;
 				} else {
 					if (i == 2) {
 						stat = 3 * (lvl - 2);

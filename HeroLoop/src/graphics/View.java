@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import collectable.CardState;
@@ -151,6 +153,8 @@ public class View {
 		}
 	}
 	
+	
+	
 	public void drawPlayerStats(Graphics2D graphics) {
 		int HudWidth = (int)(width - (21 * caseSize));
 		
@@ -162,7 +166,7 @@ public class View {
 		int i = 8;
 		for (String s : player.basicStats().keySet()) {
 			if (s != "hp" && s != "hpMax") {
-				graphics.drawString(s + " : " + (player.basicStats().get(s)), (21 * caseSize) + 50, (int)(550 + (20 * i)));
+				graphics.drawString(s + " : " + (round((player.basicStats().get(s)), 1)), (21 * caseSize) + 50, (int)(550 + (20 * i)));
 				i++;
 			}
 		}
@@ -190,7 +194,7 @@ public class View {
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		int compt = 2;
 		for (String stat : player.items().get(gameData.selectedItem()).stats().keySet()) {
-			String line = stat + " : " + player.items().get(gameData.selectedItem()).stats().get(stat);
+			String line = stat + " : " + round(player.items().get(gameData.selectedItem()).stats().get(stat), 1);
 			graphics.drawString(line, (21 * caseSize) + 50, (int)(height - (height / 3)) + (compt * 20));
 			compt++;
 		}	
@@ -424,5 +428,13 @@ public class View {
 	
 	public GridPosition toCellPos(Point2D.Float location) {
 		return new GridPosition((int)(location.x / caseSize), (int)(location.y / caseSize) - 1);
+	}
+	
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = BigDecimal.valueOf(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 }

@@ -40,7 +40,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			while (!(player.isDead()) && size != 0) {
 				
 				waitSeconds(1);
-				dealDamage(target, player);
+				dealDamage(target, player, c);
 				hits++;
 				view.drawScreen();
 				
@@ -61,7 +61,7 @@ public class BattleData { // this class takes care of all the battle related ope
 				
 				for (Monster m : ((RoadCell)c).getEntities()) {
 					waitSeconds(1);
-					dealDamage(player, m);
+					dealDamage(player, m, c);
 					hits++;
 					view.drawScreen();
 				}
@@ -72,7 +72,7 @@ public class BattleData { // this class takes care of all the battle related ope
 		}
 	}
 	
-	public void dealDamage(Entity victim, Entity attacker) {
+	public void dealDamage(Entity victim, Entity attacker, Cell c) {
 		double base;
 		Random rand = new Random();
 		int veski = rand.nextInt(100);
@@ -87,7 +87,7 @@ public class BattleData { // this class takes care of all the battle related ope
 					victim.takeDamage((int)(damage - victim.basicStats().get("def")));
 				}
 				else {
-					dealDamage(attacker,victim);
+					dealDamage(attacker,victim,c);
 					System.out.println("oh le gounter mama");
 				}
 			}
@@ -95,6 +95,9 @@ public class BattleData { // this class takes care of all the battle related ope
 				System.out.println("ouaaaah la veski du turfu");
 			}
 		} else if (veski > victim.getEvade()){ // si le monstre esquive pas 
+			for (Monster m : ((RoadCell)c).getEntities()) {
+				m.takeDamage((int)attacker.getStat("damageToAll"));
+			}
 			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Player)attacker).damage());
 			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
 			return;

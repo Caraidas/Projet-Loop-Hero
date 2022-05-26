@@ -31,7 +31,7 @@ abstract class AbstractEntity implements Entity {
 	}
 	
 	public double getLifeSteal() {
-		return basicStats.get("lifeSteal");
+		return basicStats.get("vampirism");
 	}
 	
 }

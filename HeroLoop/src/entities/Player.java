@@ -43,7 +43,7 @@ public class Player extends AbstractEntity {
 	
 	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {
 		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage, pureDamage, counter, regen, damageToAll);
-		this.addStat("hp", 250);
+		this.addStat("hp", 200);
 		this.addStat("hpMax", 250);
 		this.addStat("def", 0);
 		this.addStat("pureDamage", pureDamage);
@@ -51,7 +51,7 @@ public class Player extends AbstractEntity {
 		this.addStat("vampirism", 0);
 		this.addStat("evade", 0);
 		this.addStat("regen", regen);
-		this.addStat("damageToAll", 0);
+		this.addStat("damageToAll", damageToAll);
 	}
 	
 	public Card selectedCard(int selected) {

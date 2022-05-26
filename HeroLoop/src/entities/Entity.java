@@ -27,7 +27,7 @@ public interface Entity {
 	}
 	
 	default double getLifeSteal() {
-		return basicStats().get("lifeSteal");
+		return basicStats().get("vampirism");
 	}
 	
 	default void takeDamage(int damage) {
@@ -39,7 +39,7 @@ public interface Entity {
  	}
 	
 	default void lifeSteal(double percentage, int damage) {
-		globalheal(damage * percentage);
+		globalheal(damage * (percentage / 100));
 	}
 	
 	default void globalheal(double value) {
