@@ -59,6 +59,7 @@ public class Main {
 	}
 	
 	public void doMouseAction(ApplicationContext context, Event event) {
+		
 		Point2D.Float location = event.getLocation();
 		
 		if (view.clickedOnCards(location)) {
@@ -77,8 +78,8 @@ public class Main {
 			gameData.selectCard(-1); 
 			
 		} else if (view.clickedOnItems(location)) {
-			System.out.println("clicked on items");
 			gameData.selectItem(view.toItemPos(location));
+		} else if (view.deposedItem(location)) {
 			player.equipItem(gameData.selectedItem());
 			gameData.selectItem(-1);
 		} else {

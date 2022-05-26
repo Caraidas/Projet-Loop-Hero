@@ -22,9 +22,9 @@ public class Range { // Mainly used to represent the damage the player can do (f
 		return max - min;
 	}
 	
-	public void boost(int n) {
-		min+=n;
-		max+=n;
+	public void boost(double d) {
+		min+=d;
+		max+=d;
 	}
 	
 	@Override 

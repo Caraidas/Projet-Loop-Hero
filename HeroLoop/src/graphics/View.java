@@ -149,12 +149,46 @@ public class View {
 		drawItems(graphics);
 		drawInventory(graphics);
 		
+		if (gameData.selectedItem() != -1) {
+			drawItemStats(graphics);
+		}
+	}
+	
+	public void drawItemStats(Graphics2D graphics) {
+		int HudWidth = (int)(width - (21 * caseSize));
+		
+		graphics.setColor(Color.black);
+		graphics.fillRect((21 * caseSize), (int)(height - (height / 3)), HudWidth, (int) height);
+		
+		graphics.setColor(Color.white);
+		graphics.fillRect((21 * caseSize), (int)(height - (height / 8)), HudWidth, (int) height);
+	}
+	
+	public boolean deposedItem(Point2D.Float location) {
+		int HudWidth = (int)(width - (21 * caseSize));
+		return (location.x >= (21 * caseSize) && location.x < width && location.y >= 
+				(int)(HudWidth - (HudWidth / 15)) && location.y < height && timeData.stopped() && 
+				gameData.selectedCard() != -1);
 	}
 	
 	public void drawItems(Graphics2D graphics) {
+		int rarity;
+		
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				graphics.setColor(Color.DARK_GRAY);
+				graphics.setColor(Color.DARK_GRAY);			
+				if (!(player.items().get((i * 4) + j) == null)) {
+					rarity = player.items().get((i * 4) + j).stats().size();
+					
+					if (rarity == 2) {
+						graphics.setColor(Color.decode("#4C91E3"));
+					}  else if (rarity == 3) {
+						graphics.setColor(Color.decode("#FFF779"));
+					}  else if (rarity == 4) {
+						graphics.setColor(Color.decode("#EEA739"));
+					} 		
+				}
+					
 				graphics.fillRect((21 * caseSize + (j * caseSize)) + 20, (int)(200 + (caseSize * i)), caseSize -1, caseSize -1);
 				if (!(player.items().get((i * 4) + j) == null)) {
 					ImageConstructor itemImage = new ImageConstructor(Path.of(player.items().get((i * 4) + j).sprite()), (double)(caseSize -1), (double)(caseSize -1));

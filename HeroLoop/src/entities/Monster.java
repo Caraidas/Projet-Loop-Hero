@@ -23,7 +23,8 @@ public class Monster extends AbstractEntity {
 			Monster m = new Monster(new HashMap<>(), dropableRessources, 3.6, 40, "RatWolf.png");
 			m.addStat("hp", (int)(16 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			m.addStat("hpMax", (int)(16 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
-			m.addStat("def", 0);		
+			m.addStat("def", 0);
+			m.addStat("lifeSteal", 0);
 			return m;
 		}
 		case "Slime" ->{
@@ -34,6 +35,7 @@ public class Monster extends AbstractEntity {
 			slime.addStat("hp", (int)(13 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			slime.addStat("hpMax", (int)(13 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			slime.addStat("def", 0);
+			slime.addStat("lifeSteal", 0);
 			return slime;
 		}
 		case "Skeleton" ->{
@@ -43,6 +45,7 @@ public class Monster extends AbstractEntity {
 			skeleton.addStat("hp", (int)(12 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			skeleton.addStat("hpMax", (int)(12 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			skeleton.addStat("def", 0);
+			skeleton.addStat("lifeSteal", 0);
 			return skeleton;
 		}
 		case "Spider" ->{
@@ -52,6 +55,7 @@ public class Monster extends AbstractEntity {
 			spider.addStat("hp", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			spider.addStat("hpMax", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			spider.addStat("def", 0);
+			spider.addStat("lifeSteal", 0);
 			return spider;
 		}
 		case "Chest" ->{
@@ -62,6 +66,7 @@ public class Monster extends AbstractEntity {
 			chest.addStat("hp", (int)(11 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			chest.addStat("hpMax", (int)(11 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			chest.addStat("def", 0);
+			chest.addStat("lifeSteal", 0);
 			return chest;
 		}
 		case "Mimic" ->{
@@ -72,6 +77,7 @@ public class Monster extends AbstractEntity {
 			mimic.addStat("hp", (int)(26 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			mimic.addStat("hpMax", (int)(26 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			mimic.addStat("def", 0);
+			mimic.addStat("lifeSteal", 0);
 			return mimic;
 		}
 		case "Scorch Worm" ->{
@@ -81,6 +87,7 @@ public class Monster extends AbstractEntity {
 			scorchWorm.addStat("hp", (int)(10 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			scorchWorm.addStat("hpMax", (int)(10 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			scorchWorm.addStat("def", 0);
+			scorchWorm.addStat("lifeSteal", 0);
 			return scorchWorm;
 		}
 		

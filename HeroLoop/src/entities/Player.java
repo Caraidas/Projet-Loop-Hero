@@ -138,28 +138,27 @@ public class Player extends AbstractEntity {
 	public void equipItem(int itemIndex) {
 		if (items.get(itemIndex).isArmor()) {
 			if (!(inventory.armor() == null)) {
-				boostStat("hpMax", -(inventory.armor().stat())); // We get rid of the stats of the item that was here before
+				boostStat("hpMax", -(inventory.armor().stats().get("hpMax"))); // We get rid of the stats of the item that was here before
 			}
 			inventory.setArmor(items.get(itemIndex));
-			boostStat("hpMax", items.get(itemIndex).stat());
+			boostStat("hpMax", items.get(itemIndex).stats().get("hpMax"));
 			
 		} else if (items.get(itemIndex).isWeapon()) {
 			if (!(inventory.weapon() == null)) {
-				damage.boost(-(inventory.weapon().stat())); // We get rid of the stats of the item that was here before
+				damage.boost(-(inventory.weapon().stats().get("damage"))); // We get rid of the stats of the item that was here before
 			}			
 			inventory.setWeapon(items.get(itemIndex));
-			damage.boost(items.get(itemIndex).stat());
+			damage.boost(items.get(itemIndex).stats().get("damage"));
 			
 		} else if (items.get(itemIndex).isShield()) {
 			if (!(inventory.shield() == null)) {
-				boostStat("def", -(inventory.shield().stat())); // We get rid of the stats of the item that was here before
+				boostStat("def", -(inventory.shield().stats().get("def"))); // We get rid of the stats of the item that was here before
 			}
 			inventory.setShield(items.get(itemIndex));
-			boostStat("def", items.get(itemIndex).stat());
+			boostStat("def", items.get(itemIndex).stats().get("def"));
 		}
 		
 		destroyItem(itemIndex);
-		
 	}
 	
 	public void destroyItem(int i) {
