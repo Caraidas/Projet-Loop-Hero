@@ -75,19 +75,26 @@ public class BattleData { // this class takes care of all the battle related ope
 	public void dealDamage(Entity victim, Entity attacker) {
 		double base;
 		Random rand = new Random();
-		int r = rand.nextInt(100);
+		int veski = rand.nextInt(100);
+		int gounter = rand.nextInt(100);
 		if (attacker instanceof Monster) {
-			if (r > victim.getEvade()) {
-				attacker.lifeSteal(attacker.getLifeSteal(), (int)((Monster)attacker).strength());
-				base = ((Monster)attacker).strength();
-				int lvl = gameData.getLoopCount();
-				double damage = base * lvl * 0.95 * (1 + (lvl - 1) * 0.02);
-				victim.takeDamage((int)(damage - victim.basicStats().get("def")));
+			if (veski > victim.getEvade()) { // si le player esquive pas 
+				if (gounter > ((Player)victim).counter()) { // si en gros le player il contre pas 
+					attacker.lifeSteal(attacker.getLifeSteal(), (int)((Monster)attacker).strength());
+					base = ((Monster)attacker).strength();
+					int lvl = gameData.getLoopCount();
+					double damage = base * lvl * 0.95 * (1 + (lvl - 1) * 0.02);
+					victim.takeDamage((int)(damage - victim.basicStats().get("def")));
+				}
+				else {
+					dealDamage(attacker,victim);
+					System.out.println("oh le gounter mama");
+				}
 			}
 			else {
 				System.out.println("ouaaaah la veski du turfu");
 			}
-		} else if (r > victim.getEvade()){
+		} else if (veski > victim.getEvade()){ // si le monstre esquive pas 
 			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Player)attacker).damage());
 			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
 			return;
