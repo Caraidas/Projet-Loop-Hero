@@ -6,7 +6,6 @@ import java.util.HashMap;
 import Battle.BattleData;
 import collectable.Card;
 import collectable.Item;
-import collectable.Oblivion;
 import collectable.SpawnCard;
 import data.GameData;
 import data.GridPosition;
