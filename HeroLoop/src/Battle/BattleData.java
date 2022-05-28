@@ -40,7 +40,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			while (!(player.isDead()) && size != 0) {
 				
 				waitSeconds(1);
-				dealDamage(target, player, c, n);
+				dealDamage(target, player, c);
 				hits++;
 				view.drawScreen();
 				
@@ -60,19 +60,23 @@ public class BattleData { // this class takes care of all the battle related ope
 				}
 				
 				for (Monster m : ((RoadCell)c).getEntities()) {
-					waitSeconds(1);
-					dealDamage(player, m, c, -1);
-					hits++;
-					view.drawScreen();
+					if (m.isDead()) {
+						((RoadCell)c).getEntities().remove(n);
+					} else {
+						waitSeconds(1);
+						dealDamage(player, m, c);
+						hits++;
+						view.drawScreen();
+					}
 				}
 			}
 			
-			timeData.addTime(hits * 1000);
 			gameData.switchGameState();
+			timeData.addTime(hits * 1000);
 		}
 	}
 	
-	public void dealDamage(Entity victim, Entity attacker, Cell c, int mNum) {
+	public void dealDamage(Entity victim, Entity attacker, Cell c) {
 		double base;
 		Random rand = new Random();
 		int veski = rand.nextInt(100);
@@ -90,7 +94,7 @@ public class BattleData { // this class takes care of all the battle related ope
 					victim.takeDamage((int)(damage - victim.basicStats().get("def")));
 				}
 				else {
-					dealDamage(attacker, victim, c, mNum);
+					dealDamage(attacker, victim, c);
 					System.out.println("oh le gounter mama");
 				}
 			}
@@ -105,6 +109,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			}
 			
 			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Player)attacker).damage());
+			System.out.println(attacker + " lifeSteal : " + attacker.getLifeSteal());
 			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
 			return;
 			
@@ -137,7 +142,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			item.setStats(gameData.getLoopCount());
 			player.addItemInInventory(item);
 		} else {
-			player.addCard(gameData.drawCard(), 1);
+			player.addCard(gameData.drawCard());
 		}
 	}
 }

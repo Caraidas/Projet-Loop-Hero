@@ -38,6 +38,10 @@ public class Map {
 		return loop.get(p.position());
 	}
 	
+	public boolean isValid(int i, int j) {
+		return i >= 0 && i < lines() && j >= 0 && j < columns();
+	}
+	
 	public void generateLoop() {
 		
 		for (int i = 2; i <= 11; i++) { 

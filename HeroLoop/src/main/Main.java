@@ -69,6 +69,7 @@ public class Main {
 		
 		case C -> {
 			player.clearInventory();
+			gameData.selectItem(-1);
 			view.drawScreen();
 		}
 		
@@ -91,14 +92,14 @@ public class Main {
 				timeData.stop(); // planification mode
 				
 			} else if (view.deposedCard(location)) {
-				Card deposedCard = player.selectCard(gameData.selectedCard());		
-				
-				GridPosition pos = view.toCellPos(location);
-				gameData.depositCard(deposedCard, pos);
+				Card deposedCard = player.selectCard(gameData.selectedCard());
 				
 				if (deposedCard instanceof SpawnCard) {
 					((SpawnCard)deposedCard).setBirthday(timeData.dayCount());
 				}
+				
+				GridPosition pos = view.toCellPos(location);
+				gameData.depositCard(deposedCard, pos);
 				
 				deposedCard.cardAction(player, gameData, timeData, pos);
 				deposedCard.giveRessource(player);
@@ -108,6 +109,8 @@ public class Main {
 				
 			} else if (view.clickedOnItems(location)) {
 				gameData.selectItem(view.toItemPos(location));
+				timeData.stop();
+				
 			} else if (view.deposedItem(location)) {
 				player.equipItem(gameData.selectedItem());
 				gameData.selectItem(-1);
@@ -177,13 +180,16 @@ public class Main {
 		intro(context);
 		view.blackScreen();
 		view.drawScreen();
-		player.addCard(Card.createCard("Rock"), 1);
-		player.addCard(Card.createCard("Meadow"), 1);
-		player.addCard(Card.createCard("Grove"), 1);
-		player.addCard(Card.createCard("Grove"), 1);
-		player.addCard(Card.createCard("Oblivion"), 1);
-		player.addCard(Card.createCard("Ruins"), 2);
-		player.addCard(Card.createCard("SpiderCocoon"), 2);
+		player.addCard(Card.createCard("Rock"));
+		player.addCard(Card.createCard("Meadow"));
+		player.addCard(Card.createCard("Grove"));
+		player.addCard(Card.createCard("Grove"));
+		player.addCard(Card.createCard("Oblivion"));
+		player.addCard(Card.createCard("Ruins"));
+		player.addCard(Card.createCard("Ruins"));
+		player.addCard(Card.createCard("SpiderCocoon"));
+		player.addCard(Card.createCard("SpiderCocoon"));
+		player.addCard(Card.createCard("Cemetery"));
 		
 		while (true) {
 			doTimeAction(context);

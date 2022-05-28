@@ -46,6 +46,16 @@ public interface Card {
 			
 			return meadow;
 			
+		case "Cemetery":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			lst.add("Preserved Pebbles");
+			lst.add("Memory Fragment");
+			SpawnCard cemetery = new SpawnCard(c, "Cemetery.png", lst, 3, "Skeleton", 0, 0);
+			
+			return cemetery;
+			
 		case "Grove":
 			c = new ArrayList<>();
 			lst = new ArrayList<>();

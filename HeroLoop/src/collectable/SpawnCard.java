@@ -35,44 +35,57 @@ public class SpawnCard extends AbstractCard {
 	public Cell move(GameData gameData, int i, int j) {		
 		if (moveWhenSpawn == 0) {
 			return gameData.map().getCell(i, j);
-		} 
+		}
 		
 		Random rand = new Random();
 		int n = rand.nextInt(2);
-		int factor;
 		
-		if (n < 1) {
-			factor = 1;
-		} else {
-			factor = -1;
+		int[] factors = new int[2];
+		factors[0] = -1;
+		factors[1] = 1;
+		int factor = factors[n];
+		
+		ArrayList<Cell> possibleSpawnCells = new ArrayList<>();
+		
+		if (gameData.map().isValid(i, j + factor) && gameData.map().getCell(i, j + factor) instanceof RoadCell) {
+			possibleSpawnCells.add(gameData.map().getCell(i, j + factor));
+			
+		} 
+		
+		if (gameData.map().isValid(i, j - factor) && gameData.map().getCell(i, j - factor) instanceof RoadCell) {
+			possibleSpawnCells.add(gameData.map().getCell(i, j - factor));
+			
 		}
 		
-		if (gameData.map().getCell(i, j + 1) instanceof RoadCell) {
-			return gameData.map().getCell(i, j + factor);
+		if (gameData.map().isValid(i + factor, j) && gameData.map().getCell(i + factor, j) instanceof RoadCell) {
+			possibleSpawnCells.add(gameData.map().getCell(i + factor, j));
 			
-		} else if (gameData.map().getCell(i, j - factor) instanceof RoadCell) {
-			return gameData.map().getCell(i, j - factor);
-			
-		} else if (gameData.map().getCell(i + factor, j) instanceof RoadCell) {
-			return gameData.map().getCell(i + factor, j);
-			
-		} else if (gameData.map().getCell(i - factor, j) instanceof RoadCell) {
-			return gameData.map().getCell(i - factor, j);
-		} else {
-			return gameData.map().getCell(i, j);
 		}
+		
+		if (gameData.map().isValid(i - factor, j) && gameData.map().getCell(i - factor, j) instanceof RoadCell) {
+			possibleSpawnCells.add(gameData.map().getCell(i - factor, j));
+		}
+		
+		n = rand.nextInt(possibleSpawnCells.size());
+		return possibleSpawnCells.get(n);
 	}
 
 	@Override
 	public void spawn(int i, int j, GameData gameData, int day) {	
 		Cell c = move(gameData, i, j);
 		
-		if (day % spawnFrequency == birthday) {
+		System.out.println("day = " + day);
+		System.out.println("spawnFrequency = "+ spawnFrequency);
+		System.out.println("birthday = " + birthday);
+		
+		if ((day - birthday) % spawnFrequency == 0) {
 			c.spawn(Monster.createMonster(spawnableMonster, gameData.getLoopCount()));
+			System.out.println("spawn : " + spawnableMonster);
 		}
 	}
 	
 	public void setBirthday(int b) {
+		System.out.println("birthday set : " + b);
 		birthday = b;
 	}
 

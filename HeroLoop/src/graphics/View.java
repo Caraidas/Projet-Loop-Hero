@@ -372,9 +372,12 @@ public class View {
 		if (gameData.selectedCard() != -1) {
 			for (int i = 0; i < gameData.map().lines(); i++) {
 				for (int j = 0; j < gameData.map().columns(); j++) {
-					if (player.deck().getCard(gameData.selectedCard())
-							.contains(gameData.map().getCell(i, j).acceptableCardState())
+					/*if (player.deck().getCard(gameData.selectedCard()).contains(gameData.map().getCell(i, j).acceptableCardState())
 							&& gameData.map().getCell(i, j).card() == null) {
+						drawImage(graphics, j * caseSize, i * caseSize + caseSize, selectable);
+					}*/
+					
+					if (player.deck().getCard(gameData.selectedCard()).acceptCardState(gameData.map().getCell(i, j))) {
 						drawImage(graphics, j * caseSize, i * caseSize + caseSize, selectable);
 					}
 				}
@@ -498,7 +501,7 @@ public class View {
 	public boolean clickedOnItems(Point2D.Float location) {
 		return (location.x >= (21 * caseSize + (0 * caseSize)) + 20 && location.x < width
 				&& location.y >= (int) (200 + (caseSize * 0)) && location.y < (int) (200 + (caseSize * 3)))
-				&& timeData.stopped() && player.items().get(toItemPos(location)) != null;
+				&& player.items().get(toItemPos(location)) != null;
 	}
 
 	public int toCardPos(Point2D.Float location) {

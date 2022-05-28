@@ -41,6 +41,10 @@ public abstract class AbstractCard implements Card {
 	
 	@Override
 	public boolean acceptCardState(Cell cell) {
+		if (cell.card() != null) {
+			return false;
+		}
+		
 		for (CardState c : cardStates) {
 			if (c != cell.acceptableCardState()) {
 				return false;

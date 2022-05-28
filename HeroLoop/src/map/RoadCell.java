@@ -40,7 +40,7 @@ public class RoadCell extends Cell {
 			
 			int n = rand.nextInt(100);
 			
-			if (n < 0) { // 5% chance
+			if (n < 5) { // 5% chance
 				spawn(Monster.createMonster("Slime", loopCount));
 			}
 		}

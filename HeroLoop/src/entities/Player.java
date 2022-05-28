@@ -65,10 +65,8 @@ public class Player extends AbstractEntity {
 		}
 	}
 	
-	public void addCard(Card c, int n) { // Add a card to the deck n times
-		for (int i = 0; i < n; i++) {
-			deck.add(c);
-		}
+	public void addCard(Card c) { // Add a card to the deck n times
+		deck.add(c);
 	}
 	
 	public int deckSize() {
@@ -174,8 +172,14 @@ public class Player extends AbstractEntity {
 		destroyItem(itemIndex);
 	}
 	
-	public void destroyItem(int i) {
-		items.set(i, null);
+	public void destroyItem(int i) {		
+		for (int j = i; j >= 0; j--) {
+			if (j == 0) {
+				items.set(j, null);
+			} else {
+				items.set(j, items.get(j - 1));
+			}
+		}
  	}
 	
 	public int damage() {
