@@ -40,6 +40,10 @@ public interface Entity {
 	
 	default void lifeSteal(double percentage, int damage) {
 		globalheal(damage * (percentage / 100));
+		
+		if (basicStats().get("hp") > basicStats().get("hpMax")) {
+			basicStats().replace("hp", basicStats().get("hpMax"));
+		}
 	}
 	
 	default void globalheal(double value) {

@@ -2,7 +2,6 @@ package map;
 
 import java.util.ArrayList;
 import java.util.Random;
-import collectable.Carte;
 import collectable.Card;
 import collectable.CardState;
 import entities.Monster;

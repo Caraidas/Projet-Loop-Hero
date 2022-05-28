@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import collectable.Card;
-import collectable.Carte;
 import collectable.Item;
 import data.Range;
 import inventory.Deck;
@@ -105,14 +104,6 @@ public class Player extends AbstractEntity {
 	
 	public Item selectItem(int i) {
 		return items.get(i);
-	}
-	
-	public void dailyStatBoost(Carte c) {
-		for (String stat : c.dailyStatBoost().keySet()) {
-			boostStat(stat, (double)c.dailyStatBoost().get(stat));
-			
-			this.heal(0);
-		}
 	}
 	
 	public void equipItem(int itemIndex) {
