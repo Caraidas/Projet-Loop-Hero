@@ -32,8 +32,9 @@ public interface Card {
 			c.add(CardState.LANDSCAPE);
 			stats.put("hpMax", 0.01);
 			lst.add("Pebble");
+			BoostCard rock = new BoostCard(c, "Rock.png", lst, stats);
 			
-			return new BoostCard(c, "Rock.png", lst, stats);
+			return rock;
 			
 		case "Meadow":
 			c = new ArrayList<>();
@@ -41,23 +42,34 @@ public interface Card {
 			lst = new ArrayList<>();
 			c.add(CardState.LANDSCAPE);
 			stats.put("hp", 2.0);
+			DailyBoost meadow = new DailyBoost(c, "Meadow.png", lst, stats);
 			
-			return new DailyBoost(c, "Meadow.png", lst, stats);
+			return meadow;
 			
 		case "Grove":
 			c = new ArrayList<>();
 			lst = new ArrayList<>();
 			c.add(CardState.ROAD);
 			lst.add("Stable Branches");
+			SpawnCard grove = new SpawnCard(c, "Grove.png", lst, 2, "RatWolf", 0, 1);
 			
-			return new SpawnCard(c, "Grove.png", lst, 2, "RatWolf", 0, 1);
+			return grove;
 			
 		case "Ruins":
 			c = new ArrayList<>();
 			lst = new ArrayList<>();
 			c.add(CardState.ROAD);
+			SpawnCard ruins = new SpawnCard(c, "Ruins.png", lst, 2, "ScorchWorm", 0, 0);
 			
-			return new SpawnCard(c, "Ruins.png", lst, 2, "ScorchWorm", 0, 0);
+			return ruins;
+			
+		case "SpiderCocoon":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROADSIDE);
+			SpawnCard spiderCocoon = new SpawnCard(c, "SpiderCocoon.png", lst, 1, "Spider", 0, 1);
+			
+			return spiderCocoon;
 		
 		case "Oblivion":
 			c = new ArrayList<>();
@@ -65,8 +77,9 @@ public interface Card {
 			c.add(CardState.ROAD);
 			c.add(CardState.LANDSCAPE);
 			c.add(CardState.ROADSIDE);
+			Oblivion oblivion = new Oblivion(c, "Oblivion.png", lst);
 			
-			return new Oblivion(c, "Oblivion.png", lst);
+			return oblivion;
 
 		default:
 			return null;

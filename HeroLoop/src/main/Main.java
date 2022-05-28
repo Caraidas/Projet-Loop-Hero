@@ -97,12 +97,12 @@ public class Main {
 				GridPosition pos = view.toCellPos(location);
 				gameData.depositCard(deposedCard, pos);
 				
-				deposedCard.cardAction(player, gameData, timeData, pos);
-				deposedCard.giveRessource(player);
-				
 				if (deposedCard instanceof SpawnCard) {
 					((SpawnCard)deposedCard).setBirthday(timeData.dayCount());
 				}
+				
+				deposedCard.cardAction(player, gameData, timeData, pos);
+				deposedCard.giveRessource(player);
 				
 				player.deck().remove(gameData.selectedCard());
 				gameData.selectCard(-1);
@@ -181,8 +181,10 @@ public class Main {
 		player.addCard(Card.createCard("Rock"), 1);
 		player.addCard(Card.createCard("Meadow"), 1);
 		player.addCard(Card.createCard("Grove"), 1);
-		player.addCard(Card.createCard("Oblivion"), 2);
+		player.addCard(Card.createCard("Grove"), 1);
+		player.addCard(Card.createCard("Oblivion"), 1);
 		player.addCard(Card.createCard("Ruins"), 2);
+		player.addCard(Card.createCard("SpiderCocoon"), 2);
 		
 		while (true) {
 			doTimeAction(context);
