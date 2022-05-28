@@ -386,10 +386,6 @@ public class View {
 		
 		ImageConstructor image = new ImageConstructor(Path.of("ressources/Utility-Sprite/WindowFight.png"), -2.7, -2.7);
 		drawImage(graphics, (int)(width / 5), (int) (height / 27), image);
-		/*graphics.setColor(Color.black);
-		graphics.fillRect((int) (width / 5), (int) (height / 6), (int) (width / 2), (int) (height * 0.7));
-		graphics.setColor(Color.gray);
-		graphics.drawRect((int) (width / 5), (int) (height / 6), (int) (width / 2), (int) (height * 0.7));*/
 		drawMonstersInBattle(graphics, (RoadCell) (gameData.map().getCell(gameData.map().getPlayerPos(player))));
 	}
 

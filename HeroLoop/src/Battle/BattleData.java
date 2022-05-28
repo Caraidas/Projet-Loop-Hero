@@ -40,7 +40,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			while (!(player.isDead()) && size != 0) {
 				
 				waitSeconds(1);
-				dealDamage(target, player, c);
+				dealDamage(target, player, c, n);
 				hits++;
 				view.drawScreen();
 				
@@ -61,7 +61,7 @@ public class BattleData { // this class takes care of all the battle related ope
 				
 				for (Monster m : ((RoadCell)c).getEntities()) {
 					waitSeconds(1);
-					dealDamage(player, m, c);
+					dealDamage(player, m, c, -1);
 					hits++;
 					view.drawScreen();
 				}
@@ -72,14 +72,17 @@ public class BattleData { // this class takes care of all the battle related ope
 		}
 	}
 	
-	public void dealDamage(Entity victim, Entity attacker, Cell c) {
+	public void dealDamage(Entity victim, Entity attacker, Cell c, int mNum) {
 		double base;
 		Random rand = new Random();
 		int veski = rand.nextInt(100);
 		int gounter = rand.nextInt(100);
 		if (attacker instanceof Monster) {
+			
 			if (veski > victim.getEvade()) { // si le player esquive pas 
-				if (gounter > ((Player)victim).counter()) { // si en gros le player il contre pas 
+				
+				if (gounter > ((Player)victim).counter()) { // si en gros le player il contre pas
+					
 					attacker.lifeSteal(attacker.getLifeSteal(), (int)((Monster)attacker).strength());
 					base = ((Monster)attacker).strength();
 					int lvl = gameData.getLoopCount();
@@ -87,20 +90,24 @@ public class BattleData { // this class takes care of all the battle related ope
 					victim.takeDamage((int)(damage - victim.basicStats().get("def")));
 				}
 				else {
-					dealDamage(attacker,victim,c);
+					dealDamage(attacker, victim, c, mNum);
 					System.out.println("oh le gounter mama");
 				}
 			}
 			else {
 				System.out.println("ouaaaah la veski du turfu");
 			}
+			
 		} else if (veski > victim.getEvade()){ // si le monstre esquive pas 
+			
 			for (Monster m : ((RoadCell)c).getEntities()) {
 				m.takeDamage((int)attacker.getStat("damageToAll"));
 			}
+			
 			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Player)attacker).damage());
 			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
 			return;
+			
 		} else {
 			System.out.println("ouaaaah la veski du turfu");
 		}
