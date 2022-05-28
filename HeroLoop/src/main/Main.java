@@ -6,6 +6,8 @@ import java.util.HashMap;
 import Battle.BattleData;
 import collectable.Card;
 import collectable.Item;
+import collectable.Oblivion;
+import collectable.SpawnCard;
 import data.GameData;
 import data.GridPosition;
 import data.Range;
@@ -33,7 +35,7 @@ public class Main {
 	public void doTimeAction(ApplicationContext context) {
 		if (timeData.dayPassed()) { 
 			gameData.spawn();
-			gameData.applyDailyBoosts(player);
+			gameData.cardAction(player);
 		}
 		
 		if (timeData.elapsedRegen() >= TimeData.REGEN_DELAY) {
@@ -79,33 +81,45 @@ public class Main {
 		
 		Point2D.Float location = event.getLocation();
 		
-		if (view.clickedOnCards(location)) {
-			gameData.selectCard((view.toCardPos(location)));
-			timeData.stop(); // planification mode
-			
-		} else if (view.deposedCard(location)) {
-			Card deposedCard = player.selectCard(gameData.selectedCard());		
-			
-			player.boostStat(deposedCard);
-			player.giveRessource(deposedCard);
-			
-			GridPosition pos = view.toCellPos(location);
-			gameData.depositCard(deposedCard, pos);
-			player.deck().remove(gameData.selectedCard());
-			gameData.selectCard(-1);
-			
-		} else if (view.clickedOnItems(location)) {
-			gameData.selectItem(view.toItemPos(location));
-		} else if (view.deposedItem(location)) {
-			player.equipItem(gameData.selectedItem());
-			gameData.selectItem(-1);
+		if (!gameData.inGame()) {
+			if (view.clickedOnPlay(location)) {
+				gameData.startGame();
+			}
 		} else {
-			gameData.selectCard(-1);
-			gameData.selectItem(-1);
+			
+			if (view.clickedOnCards(location)) {
+				gameData.selectCard((view.toCardPos(location)));
+				timeData.stop(); // planification mode
+				
+			} else if (view.deposedCard(location)) {
+				Card deposedCard = player.selectCard(gameData.selectedCard());		
+				
+				GridPosition pos = view.toCellPos(location);
+				gameData.depositCard(deposedCard, pos);
+				
+				deposedCard.cardAction(player, gameData, timeData, pos);
+				deposedCard.giveRessource(player);
+				
+				if (deposedCard instanceof SpawnCard) {
+					((SpawnCard)deposedCard).setBirthday(timeData.dayCount());
+				}
+				
+				player.deck().remove(gameData.selectedCard());
+				gameData.selectCard(-1);
+				
+			} else if (view.clickedOnItems(location)) {
+				gameData.selectItem(view.toItemPos(location));
+			} else if (view.deposedItem(location)) {
+				player.equipItem(gameData.selectedItem());
+				gameData.selectItem(-1);
+			} else {
+				gameData.selectCard(-1);
+				gameData.selectItem(-1);
+			}
+			
+			view.blackScreen();
+			view.drawScreen();
 		}
-		
-		view.blackScreen();
-		view.drawScreen();
 	}
 	
 	private void doPlayerAction(ApplicationContext context) {
@@ -117,11 +131,10 @@ public class Main {
 				gameData.updateLoopCount();
 				player.heal(0.2);
 			}
-			player.giveRessourcesWhenCrossed(m.playerCell(player).card());
+			// player.giveRessourcesWhenCrossed(m.playerCell(player).card());
 		}
 		
 		battleData.startBattle(m.playerCell(player), player);
-		m.playerCell(player).clear();
 	}
 	
 	public void doEventAction(ApplicationContext context) { 
@@ -151,18 +164,25 @@ public class Main {
 		}
 	}
 	
+	public void intro(ApplicationContext context) {
+		while (!gameData.inGame()) {
+			doEventAction(context);
+			view.drawScreen();
+		}
+	}
+	
 	public void gameLoop(ApplicationContext context) {
 		
 		view.initContext(context);
 		gameData.generateGameBoard();
+		intro(context);
+		view.blackScreen();
 		view.drawScreen();
-		Card rock = Card.createCard("Rock");
-		Card grove = Card.createCard("Grove");
-		Card meadow = Card.createCard("Meadow");
-		
-		player.addCard(grove, 1);
-		player.addCard(rock, 1);
-		player.addCard(meadow, 1);
+		player.addCard(Card.createCard("Rock"), 1);
+		player.addCard(Card.createCard("Meadow"), 1);
+		player.addCard(Card.createCard("Grove"), 1);
+		player.addCard(Card.createCard("Oblivion"), 2);
+		player.addCard(Card.createCard("Ruins"), 2);
 		
 		while (true) {
 			doTimeAction(context);

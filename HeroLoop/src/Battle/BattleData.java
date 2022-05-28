@@ -125,7 +125,7 @@ public class BattleData { // this class takes care of all the battle related ope
 		
 		int n = rand.nextInt(100);
 		
-		if (n < monster.ressourceChance()) {
+		if (n <= monster.ressourceChance()) {
 			Item item = new Item();
 			item.setStats(gameData.getLoopCount());
 			player.addItemInInventory(item);

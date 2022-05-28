@@ -11,12 +11,13 @@ public class Item {
 	
 	public Item() {		
 		Random rand = new Random();
-		int n = rand.nextInt(3);
+		int n = rand.nextInt(4);
 		
 		ArrayList<String> lstType = new ArrayList<>();
 		lstType.add("Weapon");
 		lstType.add("Shield");
 		lstType.add("Armor");
+		lstType.add("Ring");
 	
 		this.type = lstType.get(n);
 		this.sprite = "ressources/item-Sprite/"+lstType.get(n)+".png";
@@ -48,13 +49,14 @@ public class Item {
 		}
 	}
 	
-	public void setStats(int lvl) {
-		int rarity = setRarity(lvl);
-		double stat;
+	private double setOriginalStat(String type, int rarity, int lvl, ArrayList<String> tab) {
+		double stat = 0;
+		Random rand = new Random();
+		int n;
+		
 		switch (type) {
 		case "Weapon":
-			Random rand = new Random();
-			int n = rand.nextInt(2);
+			n = rand.nextInt(2);
 			stat = lvl * (4 + n); // between 4 and 6
 			stats.put("damage", stat);
 			break;
@@ -63,18 +65,60 @@ public class Item {
 			stat = 4 * lvl;
 			stats.put("def", stat);
 			break;
-			
+			 
 		case "Armor":
 			rand = new Random();
 			n = rand.nextInt(20);
 			stat = lvl * (80 + n); // between 80 and 100
 			stats.put("hpMax", stat);
 			break;
+			
+		case "Ring":
+			n = rand.nextInt(tab.size());
+			stat = ringStat(tab.get(n), lvl);
+			stats.put(tab.get(n), stat);
+			break;
 
 		default:
 			break;
 		}
 		
+		return stat;
+	}
+	
+	public double ringStat(String stat, int lvl) {
+		switch (stat) {
+		case "def":
+			return lvl * 1.5;
+			
+		case "vampirism":
+			return 8 + (lvl - 1) * 1.5;
+			
+		case "counter":
+			return  8 + (lvl - 1) * 4;
+			
+		case "evade":
+			return 8 + (lvl - 1) * 2;
+			
+		case "regen":
+			return lvl * 0.6;
+			
+		case "pureDamage":
+			return 3 * lvl;
+			
+		case "damageToAll":
+			return lvl;
+			
+		default:
+			return 0;
+		}
+
+	}
+	
+	public void setStats(int lvl) {
+		int rarity = setRarity(lvl);
+		Random rand = new Random();
+		int n;
 		ArrayList<String> tab = new ArrayList<>();
 		tab.add("regen");
 		tab.add("counter");
@@ -84,9 +128,10 @@ public class Item {
 		tab.add("vampirism");
 		tab.add("damageToAll");
 		
+		double stat = setOriginalStat(type, rarity, lvl, tab);
+		
 		for (int i = 0; i < rarity; i++) {
-			Random rand = new Random();
-			int n = rand.nextInt(tab.size());
+			n = rand.nextInt(tab.size());
 			
 			switch (tab.get(n)) {
 			case "def":
@@ -94,8 +139,6 @@ public class Item {
 				
 				if (rarity == 1) {
 					stat = stat / 3;
-					if (stat < 1)
-						stat = 1;
 				} else {
 					if (i == 2) {
 						stat = 4 * (lvl - 2);
@@ -231,6 +274,10 @@ public class Item {
 	
 	public boolean isShield() {
 		return type.equals("Shield");
+	}
+	
+	public boolean isRing() {
+		return type.equals("Ring");
 	}
 	
 	public static Item debugItem(int lvl) {

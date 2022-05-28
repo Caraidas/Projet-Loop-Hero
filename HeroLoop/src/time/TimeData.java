@@ -77,12 +77,12 @@ public class TimeData {
 	}
 	
 	public boolean dayPassed() {
-		if (timeFraction() > 0.95 && !stopped()) {
+		if (timeFraction() >= 0.90 && !stopped()) {
 			updateDayCount();
+			elapsedTotal = 0;
 			return true;
 		}
 		return false;
-		
 	}
 		
 	public void updateDayCount() {

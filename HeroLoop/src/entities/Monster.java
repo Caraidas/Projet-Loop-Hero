@@ -86,7 +86,7 @@ public class Monster extends AbstractEntity {
 			mimic.addStat("evade", 5);
 			return mimic;
 		}
-		case "Scorch Worm" ->{
+		case "ScorchWorm" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
 			Monster scorchWorm = new Monster(new HashMap<>(), dropableRessources, 2.7, 85, "ScorchWorm.png");

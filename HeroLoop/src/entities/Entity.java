@@ -45,7 +45,7 @@ public interface Entity {
 	default void globalheal(double value) {
 		basicStats().replace("hp", basicStats().get("hp") +  value);
 		
-		if (basicStats().get("hp") >= basicStats().get("hpMax")) {
+		if (basicStats().get("hp") > basicStats().get("hpMax")) {
 			basicStats().replace("hp", basicStats().get("hpMax"));
 		}
 	}
@@ -59,6 +59,13 @@ public interface Entity {
 	}
 	
 	default void boostStat(String stat, Double factor) {
+		if (factor < 1 && factor > -1) {
+			basicStats().replace(stat, basicStats().get(stat) + basicStats().get(stat) * factor);
+		}
 		basicStats().replace(stat, basicStats().get(stat) + factor);
+		
+		if (basicStats().get("hp") > basicStats().get("hpMax")) {
+			basicStats().replace("hp", basicStats().get("hpMax"));
+		}
 	}
 }

@@ -2,125 +2,79 @@ package collectable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
-public class Card { 
-	private final ArrayList<CardState> cardState; // A card can be ROAD, LANSCAPE and / or ROADSIDE
-	private final HashMap<String, Integer> spawnableMonster; //String is the monster that can spawn, Integer is the rate of spawn in days
+import data.GameData;
+import data.GridPosition;
+import entities.Player;
+import map.Cell;
+import time.TimeData;
+
+public interface Card {
 	
-	private final HashMap<String, Double> boostedStats; // The stats that the card boosts upon being placed
-	private final HashMap<String, Integer> dailyStatBoost; // The stats that the card boosts every day
+	String sprite();
 	
-	private final String ressourceGiven; // ressources given when the card is placed
-	private final ArrayList<String> ressourceGivenWhenCrossed; // ressources given when the tile is crossed
-	private final String sprite; 
+	ArrayList<CardState> cardState();
 	
-	public Card(String sprite, String ressourceGiven, ArrayList<String> ressourceGivenWhenCrossed, int moveWhenSpawn) {
-		this.sprite = sprite;
-		this.ressourceGiven = ressourceGiven;
-		this.ressourceGivenWhenCrossed = ressourceGivenWhenCrossed;
-		
-		this.cardState = new ArrayList<>();
-		this.boostedStats = new HashMap<>();
-		this.spawnableMonster = new HashMap<>();
-		this.dailyStatBoost = new HashMap<>();
+	void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos);
+	
+	void spawn(int i, int j, GameData gameData, int day);
+	
+	default boolean contains(CardState c) {
+		return cardState().contains(c);
 	}
 	
-	public static Card createCard(String name) { // this method is used to easily create cards
+	static Card createCard(String name) {
 		switch (name) {
-		case "Rock" -> {
-			ArrayList<String> ressources = new ArrayList<String>();
-			Card card = new Card("Rock.png", "Pebbles", ressources, 0);
-			card.addCardState(CardState.LANDSCAPE);
-			card.addBoostedStat("hpMax", 0.01);
-			return card;
-		}
+		case "Rock":
+			ArrayList<CardState> c = new ArrayList<>();
+			HashMap<String, Double> stats = new HashMap<>();
+			ArrayList<String> lst = new ArrayList<>();
+			c.add(CardState.LANDSCAPE);
+			stats.put("hpMax", 0.01);
+			lst.add("Pebble");
+			
+			return new BoostCard(c, "Rock.png", lst, stats);
+			
+		case "Meadow":
+			c = new ArrayList<>();
+			stats = new HashMap<>();
+			lst = new ArrayList<>();
+			c.add(CardState.LANDSCAPE);
+			stats.put("hp", 2.0);
+			
+			return new DailyBoost(c, "Meadow.png", lst, stats);
+			
+		case "Grove":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			lst.add("Stable Branches");
+			
+			return new SpawnCard(c, "Grove.png", lst, 2, "RatWolf", 0, 1);
+			
+		case "Ruins":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			
+			return new SpawnCard(c, "Ruins.png", lst, 2, "ScorchWorm", 0, 0);
 		
-		case "Grove" -> {
-			ArrayList<String> ressources = new ArrayList<String>();
-			ressources.add("Stick");
-			Card card = new Card("Grove.png", "", ressources, 1);
-			card.addCardState(CardState.ROAD);
-			card.addSpawnableMonster("RatWolf", 2);
-			return card;
-		}
-		
-		case "Meadow" -> {
-			ArrayList<String> ressources = new ArrayList<String>();
-			Card card = new Card("Meadow.png", "Ration", ressources, 0);
-			card.addCardState(CardState.LANDSCAPE);
-			card.addDailyStatBoost("hp", 2);
-			return card;
-		}
-		case "Cemetery" -> {
-			ArrayList<String> ressources = new ArrayList<String>();
-			ressources.add("Preserved Pebbles");
-			ressources.add("Memory Fragment");
-			Card card = new Card("Cemetery.png", "", ressources, 0);
-			card.addCardState(CardState.ROADSIDE);
-			card.addSpawnableMonster("Skeleton", 3);
-			return card;
-		}
-		
-		default ->
-		throw new IllegalArgumentException("Unexpected value: " + name);
+		case "Oblivion":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			c.add(CardState.LANDSCAPE);
+			c.add(CardState.ROADSIDE);
+			
+			return new Oblivion(c, "Oblivion.png", lst);
+
+		default:
+			return null;
 		}
 	}
+
+	void giveRessource(Player player);
 	
-	public boolean contains(CardState c) {
-		return cardState.contains(c);
-	}
-	
-	public void addDailyStatBoost(String name, int value) {
-		dailyStatBoost.put(name, value);
-	}
-	
-	public void addCardState(CardState c) {
-		cardState.add(c);
-	}
-	
-	public void addSpawnableMonster(String m, int rate) {
-		spawnableMonster.put(m, rate);
-	}
-	
-	public void addBoostedStat(String name, double value) {
-		boostedStats.put(name, value);
-	}
-	
-	// Getters :
-	
-	public String sprite() {
-		return sprite;
-	}
-	
-	public String toString() {
-		return sprite;
-	}
-	
-	public HashMap<String, Double> boostedStats() {
-		return boostedStats;
-	}
-	
-	public HashMap<String, Integer> dailyStatBoost() {
-		return dailyStatBoost;
-	}
-	
-	public ArrayList<CardState> cardState() {
-		return cardState;
-	}
-	
-	public String ressourceGiven() {
-		return ressourceGiven;
-	}
-	
-	public String ressourceGivenWhenCrossed() {
-		Random random = new Random();
-		int randomIndex = random.nextInt(ressourceGivenWhenCrossed.size());
-		return ressourceGivenWhenCrossed.get(randomIndex);
-	}
-	
-	public HashMap<String, Integer> spawnableMonster() {
-		return spawnableMonster;
-	}
-	
+	boolean acceptCardState(Cell c);
+
 }

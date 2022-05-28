@@ -6,14 +6,14 @@ public class Inventory {
 	private Item armor;
 	private Item shield;
 	private Item weapon;
-	// private Item ring;
+	private Item ring;
 	// private Item amulet;
 	
 	public Inventory() {
 		this.armor = null;
 		this.weapon = null;
 		this.shield = null;
-		// this.ring = null;
+		this.ring = null;
 		// this.amulet = null;
 	}
 	
@@ -29,6 +29,10 @@ public class Inventory {
 		shield = item;
 	}
 	
+	public void setRing(Item item) {
+		ring = item;
+	}
+	
 	public boolean hasWeapon() {
 		return !(weapon == null);
 	}
@@ -39,6 +43,10 @@ public class Inventory {
 	
 	public boolean hasShield() {
 		return !(shield == null);
+	}
+	
+	public boolean hasRing() {
+		return !(ring == null);
 	}
 	
 	// Getters :
@@ -53,6 +61,10 @@ public class Inventory {
 	
 	public Item shield() {
 		return shield;
+	}
+	
+	public Item ring() {
+		return ring;
 	}
 
 }

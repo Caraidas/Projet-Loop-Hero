@@ -26,12 +26,24 @@ public class Cell {
 		return;
 	}
 	
-	public void clear() { // clears a cell from the monster on it
+	public void addDirection(String s) {
 		return;
+	}
+	
+	public void clear() { // clears a cell from the building on it
+		addCard(null);
 	}
 	
 	public void addCard(Card c) {
 		card = c;
+	}
+	
+	public boolean hasNoMonsters() {
+		return true;
+	}
+	
+	public boolean hasNoBuilding() {
+		return card == null;
 	}
 	
 	// Getters :

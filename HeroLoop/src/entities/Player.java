@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import collectable.Card;
+import collectable.Carte;
 import collectable.Item;
 import data.Range;
 import inventory.Deck;
@@ -68,7 +69,7 @@ public class Player extends AbstractEntity {
 	public void addCard(Card c, int n) { // Add a card to the deck n times
 		for (int i = 0; i < n; i++) {
 			deck.add(c);
-		}	
+		}
 	}
 	
 	public int deckSize() {
@@ -106,41 +107,11 @@ public class Player extends AbstractEntity {
 		return items.get(i);
 	}
 	
-	public void boostStat(Card c) {
-		for (String stat : c.boostedStats().keySet()) {
-			boostStat(stat, c.boostedStats().get(stat));
-		}
-	}
-	
-	public void dailyStatBoost(Card c) {
+	public void dailyStatBoost(Carte c) {
 		for (String stat : c.dailyStatBoost().keySet()) {
 			boostStat(stat, (double)c.dailyStatBoost().get(stat));
 			
 			this.heal(0);
-		}
-	}
-	
-	public void giveRessourcesWhenCrossed(Card c) {
-		if (c != null) {
-			if (c.ressourceGivenWhenCrossed() != "") {
-				if (ressources.containsKey(c.ressourceGivenWhenCrossed())) {
-					ressources.replace(c.ressourceGivenWhenCrossed(), ressources.get(c.ressourceGivenWhenCrossed()) + 1);
-				} else {
-					ressources.put(c.ressourceGivenWhenCrossed(), 1);
-				}
-			}
-		}
-	}
-	
-	public void giveRessource(Card c) {
-		if (c != null) {
-			if (c.ressourceGiven() != "") {
-				if (ressources.containsKey(c.ressourceGiven())) {
-					ressources.replace(c.ressourceGiven(), ressources.get(c.ressourceGiven()) + 1);
-				} else {
-					ressources.put(c.ressourceGiven(), 1);
-				}
-			}	
 		}
 	}
 	
@@ -152,6 +123,10 @@ public class Player extends AbstractEntity {
 			if (!(inventory.armor() == null)) {
 				for (String stat : inventory().armor().stats().keySet()) {	
 					boostStat(stat, -(inventory.armor().stats().get(stat))); // We get rid of the stats of the item that was here before
+					
+					if (getStat(stat) < 0) {
+						basicStats().put(stat, 0.0);
+					}
 				}
 			}	
 			inventory.setArmor(item);
@@ -163,6 +138,9 @@ public class Player extends AbstractEntity {
 						damage.boost(-(inventory.weapon().stats().get("damage"))); // We get rid of the stats of the item that was here 
 					} else {
 						boostStat(stat, -(inventory.weapon().stats().get(stat))); // We get rid of the stats of the item that was here before
+						if (getStat(stat) < 0) {
+							basicStats().put(stat, 0.0);
+						}
 					}
 				}
 			}
@@ -172,9 +150,25 @@ public class Player extends AbstractEntity {
 			if (!(inventory.shield() == null)) {
 				for (String stat : inventory().shield().stats().keySet()) {	
 					boostStat(stat, -(inventory.shield().stats().get(stat))); // We get rid of the stats of the item that was here before
+					
+					if (getStat(stat) < 0) {
+						basicStats().put(stat, 0.0);
+					}
 				}
 			}
 			inventory.setShield(item);
+			
+		} else if (item.isRing()) {
+			if (!(inventory.ring() == null)) {
+				for (String stat : inventory().ring().stats().keySet()) {	
+					boostStat(stat, -(inventory.ring().stats().get(stat))); // We get rid of the stats of the item that was here before
+					
+					if (getStat(stat) < 0) {
+						basicStats().put(stat, 0.0);
+					}
+				}
+			}
+			inventory.setRing(item);
 		}
 		
 		for (String stat : item.stats().keySet()) {

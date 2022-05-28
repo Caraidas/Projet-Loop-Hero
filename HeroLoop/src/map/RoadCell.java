@@ -2,21 +2,30 @@ package map;
 
 import java.util.ArrayList;
 import java.util.Random;
+import collectable.Carte;
 import collectable.Card;
 import collectable.CardState;
 import entities.Monster;
 
 public class RoadCell extends Cell {
 	private final ArrayList<Monster> entitiesOn;
+	private String direction;
 	
-	public RoadCell(Card card, ArrayList<Monster> entitiesOn) {
+	public RoadCell(Card card, ArrayList<Monster> entitiesOn, String direction) {
 		super(card, CardState.ROAD);
 		this.entitiesOn = entitiesOn;
+		this.direction = direction;
 	}
 	
 	public RoadCell() {
 		super();
 		this.entitiesOn = new ArrayList<>();
+		this.direction = "0";
+	}
+	
+	@Override
+	public void addDirection(String s) {
+		direction = s;
 	}
 	
 	@Override
@@ -35,32 +44,29 @@ public class RoadCell extends Cell {
 			if (n < 5) { // 5% chance
 				spawn(Monster.createMonster("Slime", loopCount));
 			}
-		} else {
-			for (String m : this.card().spawnableMonster().keySet()) {
-				if (dayCount % this.card().spawnableMonster().get(m) == 0) {
-					spawn(Monster.createMonster(m, loopCount));
-				}
-			}
 		}
 	}
 	
-	@Override 
-	public String sprite() {
-		if (super.card() != null) {
-			return card().sprite();
-		}
-		
-		return "horizontal-road.png"; // will be replaced by a method that determinates the direction of the road
-	}
 	
+	@Override
 	public void clear() {
 		entitiesOn.clear();
+		this.addCard(null);
+	}
+	
+	@Override
+	public boolean hasNoMonsters() {
+		return entitiesOn.isEmpty();
 	}
 	
 	// Getters :
 	
 	public ArrayList<Monster> getEntities() {
 		return entitiesOn;
+	}
+	
+	public String direction() {
+		return direction;
 	}
 	
 }

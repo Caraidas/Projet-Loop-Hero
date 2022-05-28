@@ -1,6 +1,7 @@
 package inventory;
 
 import java.util.ArrayList;
+
 import collectable.Card;
 
 public class Deck {

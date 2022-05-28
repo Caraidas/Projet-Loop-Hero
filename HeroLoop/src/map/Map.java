@@ -71,8 +71,35 @@ public class Map {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
 				map[i][j].addCardState(determinateCardState(i, j));
+				map[i][j].addDirection(determinateDirection(i, j));
 			}	
 		}
+		
+	}
+	
+	private String determinateDirection(int i, int j) {
+		if (!(map[i][j] instanceof RoadCell)) {
+			return "";
+		} 
+		
+		String s = "";
+
+		if (map[i][j + 1] instanceof RoadCell) {
+			s += "Right";
+		} 
+		
+		if (map[i][j - 1] instanceof RoadCell) {
+			s += "Left";
+		} 
+		
+		if (map[i - 1][j] instanceof RoadCell) {
+			s += "Top";
+		}
+		
+		if (map[i + 1][j] instanceof RoadCell) {
+			s += "Bottom";
+		}
+		return s;
 		
 	}
 	
