@@ -87,7 +87,15 @@ public class Main {
 			}
 		} else {
 			
+			if (view.clickedOnRessources(location)) {
+				gameData.updateRessourceState();
+				
+			} else {
+				gameData.updateRessourceState(false);
+			}
+			
 			if (view.clickedOnCards(location)) {
+				
 				gameData.selectCard((view.toCardPos(location)));
 				timeData.stop(); // planification mode
 				

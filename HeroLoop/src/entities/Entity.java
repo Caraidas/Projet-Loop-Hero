@@ -32,6 +32,9 @@ public interface Entity {
 	
 	default void takeDamage(int damage) {
 		basicStats().replace("hp", basicStats().get("hp") - damage);
+		if (damage != 0) {
+			this.setBattleState("Hurt");
+		}
 	}
 	
 	default void heal(double percentage) { 
@@ -61,6 +64,10 @@ public interface Entity {
 	default void addStat(String name, double value) {
 		basicStats().put(name, value);
 	}
+	
+	String battleState();
+	
+	void setBattleState(String s);
 	
 	default void boostStat(String stat, Double factor) {
 		if (factor < 1 && factor > -1) {

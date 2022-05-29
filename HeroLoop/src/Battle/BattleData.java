@@ -68,11 +68,14 @@ public class BattleData { // this class takes care of all the battle related ope
 						hits++;
 						view.drawScreen();
 					}
+					m.setBattleState("Idle");
 				}
+				
 			}
 			
 			gameData.switchGameState();
 			timeData.addTime(hits * 1000);
+			player.setBattleState("Idle");
 		}
 	}
 	
@@ -92,6 +95,7 @@ public class BattleData { // this class takes care of all the battle related ope
 					int lvl = gameData.getLoopCount();
 					double damage = base * lvl * 0.95 * (1 + (lvl - 1) * 0.02);
 					victim.takeDamage((int)(damage - victim.basicStats().get("def")));
+					attacker.setBattleState("Attack");
 				}
 				else {
 					dealDamage(attacker, victim, c);
@@ -100,6 +104,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			}
 			else {
 				System.out.println("ouaaaah la veski du turfu");
+				victim.setBattleState("Evade");
 			}
 			
 		} else if (veski > victim.getEvade()){ // si le monstre esquive pas 
@@ -111,10 +116,12 @@ public class BattleData { // this class takes care of all the battle related ope
 			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Player)attacker).damage());
 			System.out.println(attacker + " lifeSteal : " + attacker.getLifeSteal());
 			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
+			attacker.setBattleState("Attack");
 			return;
 			
 		} else {
 			System.out.println("ouaaaah la veski du turfu");
+			victim.setBattleState("Evade");
 		}
 		
 	}

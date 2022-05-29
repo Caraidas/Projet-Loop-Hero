@@ -20,6 +20,7 @@ public class GameData { // Takes care of all the data in the game that should be
 	
 	private boolean inBattle = false; 
 	private boolean inGame = false;
+	private boolean inRessourceMenu = false;
 	
 	public GameData(Map map, TimeData timeData) {
 		this.map = map;
@@ -109,6 +110,14 @@ public class GameData { // Takes care of all the data in the game that should be
 		inGame = true;
 	}
 	
+	public void updateRessourceState() {
+		inRessourceMenu = !inRessourceMenu;
+	}
+	
+	public void updateRessourceState(boolean b) {
+		inRessourceMenu = false;
+	}
+	
 	// Getters :
 	
 	public boolean inBattle() {
@@ -133,6 +142,10 @@ public class GameData { // Takes care of all the data in the game that should be
 	
 	public boolean inGame() {
 		return inGame;
+	}
+	
+	public boolean inRessourceMenu() {
+		return inRessourceMenu;
 	}
 
 }

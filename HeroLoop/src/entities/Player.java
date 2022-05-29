@@ -24,7 +24,7 @@ public class Player extends AbstractEntity {
 
 	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {
 		
-		super(basicStats, "Player.png");
+		super(basicStats, "Player");
 		this.position = position;
 		this.inventory = inventory;
 		this.deck = deck;

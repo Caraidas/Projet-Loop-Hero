@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import collectable.Card;
-import collectable.CardState;
 import collectable.Oblivion;
 import data.GameData;
 import data.GridPosition;
@@ -75,7 +74,7 @@ public class View {
 		ArrayList<Monster> monsters = ((RoadCell) (c)).getEntities();
 		for (int index = 0; index < monsters.size(); index++) {
 			ImageConstructor monsterImage = new ImageConstructor(
-					Path.of("ressources/Entities-Sprite/outOfBattle/monsters/" + monsters.get(index).getSprite()),
+					Path.of("ressources/Entities-Sprite/outOfBattle/monsters/" + monsters.get(index).getSprite() + ".png"),
 					(int) (caseSize * 0.25), (int) (caseSize * 0.25));
 			if (index % 2 != 0) {
 				newI = (int) (i + (caseSize * 0.75)) - 5;
@@ -180,8 +179,8 @@ public class View {
 		String playerDamage = "damage : " + player.damageString();
 		graphics.drawString(playerDamage, (21 * caseSize) + 50, (int) (height - 215));
 
-		graphics.setFont(new Font("TimesRoman", Font.BOLD, 45));
-		graphics.drawString("Statistiques", (21 * caseSize) + 30, (int) (height - 270));
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 35));
+		graphics.drawString("- Statistiques -", (21 * caseSize) + 30, (int) (height - 270));
 	}
 
 	public void drawItemStats(Graphics2D graphics) {
@@ -371,12 +370,7 @@ public class View {
 				caseSize);
 		if (gameData.selectedCard() != -1) {
 			for (int i = 0; i < gameData.map().lines(); i++) {
-				for (int j = 0; j < gameData.map().columns(); j++) {
-					/*if (player.deck().getCard(gameData.selectedCard()).contains(gameData.map().getCell(i, j).acceptableCardState())
-							&& gameData.map().getCell(i, j).card() == null) {
-						drawImage(graphics, j * caseSize, i * caseSize + caseSize, selectable);
-					}*/
-					
+				for (int j = 0; j < gameData.map().columns(); j++) {		
 					if (player.deck().getCard(gameData.selectedCard()).acceptCardState(gameData.map().getCell(i, j))) {
 						drawImage(graphics, j * caseSize, i * caseSize + caseSize, selectable);
 					}
@@ -396,14 +390,14 @@ public class View {
 		int i = 0;
 		for (Monster m : c.getEntities()) {
 			ImageConstructor mnstrImage = new ImageConstructor(
-					Path.of("ressources/Entities-Sprite/InBattle/monsters/" + m.getSprite()), -0.15, -0.15);
+					Path.of("ressources/Entities-Sprite/InBattle/monsters/" + m.getSprite() +  m.battleState() + ".png"), -0.15, -0.15);
 			drawImageInBattle(graphics, i, mnstrImage);
 			drawMonsterStat(graphics, i, m);
 			i++;
 		}
 
 		ImageConstructor pImage = new ImageConstructor(
-				Path.of("ressources/Entities-Sprite/InBattle/" + player.getSprite()), -0.2, -0.2);
+				Path.of("ressources/Entities-Sprite/InBattle/" + player.getSprite() + player.battleState() + ".png"), -0.2, -0.2);
 		drawImageInBattle(graphics, -1, pImage);
 	}
 
@@ -463,6 +457,28 @@ public class View {
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		graphics.drawString("Commencer", (int)(4 * (width / 10)) + 100, (int)(3 * (height /8) + 23));
 	}
+	
+	public void drawRessourceMenu(Graphics2D graphics) {
+		int HudWidth = (int) (width - (21 * caseSize));
+		ImageConstructor image = new ImageConstructor(Path.of("ressources/Utility-Sprite/WindowRessource.png"), HudWidth, height);
+		drawImage(graphics, (21 * caseSize), 0, image);
+		
+		int i = 1;
+		graphics.setColor(Color.white);
+		for (String s : player.ressources().keySet()) {
+			String line = "¤ " + s + " : " + player.ressources().get(s);
+			graphics.drawString(line, (21 * caseSize) + 45, 200 + (i * 25));
+			i++;
+		}
+		
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 35));
+		graphics.drawString("- Ressources -", (21 * caseSize) + 30, 180);
+	}
+	
+	public void drawRessourceButton(Graphics2D graphics) {
+		ImageConstructor image = new ImageConstructor(Path.of("ressources/Utility-Sprite/HUD/ButtonR.png"), -1, -1);
+		drawImage(graphics, (20 * caseSize), 15, image);
+	}
 
 	public void drawScreen() {
 
@@ -478,6 +494,11 @@ public class View {
 					drawHud(graphics);
 					drawPlayer(graphics);
 					drawDeck(graphics);
+					drawRessourceButton(graphics);
+					
+					if (gameData.inRessourceMenu()) {
+						drawRessourceMenu(graphics);
+					}
 				}
 			} else {
 				drawIntro(graphics);
@@ -521,6 +542,11 @@ public class View {
 	public boolean clickedOnPlay(Point2D.Float location) {
 		return (location.x >= ((4 * (width / 10)) + 53) && location.x < (6 * (width / 10) - 50)
 				&& location.y >= (3 * (height /8)) && location.y < (3 * (height /8) + 30));
+	}
+	
+	public boolean clickedOnRessources(Point2D.Float location) {
+		return (location.x >= (20 * caseSize) && location.x < (20 * caseSize) + 100
+				&& location.y >= 15 && location.y < 60);
 	}
 
 	public static double round(double value, int places) {
