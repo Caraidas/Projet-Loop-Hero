@@ -76,17 +76,24 @@ public class View {
 			ImageConstructor monsterImage = new ImageConstructor(
 					Path.of("ressources/Entities-Sprite/outOfBattle/monsters/" + monsters.get(index).getSprite() + ".png"),
 					(int) (caseSize * 0.25), (int) (caseSize * 0.25));
-			if (index % 2 != 0) {
-				newI = (int) (i + (caseSize * 0.75)) - 5;
+			
+			if (index == 4) {
+				newI = (int)(i + (caseSize * 0.5) - 5);
+				newJ = (int)(j + (caseSize * 0.5) - 5);
 			} else {
-				newI = i + 5;
-			}
+				if (index % 2 != 0) {
+					newI = (int) (i + (caseSize * 0.75)) - 5;
+				} else {
+					newI = i + 5;
+				}
 
-			if (index <= 1) {
-				newJ = j + 5;
-			} else {
-				newJ = (int) (j + (caseSize * 0.75)) - 5;
+				if (index <= 1) {
+					newJ = j + 5;
+				} else {
+					newJ = (int) (j + (caseSize * 0.75)) - 5;
+				}
 			}
+			
 			drawImage(graphics, newI, newJ, monsterImage);
 		}
 	}
@@ -120,8 +127,10 @@ public class View {
 	}
 
 	public void drawMap(Graphics2D graphics) {
+		graphics.setColor(Color.black);
 		for (int i = 0; i < gameData.map().lines(); i++) {
 			for (int j = 0; j < gameData.map().columns(); j++) {
+				graphics.fillRect(j * caseSize, i * caseSize + caseSize, caseSize, caseSize);
 				drawCell(graphics, j * caseSize, i * caseSize + caseSize, gameData.map().getCell(i, j));
 			}
 		}
@@ -403,20 +412,28 @@ public class View {
 
 	public void drawMonsterStat(Graphics2D graphics, int i, Monster m) {
 		int index = 1;
+		int x, y;
+		
+		if (i != 4) {
+			x = (int) (3 * (width / 6)) + 3 * caseSize;
+			y = (int) (i * 2 * caseSize + (height / 6) + caseSize) + caseSize;
+		} else {
+			x = (int) (3 * (width / 7));
+			y = (int)(caseSize + (height / 6) + caseSize);
+		}
+		
 		for (String stat : m.basicStats().keySet()) {
 			if (stat != "hpMax") {
 				if (stat == "hp") {
 					String s = stat + " : " + m.basicStats().get(stat) + "/" + m.getHpMax();
 					graphics.setColor(Color.red);
 					graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
-					graphics.drawString(s, (int) (3 * (width / 6)) + 3 * caseSize,
-							(int) (i * 2 * caseSize + (height / 6) + caseSize) + caseSize);
+					graphics.drawString(s, x, y);
 				} else {
 					String s = stat + " : " + m.basicStats().get(stat);
 					graphics.setColor(Color.white);
 					graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
-					graphics.drawString(s, (int) (3 * (width / 6)) + 3 * caseSize,
-							(int) (i * 2 * caseSize + (height / 6) + caseSize) + caseSize + index * 20);
+					graphics.drawString(s, x, y + index * 20);
 					index++;
 				}
 
@@ -425,18 +442,19 @@ public class View {
 		String s = "Strength : " + m.strength();
 		graphics.setColor(Color.white);
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
-		graphics.drawString(s, (int) (3 * (width / 6)) + 3 * caseSize,
-				(int) (i * 2 * caseSize + (height / 6) + caseSize) + caseSize + index * 20);
-
+		graphics.drawString(s, x, y + index * 20);
 	}
 
 	public void drawImageInBattle(Graphics2D graphics, int i, ImageConstructor imgConstructor) {
-		if (i != -1) {
+		if (i == -1) {
+			graphics.drawImage(imgConstructor.img(), imgConstructor.scaling(), (int) (1.5 * (width / 6)),
+					(int) (height / 2));
+		} else if (i < 4) {
 			graphics.drawImage(imgConstructor.img(), imgConstructor.scaling(), (int) (3 * (width / 6)),
 					(int) (i * 2 * caseSize + (height / 6) + caseSize));
 		} else {
-			graphics.drawImage(imgConstructor.img(), imgConstructor.scaling(), (int) (1.5 * (width / 6)),
-					(int) (height / 2));
+			graphics.drawImage(imgConstructor.img(), imgConstructor.scaling(), (int)(2 * (width / 6)),
+					(int)((height / 6) + caseSize));
 		}
 	}
 	

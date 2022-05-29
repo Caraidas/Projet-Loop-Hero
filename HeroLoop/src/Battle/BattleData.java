@@ -38,7 +38,6 @@ public class BattleData { // this class takes care of all the battle related ope
 			Monster target = ((RoadCell)c).getEntities().get(n);
 			
 			while (!(player.isDead()) && size != 0) {
-				
 				waitSeconds(1);
 				dealDamage(target, player, c);
 				hits++;
@@ -86,9 +85,9 @@ public class BattleData { // this class takes care of all the battle related ope
 		int gounter = rand.nextInt(100);
 		if (attacker instanceof Monster) {
 			
-			if (veski > victim.getEvade()) { // si le player esquive pas 
+			if (veski > victim.getEvade()) { // si le player esquive pas
 				
-				if (gounter > ((Player)victim).counter()) { // si en gros le player il contre pas
+				if (gounter > ((Player)victim).counter()) { // si le player contre pas
 					
 					attacker.lifeSteal(attacker.getLifeSteal(), (int)((Monster)attacker).strength());
 					base = ((Monster)attacker).strength();
@@ -99,12 +98,15 @@ public class BattleData { // this class takes care of all the battle related ope
 				}
 				else {
 					dealDamage(attacker, victim, c);
+					attacker.setBattleState("Attack");
+					victim.setBattleState("Counter");
 					System.out.println("oh le gounter mama");
 				}
 			}
 			else {
-				System.out.println("ouaaaah la veski du turfu");
+				System.out.println("ouaaaah la veski du turfu 1");
 				victim.setBattleState("Evade");
+				attacker.setBattleState("Attack");
 			}
 			
 		} else if (veski > victim.getEvade()){ // si le monstre esquive pas 
@@ -120,8 +122,9 @@ public class BattleData { // this class takes care of all the battle related ope
 			return;
 			
 		} else {
-			System.out.println("ouaaaah la veski du turfu");
+			System.out.println("ouaaaah la veski du turfu 2");
 			victim.setBattleState("Evade");
+			attacker.setBattleState("Attack");
 		}
 		
 	}

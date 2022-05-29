@@ -29,9 +29,13 @@ public class RoadCell extends Cell {
 	
 	@Override
 	public void spawn(Monster monster) {
-		if (entitiesOn.size() != 4) {
+		if (entitiesOn.size() <= 4) {
 			entitiesOn.add(monster);
-		}	
+		} 
+		
+		// else if (monster.getSprite().equals("Vampire")) {
+			//entitiesOn.add(monster);
+		//}
 	}
 	
 	public void spawn(int dayCount, int loopCount) {
