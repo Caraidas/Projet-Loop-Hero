@@ -1,37 +1,88 @@
 package collectable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import data.GameData;
 import data.GridPosition;
+import entities.Monster;
 import entities.Player;
 import map.Cell;
+import map.RoadCell;
 import time.TimeData;
 
 public class ZoneCard extends AbstractCard {
-	private final int position;
+	private GridPosition position;
 	private final ArrayList<GridPosition> zone;
+	private final HashMap<String, Double> boost;
+	private final ArrayList<String> spawnableMonsters;
+	private final boolean diagonal;
+	private final int dimension;
 
-	public ZoneCard(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, int position, 
-			ArrayList<GridPosition> zone) {
+	public ZoneCard(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, GridPosition position, 
+			ArrayList<GridPosition> zone, HashMap<String, Double> boost, ArrayList<String> spawnableMonsters, boolean diagonal, 
+			int dimension) {
 		super(cardStates, sprite, ressourcesGiven);
 		this.position = position;
 		this.zone = zone;
+		this.boost = boost;
+		this.spawnableMonsters = spawnableMonsters;
+		this.diagonal = diagonal;
+		this.dimension = dimension;
 	}
 
 	@Override
 	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
-		
-	}
-
-	@Override
-	public void giveRessource(Player player) {
-		// TODO Auto-generated method stub
+		for (GridPosition g : zone) {
+			Cell c = gameData.map().getCell(g);
+			if (c instanceof RoadCell) {
+				for (Monster m : ((RoadCell)c).getEntities()) {
+					for (String stat : boost.keySet()) {
+						if (m.getStat(stat) == 0) {
+							System.out.println(m + " : " + stat);
+							m.boostStat(stat, boost.get(stat));
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public void spawn(int i, int j, GameData gameData, int day) {
-		// TODO Auto-generated method stub	
+		for (GridPosition g : zone) {
+			if (gameData.map().getCell(g) instanceof RoadCell && ((RoadCell)gameData.map().getCell(g)).getEntities().size() != 0) {
+				System.out.println("Spawn");
+				for (String m : spawnableMonsters) {
+					gameData.map().getCell(g).spawn(Monster.createMonster(m, gameData.getLoopCount()));
+				}
+			}
+		}
+	}
+	
+	public void setPosition(GridPosition g) {
+		System.out.println(g);
+		position = g;
+		setZone();
+	}
+	
+	public void setZone() {
+		for (int i = -dimension; i <= dimension; i++) {
+			for (int j = -dimension; j <= dimension; j++) {
+				if (!(i == j || -i == j)) {
+					if (diagonal) {
+						zone.add(new GridPosition(position.line() + i, position.column() + j));
+					}
+				} else {
+					zone.add(new GridPosition(position.line() + i, position.column() + j));
+				}
+			}
+		}
+		System.out.println(zone);
+	}
+	
+	public HashMap<String, Double> boost() {
+		return boost;
 	}
 
 }

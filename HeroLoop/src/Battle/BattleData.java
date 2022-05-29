@@ -85,11 +85,11 @@ public class BattleData { // this class takes care of all the battle related ope
 		int gounter = rand.nextInt(100);
 		if (attacker instanceof Monster) {
 			
-			if (veski > victim.getEvade()) { // si le player esquive pas
+			if (veski > victim.getStat("evade")) { // si le player esquive pas
 				
 				if (gounter > ((Player)victim).counter()) { // si le player contre pas
 					
-					attacker.lifeSteal(attacker.getLifeSteal(), (int)((Monster)attacker).strength());
+					attacker.lifeSteal(attacker.getStat("vampirism"), (int)((Monster)attacker).strength());
 					base = ((Monster)attacker).strength();
 					int lvl = gameData.getLoopCount();
 					double damage = base * lvl * 0.95 * (1 + (lvl - 1) * 0.02);
@@ -109,14 +109,14 @@ public class BattleData { // this class takes care of all the battle related ope
 				attacker.setBattleState("Attack");
 			}
 			
-		} else if (veski > victim.getEvade()){ // si le monstre esquive pas 
+		} else if (veski > victim.getStat("evade")){ // si le monstre esquive pas 
 			
 			for (Monster m : ((RoadCell)c).getEntities()) {
 				m.takeDamage((int)attacker.getStat("damageToAll"));
 			}
 			
-			attacker.lifeSteal(attacker.getLifeSteal(), (int)((Player)attacker).damage());
-			System.out.println(attacker + " lifeSteal : " + attacker.getLifeSteal());
+			attacker.lifeSteal(attacker.getStat("vampirism"), (int)((Player)attacker).damage());
+			System.out.println(attacker + " lifeSteal : " + attacker.getStat("vampirism"));
 			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
 			attacker.setBattleState("Attack");
 			return;

@@ -90,6 +90,18 @@ public interface Card {
 			Oblivion oblivion = new Oblivion(c, "Oblivion.png", lst);
 			
 			return oblivion;
+			
+		case "VampireMansion":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			lst.add("Vampire");
+			c.add(CardState.ROADSIDE);
+			stats = new HashMap<>();
+			stats.put("vampirism", 10.0);
+			ZoneCard vampireMansion = new ZoneCard(c, "VampireMansion.png", lst, new GridPosition(0, 0), new ArrayList<>(), 
+					stats, lst, true, 1);
+			
+			return vampireMansion;
 
 		default:
 			return null;

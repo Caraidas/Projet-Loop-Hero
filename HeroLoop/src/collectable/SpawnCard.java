@@ -74,13 +74,8 @@ public class SpawnCard extends AbstractCard {
 	public void spawn(int i, int j, GameData gameData, int day) {	
 		Cell c = move(gameData, i, j);
 		
-		System.out.println("day = " + day);
-		System.out.println("spawnFrequency = "+ spawnFrequency);
-		System.out.println("birthday = " + birthday);
-		
 		if ((day - birthday) % spawnFrequency == 0) {
 			c.spawn(Monster.createMonster(spawnableMonster, gameData.getLoopCount()));
-			System.out.println("spawn : " + spawnableMonster);
 		}
 	}
 	

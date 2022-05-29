@@ -7,6 +7,7 @@ import Battle.BattleData;
 import collectable.Card;
 import collectable.Item;
 import collectable.SpawnCard;
+import collectable.ZoneCard;
 import data.GameData;
 import data.GridPosition;
 import data.Range;
@@ -101,12 +102,14 @@ public class Main {
 				
 			} else if (view.deposedCard(location)) {
 				Card deposedCard = player.selectCard(gameData.selectedCard());
+				GridPosition pos = view.toCellPos(location);
 				
 				if (deposedCard instanceof SpawnCard) {
 					((SpawnCard)deposedCard).setBirthday(timeData.dayCount());
+				} else if (deposedCard instanceof ZoneCard) {
+					((ZoneCard)deposedCard).setPosition(pos);
 				}
 				
-				GridPosition pos = view.toCellPos(location);
 				gameData.depositCard(deposedCard, pos);
 				
 				deposedCard.cardAction(player, gameData, timeData, pos);
@@ -141,7 +144,6 @@ public class Main {
 				gameData.updateLoopCount();
 				player.heal(0.2);
 			}
-			// player.giveRessourcesWhenCrossed(m.playerCell(player).card());
 		}
 		
 		battleData.startBattle(m.playerCell(player), player);
@@ -198,12 +200,13 @@ public class Main {
 		player.addCard(Card.createCard("SpiderCocoon"));
 		player.addCard(Card.createCard("SpiderCocoon"));
 		player.addCard(Card.createCard("Cemetery"));
+		player.addCard(Card.createCard("VampireMansion"));
 		
 		while (true) {
 			doTimeAction(context);
 			doPlayerAction(context);
 			doEventAction(context);
-			view.drawScreen();
+			view.drawScreen(); 
 			if (player.isDead()) {
 				context.exit(0);
 				break;

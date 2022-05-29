@@ -137,16 +137,21 @@ public class Item {
 			case "def":
 				stat = 4 * lvl;
 				
-				if (rarity == 1) {
-					stat = stat / 3;
+				if (type.equals("Ring")) {
+					stat = stat / 2;
 				} else {
-					if (i == 2) {
-						stat = 4 * (lvl - 2);
+					if (rarity == 1) {
+						stat = stat / 3;
 					} else {
-						stat = stat / 2;
+						if (i == 2) {
+							stat = 4 * (lvl - 2);
+						} else {
+							stat = stat / 2;
+						}
 					}
+					
 				}
-				
+			
 				if (stats.containsKey("def")) {
 					stats.replace("def", stats.get("def") + stat);
 				} else {
@@ -157,13 +162,17 @@ public class Item {
 			case "counter":
 				stat = 8 + (lvl - 1) * 4;
 				
-				if (rarity == 1) {
-					stat = stat / 3;
+				if (type.equals("Ring")) {
+					stat = stat / 2;
 				} else {
-					if (i == 2) {
-						stat = 8 + ((lvl - 2) - 1) * 4;
+					if (rarity == 1) {
+						stat = stat / 3;
 					} else {
-						stat = stat / 2;
+						if (i == 2) {
+							stat = 8 + ((lvl - 2) - 1) * 4;
+						} else {
+							stat = stat / 2;
+						}
 					}
 				}
 				
@@ -173,29 +182,37 @@ public class Item {
 			case "vampirism":
 				stat = 8 + (lvl - 1) * 1.5;
 				
-				if (rarity == 1) {
-					stat = stat / 3;
+				if (type.equals("Ring")) {
+					stat = stat / 2;
 				} else {
-					if (i == 2) {
-						stat = 8 + ((lvl - 2) - 1) * 1.5;
+					if (rarity == 1) {
+						stat = stat / 3;
 					} else {
-						stat = stat / 2;
+						if (i == 2) {
+							stat = 8 + ((lvl - 2) - 1) * 1.5;
+						} else {
+							stat = stat / 2;
+						}
 					}
 				}
-				
+					
 				stats.put("vampirism", stat);
 				break;
 				
 			case "regen":
 				stat = lvl * 0.6;
 				
-				if (rarity == 1) {
-					stat = stat / 3;
+				if (type.equals("Ring")) {
+					stat = stat / 2;
 				} else {
-					if (i == 2) {
-						stat = (lvl - 2) * 0.6;
+					if (rarity == 1) {
+						stat = stat / 3;
 					} else {
-						stat = stat / 2;
+						if (i == 2) {
+							stat = (lvl - 2) * 0.6;
+						} else {
+							stat = stat / 2;
+						}
 					}
 				}
 				
@@ -205,17 +222,21 @@ public class Item {
 			case "damageToAll":
 				stat = lvl;
 				
-				if (rarity == 1) {
-					stat = stat / 3;
-					if (stat < 1) 
-						stat = 1;
+				if (type.equals("Ring")) {
+					stat = stat / 2;
 				} else {
-					if (i == 2) 
-						stat = lvl - 2;
-					else {
-						stat = stat / 2;
+					if (rarity == 1) {
+						stat = stat / 3;
 						if (stat < 1) 
 							stat = 1;
+					} else {
+						if (i == 2) 
+							stat = lvl - 2;
+						else {
+							stat = stat / 2;
+							if (stat < 1) 
+								stat = 1;
+						}
 					}
 				}
 				
@@ -225,15 +246,19 @@ public class Item {
 			case "evade":
 				stat = 8 + (lvl - 1) * 2;
 				
-				if (rarity == 1) {
-					stat = stat / 3;
-					if (stat < 1)
-						stat = 1;
+				if (type.equals("Ring")) {
+					stat = stat / 2;
 				} else {
-					if (i == 2) {
-						stat = 8 + ((lvl - 2) - 1) * 2;
+					if (rarity == 1) {
+						stat = stat / 3;
+						if (stat < 1)
+							stat = 1;
 					} else {
-						stat = stat / 2;
+						if (i == 2) {
+							stat = 8 + ((lvl - 2) - 1) * 2;
+						} else {
+							stat = stat / 2;
+						}
 					}
 				}
 				
@@ -243,15 +268,19 @@ public class Item {
 			case "pureDamage":
 				stat = 3 * lvl;
 				
-				if (rarity == 1) {
-					stat = stat / 3;
-					if (stat < 1)
-						stat = 1;
+				if (type.equals("Ring")) {
+					stat = stat / 2;
 				} else {
-					if (i == 2) {
-						stat = 3 * (lvl - 2);
+					if (rarity == 1) {
+						stat = stat / 3;
+						if (stat < 1)
+							stat = 1;
 					} else {
-						stat = stat / 2;
+						if (i == 2) {
+							stat = 3 * (lvl - 2);
+						} else {
+							stat = stat / 2;
+						}
 					}
 				}
 				

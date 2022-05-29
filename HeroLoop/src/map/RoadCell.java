@@ -1,9 +1,12 @@
 package map;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import collectable.Card;
 import collectable.CardState;
+import collectable.ZoneCard;
+import entities.Entity;
 import entities.Monster;
 
 public class RoadCell extends Cell {
@@ -28,14 +31,16 @@ public class RoadCell extends Cell {
 	}
 	
 	@Override
-	public void spawn(Monster monster) {
-		if (entitiesOn.size() <= 4) {
-			entitiesOn.add(monster);
-		} 
-		
-		// else if (monster.getSprite().equals("Vampire")) {
-			//entitiesOn.add(monster);
-		//}
+	public void spawn(Monster monster) { // vampire bug a regler
+		if (monster.getSprite().equals("Vampire")) {
+			if (entitiesOn.size() <= 4 && entitiesOn.contains(monster) == false) {
+				entitiesOn.add(monster);
+			}
+		} else {
+			if (entitiesOn.size() < 4) {
+				entitiesOn.add(monster);
+			}
+		}
 	}
 	
 	public void spawn(int dayCount, int loopCount) {
@@ -53,6 +58,14 @@ public class RoadCell extends Cell {
 	
 	@Override
 	public void clear() {
+		if (card() instanceof ZoneCard) {
+			HashMap<String, Double> boost = ((ZoneCard)card()).boost();
+			for (String stat : boost.keySet()) {
+				for (Entity m : getEntities()) {
+					m.boostStat(stat, -boost.get(stat));
+				}
+			}
+		}
 		entitiesOn.clear();
 		this.addCard(null);
 	}

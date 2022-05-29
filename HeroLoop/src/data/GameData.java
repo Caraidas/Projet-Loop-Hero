@@ -2,6 +2,7 @@ package data;
 
 import collectable.Card;
 import collectable.DailyBoost;
+import collectable.ZoneCard;
 import entities.Player;
 import java.util.ArrayList;
 import java.util.Random;
@@ -63,7 +64,7 @@ public class GameData { // Takes care of all the data in the game that should be
 	public void cardAction(Player player) {
 		for (int i = 0; i < map.lines(); i++) {
 			for (int j = 0; j < map.columns(); j++) {
-				if (map.getCell(i, j).card() instanceof DailyBoost) {
+				if (map.getCell(i, j).card() instanceof DailyBoost || map.getCell(i, j).card() instanceof ZoneCard) {
 					map.getCell(i, j).card().cardAction(player, this, timeData, new GridPosition(i, j));
 				}
 			}

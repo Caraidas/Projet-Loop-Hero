@@ -79,7 +79,6 @@ public class TimeData {
 	public boolean dayPassed() {
 		if (timeFraction() >= 0.90 && !stopped()) {
 			updateDayCount();
-			System.out.println("updated daycount from " + (dayCount - 1) + " to " + dayCount);
 			elapsedTotal = 0;
 			return true;
 		}
@@ -91,7 +90,6 @@ public class TimeData {
 	}
 	
 	public void addTime(int t) {
-		accelerateTime(1);
 		for (int i = 1; i <= t; i++) { 
 			elapsedTotal += 1;
 			dayPassed();
