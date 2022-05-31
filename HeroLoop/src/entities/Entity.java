@@ -18,6 +18,8 @@ public interface Entity {
 		basicStats().replace("hp", basicStats().get("hp") - damage);
 		if (damage != 0) {
 			this.setBattleState("Hurt");
+		} else {
+			this.setBattleState("Idle");
 		}
 	}
 	

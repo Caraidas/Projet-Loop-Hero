@@ -25,12 +25,11 @@ public class BattleData { // this class takes care of all the battle related ope
 	}
 	
 	public void startBattle(Cell c, Player player) { 
-		
 		int hits = 0;
 		int size = ((RoadCell)c).getEntities().size();
 		Random rand = new Random();
 		if (size != 0) { // Checks if there are monster to fight
-			
+			timeData.accelerateTime(1);
 			gameData.switchGameState();
 			view.drawScreen();
 			

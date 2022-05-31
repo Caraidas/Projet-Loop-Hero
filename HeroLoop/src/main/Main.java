@@ -87,7 +87,6 @@ public class Main {
 				gameData.startGame();
 			}
 		} else {
-			
 			if (view.clickedOnRessources(location)) {
 				gameData.updateRessourceState();
 				
@@ -107,11 +106,10 @@ public class Main {
 				if (deposedCard instanceof SpawnCard) {
 					((SpawnCard)deposedCard).setBirthday(timeData.dayCount());
 				} else if (deposedCard instanceof ZoneCard) {
-					((ZoneCard)deposedCard).setPosition(pos);
+					((ZoneCard)deposedCard).setPosition(pos, gameData);
 				}
 				
 				gameData.depositCard(deposedCard, pos);
-				
 				deposedCard.cardAction(player, gameData, timeData, pos);
 				deposedCard.giveRessource(player);
 				
@@ -206,7 +204,7 @@ public class Main {
 			doTimeAction(context);
 			doPlayerAction(context);
 			doEventAction(context);
-			view.drawScreen(); 
+			view.drawScreen();
 			if (player.isDead()) {
 				context.exit(0);
 				break;

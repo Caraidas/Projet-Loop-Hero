@@ -60,21 +60,25 @@ public class ZoneCard extends AbstractCard {
 		}
 	}
 	
-	public void setPosition(GridPosition g) {
+	public void setPosition(GridPosition g, GameData gameData) {
 		System.out.println(g);
 		position = g;
-		setZone();
+		setZone(gameData);
 	}
 	
-	public void setZone() {
+	public void setZone(GameData gameData) {
 		for (int i = -dimension; i <= dimension; i++) {
 			for (int j = -dimension; j <= dimension; j++) {
-				if (!(i == j || -i == j)) {
+				if (i == j || -i == j) {
 					if (diagonal) {
-						zone.add(new GridPosition(position.line() + i, position.column() + j));
+						GridPosition pos = new GridPosition(position.line() + i, position.column() + j);
+						zone.add(pos);
+						gameData.map().getCell(pos).setZone(true);
 					}
 				} else {
-					zone.add(new GridPosition(position.line() + i, position.column() + j));
+					GridPosition pos = new GridPosition(position.line() + i, position.column() + j);
+					zone.add(pos);
+					gameData.map().getCell(pos).setZone(true);
 				}
 			}
 		}
@@ -83,6 +87,10 @@ public class ZoneCard extends AbstractCard {
 	
 	public HashMap<String, Double> boost() {
 		return boost;
+	}
+	
+	public ArrayList<GridPosition> zone() {
+		return zone;
 	}
 
 }

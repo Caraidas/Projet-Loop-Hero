@@ -2,12 +2,15 @@ package map;
 
 import collectable.Card;
 import collectable.CardState;
+import collectable.ZoneCard;
+import data.GridPosition;
 import entities.Monster;
 
 
 public class Cell {
 	private Card card;
 	private CardState acceptableCardState;
+	private boolean inZone = false; // for graphics purposes
 	
 	public Cell(Card card, CardState acceptableCardState) {
 		this.card = card;
@@ -32,6 +35,7 @@ public class Cell {
 	
 	public void clear() { // clears a cell from the building on it
 		addCard(null);
+		setZone(false);
 	}
 	
 	public void addCard(Card c) {
@@ -46,6 +50,10 @@ public class Cell {
 		return card == null;
 	}
 	
+	public void setZone(boolean b) {
+		inZone = b;
+	}
+	
 	// Getters :
 	
 	public Card card() {
@@ -58,6 +66,10 @@ public class Cell {
 	
 	public String sprite() {
 		return card.sprite();
+	}
+	
+	public boolean inZone() {
+		return inZone;
 	}
 	
 }

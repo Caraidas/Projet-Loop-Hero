@@ -33,7 +33,7 @@ public class RoadCell extends Cell {
 	@Override
 	public void spawn(Monster monster) { // vampire bug a regler
 		if (monster.getSprite().equals("Vampire")) {
-			if (entitiesOn.size() <= 4 && entitiesOn.contains(monster) == false) {
+			if (entitiesOn.size() <= 4 && containsMonster("Vampire") == false) {
 				entitiesOn.add(monster);
 			}
 		} else {
@@ -41,6 +41,15 @@ public class RoadCell extends Cell {
 				entitiesOn.add(monster);
 			}
 		}
+	}
+	
+	public boolean containsMonster(String s) {
+		for (Monster m : entitiesOn) {
+			if (s.equals(m.getSprite())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void spawn(int dayCount, int loopCount) {
@@ -68,6 +77,7 @@ public class RoadCell extends Cell {
 		}
 		entitiesOn.clear();
 		this.addCard(null);
+		this.setZone(false);
 	}
 	
 	@Override

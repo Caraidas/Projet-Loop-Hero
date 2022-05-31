@@ -2,6 +2,7 @@ package data;
 
 import collectable.Card;
 import collectable.DailyBoost;
+import collectable.Oblivion;
 import collectable.ZoneCard;
 import entities.Player;
 import java.util.ArrayList;
@@ -93,8 +94,10 @@ public class GameData { // Takes care of all the data in the game that should be
 	}
 	
 	public void depositCard(Card c, GridPosition pos) { // deposits the card c on the cell of position pos
-		map.getCell(pos).addCard(c);	
-		drawPile.add(c);
+		if (!(c instanceof Oblivion)) {
+			map.getCell(pos).addCard(c);
+			drawPile.add(c);
+		}
 	}
 	
 	public void switchGameState() { 

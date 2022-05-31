@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import collectable.Card;
 import collectable.Oblivion;
+import collectable.ZoneCard;
 import data.GameData;
 import data.GridPosition;
 import entities.Monster;
@@ -123,6 +124,12 @@ public class View {
 
 			drawMonsters(graphics, i, j, c);
 
+		}
+		
+		if (c.inZone()) {
+			ImageConstructor image = new ImageConstructor(
+					Path.of("ressources/Map-Sprite/zone.png"), caseSize, caseSize);
+			drawImage(graphics, i, j, image);
 		}
 	}
 
@@ -425,12 +432,12 @@ public class View {
 		for (String stat : m.basicStats().keySet()) {
 			if (stat != "hpMax") {
 				if (stat == "hp") {
-					String s = stat + " : " + m.basicStats().get(stat) + "/" + m.getHpMax();
+					String s = stat + " : " + round(m.basicStats().get(stat), 2) + "/" + m.getHpMax();
 					graphics.setColor(Color.red);
 					graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
 					graphics.drawString(s, x, y);
 				} else {
-					String s = stat + " : " + m.basicStats().get(stat);
+					String s = stat + " : " + round(m.basicStats().get(stat), 2);
 					graphics.setColor(Color.white);
 					graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
 					graphics.drawString(s, x, y + index * 20);

@@ -22,7 +22,17 @@ public class Oblivion extends AbstractCard {
 
 	@Override
 	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
-		gameData.map().getCell(pos).clear();
+		Cell c = gameData.map().getCell(pos);
+		System.out.println(c.card());
+		if (c.card() instanceof ZoneCard) {
+			System.out.println("in if");
+			ZoneCard card = ((ZoneCard)c.card());
+			for (GridPosition g : card.zone()) {
+				System.out.println(g);
+				gameData.map().getCell(g).setZone(false);
+			}
+		}
+		c.clear();
 	}
 	
 	@Override 
