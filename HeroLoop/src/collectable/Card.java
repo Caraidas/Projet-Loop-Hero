@@ -102,6 +102,17 @@ public interface Card {
 					stats, lst, true, 1);
 			
 			return vampireMansion;
+			
+		case "Battlefield":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROADSIDE);
+			stats = new HashMap<>();
+			stats.put("undead", 50.0);
+			ZoneCard battleField = new ZoneCard(c, "Battlefield.png", lst, new GridPosition(0, 0), new ArrayList<>(), 
+					stats, lst, true, 1);
+			
+			return battleField;
 
 		default:
 			return null;

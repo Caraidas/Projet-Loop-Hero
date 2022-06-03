@@ -26,6 +26,7 @@ public class Monster extends AbstractEntity {
 			ratWolf.addStat("def", 0);
 			ratWolf.addStat("vampirism", 0);
 			ratWolf.addStat("evade", 10);
+			ratWolf.addStat("undead", 0);
 			return ratWolf;
 		}
 		case "Slime" ->{
@@ -38,6 +39,7 @@ public class Monster extends AbstractEntity {
 			slime.addStat("def", 0);
 			slime.addStat("vampirism", 0);
 			slime.addStat("evade", 0);
+			slime.addStat("undead", -1);
 			return slime;
 		}
 		case "Skeleton" ->{
@@ -49,6 +51,7 @@ public class Monster extends AbstractEntity {
 			skeleton.addStat("def", 0);
 			skeleton.addStat("vampirism", 0);
 			skeleton.addStat("evade", 5);
+			skeleton.addStat("undead", 0);
 			return skeleton;
 		}
 		case "Spider" ->{
@@ -60,6 +63,7 @@ public class Monster extends AbstractEntity {
 			spider.addStat("def", 0);
 			spider.addStat("vampirism", 0);
 			spider.addStat("evade", 10);
+			spider.addStat("undead", -1);
 			return spider;
 		}
 		case "Chest" ->{
@@ -72,6 +76,7 @@ public class Monster extends AbstractEntity {
 			chest.addStat("def", 0);
 			chest.addStat("vampirism", 0);
 			chest.addStat("evade", 0);
+			chest.addStat("undead", -1);
 			return chest;
 		}
 		case "Mimic" ->{
@@ -84,6 +89,7 @@ public class Monster extends AbstractEntity {
 			mimic.addStat("def", 0);
 			mimic.addStat("vampirism", 0);
 			mimic.addStat("evade", 5);
+			mimic.addStat("undead", -1);
 			return mimic;
 		}
 		case "ScorchWorm" ->{
@@ -95,6 +101,7 @@ public class Monster extends AbstractEntity {
 			scorchWorm.addStat("def", 0);
 			scorchWorm.addStat("vampirism", 0);
 			scorchWorm.addStat("evade", 10);
+			scorchWorm.addStat("undead", 0);
 			return scorchWorm;
 		}
 		case "Scarecrow" ->{
@@ -108,6 +115,7 @@ public class Monster extends AbstractEntity {
 			scarecrow.addStat("def", 0);
 			scarecrow.addStat("vampirism", 0);
 			scarecrow.addStat("evade", 10);
+			scarecrow.addStat("undead", -1);
 			return scarecrow;
 		}
 		case "Vampire" ->{
@@ -119,6 +127,7 @@ public class Monster extends AbstractEntity {
 			vampire.addStat("def", 0);
 			vampire.addStat("vampirism", 0);
 			vampire.addStat("evade", 10);
+			vampire.addStat("undead", 0);
 			return vampire;
 		}	
 		case "Ghost" ->{
@@ -130,7 +139,32 @@ public class Monster extends AbstractEntity {
 			ghost.addStat("def", 0);
 			ghost.addStat("vampirism", 0);
 			ghost.addStat("evade", 30);
+			ghost.addStat("undead", 0);
 			return ghost;
+		}
+		case "GhostOfAGhost" ->{
+			ArrayList<String> dropableRessources = new ArrayList<>();
+			dropableRessources.add("Living Fabric");
+			Monster ghostOfAGhost = new Monster(new HashMap<>(), dropableRessources, 4, 0, "GhostOfAGhost");
+			ghostOfAGhost.addStat("hp", (int)(6 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			ghostOfAGhost.addStat("hpMax", (int)(6 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			ghostOfAGhost.addStat("def", 0);
+			ghostOfAGhost.addStat("vampirism", 0);
+			ghostOfAGhost.addStat("evade", 20);
+			ghostOfAGhost.addStat("undead", 0);
+			return ghostOfAGhost;
+		}
+		case "PrimeMatter" ->{
+			ArrayList<String> dropableRessources = new ArrayList<>();
+			dropableRessources.add("Living Fabric");
+			Monster PrimeMatter = new Monster(new HashMap<>(), dropableRessources, 4.5, 0, "PrimeMatter");
+			PrimeMatter.addStat("hp", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			PrimeMatter.addStat("hpMax", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			PrimeMatter.addStat("def", 0);
+			PrimeMatter.addStat("vampirism", 0);
+			PrimeMatter.addStat("evade", 10);
+			PrimeMatter.addStat("undead", 0);
+			return PrimeMatter;
 		}
 		default ->
 			throw new IllegalArgumentException("Unexpected value: " + name);

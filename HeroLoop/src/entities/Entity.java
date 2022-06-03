@@ -2,6 +2,7 @@ package entities;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 public interface Entity {
 	
@@ -41,6 +42,14 @@ public interface Entity {
 		if (getStat("hp") > getStat("hpMax")) {
 			basicStats().replace("hp", getStat("hpMax"));
 		}
+	}
+	
+	default boolean revive() {
+		Random r = new Random();
+		int x = r.nextInt(100);
+		if (x < getStat("undead"))
+			return true;
+		return false;
 	}
 	
 	default boolean isDead() {

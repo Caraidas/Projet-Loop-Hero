@@ -199,6 +199,7 @@ public class Main {
 		player.addCard(Card.createCard("SpiderCocoon"));
 		player.addCard(Card.createCard("Cemetery"));
 		player.addCard(Card.createCard("VampireMansion"));
+		player.addCard(Card.createCard("Battlefield"));
 		
 		while (true) {
 			doTimeAction(context);

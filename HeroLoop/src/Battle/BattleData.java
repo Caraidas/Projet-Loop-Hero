@@ -46,6 +46,13 @@ public class BattleData { // this class takes care of all the battle related ope
 					
 					loot(target, player);
 					((RoadCell)c).getEntities().remove(n);
+					if (target.revive())
+						if (target.getSprite() == "Ghost")
+							((RoadCell)c).getEntities().add(Monster.createMonster("GhostOfAGhost", 1));
+						else if(target.getSprite() == "GhostOfAGhost")
+							((RoadCell)c).getEntities().add(Monster.createMonster("PrimeMatter", 1));
+						else
+							((RoadCell)c).getEntities().add(Monster.createMonster("RatWolf", 1)); //a remplacer par ghost (mais mnque de sprite)
 					view.drawScreen();					
 					size = ((RoadCell)c).getEntities().size();
 					

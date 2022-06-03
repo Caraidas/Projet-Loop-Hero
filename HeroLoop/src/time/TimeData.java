@@ -6,6 +6,7 @@ public class TimeData {
 	private long elapsedPlayer = 0; 	// elapsed time since last Player reset()
 	private long elapsedRegen = 0;
 	private int dayCount;
+	private int lastfactor = 1;
 	private boolean stopped;
 	public static double DAY_MILLISECONDS = 24_000;
 	public static int PLAYER_DELAY = 1500;
@@ -72,8 +73,11 @@ public class TimeData {
 	
 	public void accelerateTime(int factor) {
 		PLAYER_DELAY = 1500 / factor;
-		DAY_MILLISECONDS = 24_000 / factor;
+
+		DAY_MILLISECONDS = 24_000/factor;
 		REGEN_DELAY = 1000 / factor;
+		elapsedTotal = (elapsedTotal * lastfactor)/factor;
+		lastfactor = factor;
 	}
 	
 	public boolean dayPassed() {
