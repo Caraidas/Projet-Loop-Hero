@@ -47,8 +47,9 @@ public interface Entity {
 	default boolean revive() {
 		Random r = new Random();
 		int x = r.nextInt(100);
-		if (x < getStat("undead"))
+		if (x < getStat("undead")) {
 			return true;
+		}
 		return false;
 	}
 	

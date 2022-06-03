@@ -139,7 +139,7 @@ public class Monster extends AbstractEntity {
 			ghost.addStat("def", 0);
 			ghost.addStat("vampirism", 0);
 			ghost.addStat("evade", 30);
-			ghost.addStat("undead", 0);
+			ghost.addStat("undead", 50.0);
 			return ghost;
 		}
 		case "GhostOfAGhost" ->{
@@ -151,7 +151,7 @@ public class Monster extends AbstractEntity {
 			ghostOfAGhost.addStat("def", 0);
 			ghostOfAGhost.addStat("vampirism", 0);
 			ghostOfAGhost.addStat("evade", 20);
-			ghostOfAGhost.addStat("undead", 0);
+			ghostOfAGhost.addStat("undead", 50.0);
 			return ghostOfAGhost;
 		}
 		case "PrimeMatter" ->{
