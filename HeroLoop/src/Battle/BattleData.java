@@ -52,7 +52,7 @@ public class BattleData { // this class takes care of all the battle related ope
 						else if(target.getSprite() == "GhostOfAGhost")
 							((RoadCell)c).spawn(Monster.createMonster("PrimeMatter", 1));
 						else
-							((RoadCell)c).spawn(Monster.createMonster("Ghost", 1)); // a remplacer par ghost (mais mnque de sprite)
+							((RoadCell)c).spawn(Monster.createMonster("Ghost", 1));
 					view.drawScreen();					
 					size = ((RoadCell)c).getEntities().size();
 					
@@ -64,9 +64,10 @@ public class BattleData { // this class takes care of all the battle related ope
 					target = ((RoadCell)c).getEntities().get(n);	
 				}
 				
-				for (Monster m : ((RoadCell)c).getEntities()) {
+				for (int i = 0; i < ((RoadCell)c).getEntities().size(); i++) {
+					Monster m = ((RoadCell)c).getEntities().get(i);
 					if (m.isDead()) {
-						((RoadCell)c).getEntities().remove(n);
+						((RoadCell)c).getEntities().remove(i);
 					} else {
 						waitSeconds(1);
 						dealDamage(player, m, c);
