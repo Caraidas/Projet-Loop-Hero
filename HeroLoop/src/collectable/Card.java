@@ -128,7 +128,7 @@ public interface Card {
 			c = new ArrayList<>();
 			lst = new ArrayList<>();
 			c.add(CardState.ROAD);
-			WheatFields wheatFields = new WheatFields(c, "WheatFields.png", lst, 4, "ScareCrow", 0, 0);
+			WheatFields wheatFields = new WheatFields(c, "WheatFields.png", lst, 4, "Scarecrow", 0, 0);
 		
 			return wheatFields;
 
