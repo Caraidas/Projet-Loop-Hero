@@ -80,6 +80,8 @@ public class RoadCell extends Cell {
 		this.addToZone(-1);
 	}
 	
+	
+	
 	@Override
 	public boolean hasNoMonsters() {
 		return entitiesOn.isEmpty();

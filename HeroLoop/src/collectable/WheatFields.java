@@ -8,6 +8,7 @@ import map.Cell;
 import time.TimeData;
 
 public class WheatFields extends SpawnCard {
+	private GridPosition villagePos = new GridPosition(0, 0);
 
 	public WheatFields(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,
 			int spawnFrequency, String spawnableMonster, int birthday, int moveWhenSpawn) {
@@ -17,18 +18,39 @@ public class WheatFields extends SpawnCard {
 	
 	@Override
 	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
-		giveRessource(player);
+		// gameData.map().getCell(villagePos); .boost()
 	}
 	
-	/*@Override
-	public boolean acceptCardState(Cell cell, GameData gameData) {
+	@Override
+	public boolean acceptCardState(GridPosition pos, GameData gameData) {
+		System.out.println(pos);
+		Cell cell = gameData.map().getCell(pos);
 		if (cell.card() != null) {
 			return false;
+		}
+		
+		for (CardState c : super.cardStates()) {
+			if (c != cell.acceptableCardState()) {
+				return false;
+			}
 		}
 	
 		int lst[] = new int[2];
 		lst[0] = -1;
 		lst[1] = 1;
-	}*/
+		
+		for (int i : lst) {
+			if (gameData.map().isValid(pos.line() + i, pos.column()) && gameData.map().getCell(pos.line() + i, pos.column()).card() instanceof SpawnCard) {
+				villagePos = new GridPosition(pos.line() + i, pos.column());
+				return true;
+			}
+			
+			if (gameData.map().isValid(pos.line(), pos.column() + i) && gameData.map().getCell(pos.line(), pos.column() + i).card() instanceof SpawnCard) {
+				villagePos = new GridPosition(pos.line(), pos.column() + i);
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

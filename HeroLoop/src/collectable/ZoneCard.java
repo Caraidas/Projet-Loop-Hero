@@ -70,15 +70,15 @@ public class ZoneCard extends AbstractCard {
 		for (int i = -dimension; i <= dimension; i++) {
 			for (int j = -dimension; j <= dimension; j++) {
 				GridPosition pos = new GridPosition(position.line() + i, position.column() + j);
-				if (gameData.map().isValid(pos.column(), pos.line())) {
+				if (gameData.map().isValid(pos.line(), pos.column())) {
 					if ((i == j || -i == j)) {
 						if (diagonal) {
 							zone.add(pos);
-							gameData.map().getCell(pos).addToZone(1);
+							gameData.map().getCell(pos).setInZone(true);
 						}
 					} else {
 						zone.add(pos);
-						gameData.map().getCell(pos).addToZone(1);
+						gameData.map().getCell(pos).setInZone(true);
 					}
 				}
 			}
@@ -96,6 +96,18 @@ public class ZoneCard extends AbstractCard {
 	
 	public ArrayList<GridPosition> zone() {
 		return zone;
+	}
+	
+	public int dimension() {
+		return dimension;
+	}
+	
+	public boolean diagonal() {
+		return diagonal;
+	}
+	
+	public GridPosition position() {
+		return position;
 	}
 
 }

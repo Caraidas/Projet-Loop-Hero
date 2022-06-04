@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import data.GameData;
+import data.GridPosition;
 import entities.Player;
 import map.Cell;
 
@@ -41,7 +42,9 @@ public abstract class AbstractCard implements Card {
 	}
 	
 	@Override
-	public boolean acceptCardState(Cell cell, GameData gameData) {
+	public boolean acceptCardState(GridPosition pos, GameData gameData) {
+		System.out.println(pos);
+		Cell cell = gameData.map().getCell(pos);
 		if (cell.card() != null) {
 			return false;
 		}
@@ -52,5 +55,9 @@ public abstract class AbstractCard implements Card {
 			}
 		}
 		return true;
+	}
+	
+	public ArrayList<CardState> cardStates() {
+		return cardStates;
 	}
 }

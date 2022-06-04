@@ -35,6 +35,7 @@ public class GameData { // Takes care of all the data in the game that should be
 		this.addCardToDrawPile(Card.createCard("Oblivion"), 2);
 		this.addCardToDrawPile(Card.createCard("Ruins"), 3);
 		this.addCardToDrawPile(Card.createCard("SpiderCocoon"), 6);
+		this.addCardToDrawPile(Card.createCard("WheatFields"), 6);
 	}
 	
 	public void addCardToDrawPile(Card c, int n) {
@@ -58,7 +59,7 @@ public class GameData { // Takes care of all the data in the game that should be
 	public void spawn() {
 		for (int i = 0; i < map.loop().size(); i++) {
 			if (i != 0) {
-				((RoadCell)map.getCell(map.loop().get(i).column(), map.loop().get(i).line())).spawn(timeData.dayCount(), loopCount);
+				((RoadCell)map.getCell( map.loop().get(i).line(), map.loop().get(i).column())).spawn(timeData.dayCount(), loopCount);
 			}
 		}
 		

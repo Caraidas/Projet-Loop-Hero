@@ -31,10 +31,11 @@ public class Map {
 	}
 	
 	public Cell getCell(GridPosition g) {
-		return this.getCell(g.column(), g.line());
+		return this.getCell(g.line(), g.column());
 	}
 	
 	public GridPosition getPlayerPos(Player p) {
+		System.out.println(loop.get(p.position()));
 		return loop.get(p.position());
 	}
 	
@@ -69,7 +70,7 @@ public class Map {
 		}
 		
 		for (GridPosition pos : loop) {
-			map[pos.column()][pos.line()] = new RoadCell();
+			map[pos.line()][pos.column()] = new RoadCell();
 		}
 		
 		for (int i = 0; i < map.length; i++) {
@@ -115,23 +116,14 @@ public class Map {
 		
 		ArrayList<Integer> lst = new ArrayList<>();
 		lst.add(1);
-		lst.add(-1);
-		
-		if (i == 0 || j == 0 )  {
-			lst.remove(1);
-		}
-		
-		if (i == map.length - 1 || j == map[0].length - 1) {
-			lst.remove(0);
-		}
-		
+		lst.add(-1);		
 		
 		for (int k : lst) {
-			if (map[i][j + k] instanceof RoadCell) {
+			if (isValid(i, j + k) && map[i][j + k] instanceof RoadCell) {
 				return CardState.ROADSIDE; 
 			} 
 			
-			if (map[i + k][j] instanceof RoadCell) {
+			if (isValid(i + k, j) && map[i + k][j] instanceof RoadCell) {
 				return CardState.ROADSIDE;
 			}
 		}

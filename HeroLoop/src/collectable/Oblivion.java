@@ -36,7 +36,8 @@ public class Oblivion extends AbstractCard {
 	}
 	
 	@Override 
-	public boolean acceptCardState(Cell c, GameData gameData) {
+	public boolean acceptCardState(GridPosition pos, GameData gameData) {
+		Cell c = gameData.map().getCell(pos);
 		if (c.hasNoBuilding() && c.hasNoMonsters()) {
 			return false;
 		}

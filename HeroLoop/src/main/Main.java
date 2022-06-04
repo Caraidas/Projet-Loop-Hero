@@ -195,13 +195,13 @@ public class Main {
 		player.addCard(Card.createCard("Grove"));
 		player.addCard(Card.createCard("Oblivion"));
 		player.addCard(Card.createCard("Ruins"));
-		player.addCard(Card.createCard("Ruins"));
 		player.addCard(Card.createCard("SpiderCocoon"));
 		player.addCard(Card.createCard("SpiderCocoon"));
 		player.addCard(Card.createCard("Cemetery"));
 		player.addCard(Card.createCard("VampireMansion"));
 		player.addCard(Card.createCard("Battlefield"));
 		player.addCard(Card.createCard("Battlefield"));
+		player.addCard(Card.createCard("WheatFields"));
 		
 		while (true) {
 			doTimeAction(context);

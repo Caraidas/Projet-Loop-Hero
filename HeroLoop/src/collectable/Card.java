@@ -123,6 +123,14 @@ public interface Card {
 			SpawnCard bloodPath = new SpawnCard(c, "BloodPath.png", lst, 4, "BloodClot", 0, 0);
 			
 			return bloodPath;
+			
+		case "WheatFields":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			WheatFields wheatFields = new WheatFields(c, "WheatFields.png", lst, 4, "ScareCrow", 0, 0);
+		
+			return wheatFields;
 
 		default:
 			return null;
@@ -131,6 +139,6 @@ public interface Card {
 
 	void giveRessource(Player player);
 	
-	boolean acceptCardState(Cell c, GameData gameData);
+	boolean acceptCardState(GridPosition pos, GameData gameData);
 
 }

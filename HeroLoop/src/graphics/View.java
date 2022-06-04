@@ -63,8 +63,8 @@ public class View {
 		int column = gameData.map().loop().get(player.position()).column();
 		int line = gameData.map().loop().get(player.position()).line();
 		
-		drawImage(graphics, (int) ((line * caseSize) + (caseSize * 0.25)),
-				(int) ((column * caseSize) + (caseSize * 1.25)), playerImage);
+		drawImage(graphics, (int) ((column * caseSize) + (caseSize * 0.25)),
+				(int) ((line * caseSize) + (caseSize * 1.25)), playerImage);
 	}
 
 	private void drawImage(Graphics2D graphics, int i, int j, ImageConstructor imgConstructor) {
@@ -128,7 +128,7 @@ public class View {
 
 		}
 		
-		if (c.inZone() > 0) {
+		if (c.inZone()) {
 			ImageConstructor image = new ImageConstructor(
 					Path.of("ressources/Map-Sprite/zone.png"), caseSize, caseSize);
 			drawImage(graphics, i, j, image);
@@ -367,7 +367,7 @@ public class View {
 		}
 
 		Card card = player.selectedCard(gameData.selectedCard());
-		if (!(card.acceptCardState(gameData.map().getCell(toCellPos(location)), gameData))) {
+		if (!(card.acceptCardState(toCellPos(location), gameData))) {
 			return false;
 		}
 
@@ -389,9 +389,9 @@ public class View {
 		if (gameData.selectedCard() != -1) {
 			for (int i = 0; i < gameData.map().lines(); i++) {
 				for (int j = 0; j < gameData.map().columns(); j++) {		
-					if (player.deck().getCard(gameData.selectedCard()).acceptCardState(gameData.map().getCell(i, j), gameData)) {
+					if (player.deck().getCard(gameData.selectedCard()).acceptCardState(new GridPosition(i, j), gameData)) {
 						drawImage(graphics, j * caseSize, i * caseSize + caseSize, selectable);
-					}
+					} 
 				}
 			}
 		}
@@ -563,7 +563,7 @@ public class View {
 	}
 
 	public GridPosition toCellPos(Point2D.Float location) {
-		return new GridPosition((int) (location.x / caseSize), (int) (location.y / caseSize) - 1);
+		return new GridPosition((int) ((location.y / caseSize) - 1), (int) (location.x / caseSize));
 	}
 	  
 	public boolean clickedOnPlay(Point2D.Float location) {
