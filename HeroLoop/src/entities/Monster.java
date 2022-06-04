@@ -124,7 +124,7 @@ public class Monster extends AbstractEntity {
 		
 		case "Vampire" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
-			dropableRessources.add("Living Fabric");
+			dropableRessources.add("Pitiful Remains");
 			Monster vampire = new Monster(new HashMap<>(), dropableRessources, 5.8, 45, "Vampire");
 			vampire.addStat("hp", (int)(18 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			vampire.addStat("hpMax", (int)(18 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
@@ -137,7 +137,7 @@ public class Monster extends AbstractEntity {
 		
 		case "Ghost" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
-			dropableRessources.add("Living Fabric");
+			dropableRessources.add("Pitiful Remains");		
 			Monster ghost = new Monster(new HashMap<>(), dropableRessources, 3, 0, "Ghost");
 			ghost.addStat("hp", (int)(3 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			ghost.addStat("hpMax", (int)(3 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
@@ -150,7 +150,8 @@ public class Monster extends AbstractEntity {
 		
 		case "GhostOfAGhost" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
-			dropableRessources.add("Living Fabric");
+			dropableRessources.add("Pitiful Remains");
+			dropableRessources.add("Shapeless Mass");
 			Monster ghostOfAGhost = new Monster(new HashMap<>(), dropableRessources, 4, 0, "GhostOfAGhost");
 			ghostOfAGhost.addStat("hp", (int)(6 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			ghostOfAGhost.addStat("hpMax", (int)(6 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
@@ -163,7 +164,8 @@ public class Monster extends AbstractEntity {
 		
 		case "PrimeMatter" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
-			dropableRessources.add("Living Fabric");
+			dropableRessources.add("Pitful Remains");
+			dropableRessources.add("Time Shard");
 			Monster PrimeMatter = new Monster(new HashMap<>(), dropableRessources, 4.5, 0, "PrimeMatter");
 			PrimeMatter.addStat("hp", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			PrimeMatter.addStat("hpMax", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
@@ -176,14 +178,30 @@ public class Monster extends AbstractEntity {
 		
 		case "BloodClot" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
-			Monster bloodClot = new Monster(new HashMap<>(), dropableRessources, 4.8, 80, "BloodClot");
-			bloodClot.addStat("hp", (int)(20 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
-			bloodClot.addStat("hpMax", (int)(20 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			dropableRessources.add("Pitiful Remains");
+			dropableRessources.add("Shapeless Mass");
+			Monster bloodClot = new Monster(new HashMap<>(), dropableRessources, 4.8, 64, "BloodClot");
+			bloodClot.addStat("hp", (int)(15 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			bloodClot.addStat("hpMax", (int)(15 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			bloodClot.addStat("def", 0);
 			bloodClot.addStat("vampirism", 0);
 			bloodClot.addStat("evade", 20);
 			bloodClot.addStat("undead", 0);
 			return bloodClot;
+		}
+		case "FieldOfBlades" ->{
+			ArrayList<String> dropableRessources = new ArrayList<>();
+			dropableRessources.add("Ration");
+			dropableRessources.add("Living Fabric");
+			dropableRessources.add("Shapeless Mass");
+			Monster fieldOfBlades = new Monster(new HashMap<>(), dropableRessources, 5, 80, "FieldOfBlades");
+			fieldOfBlades.addStat("hp", (int)(20 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			fieldOfBlades.addStat("hpMax", (int)(20 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			fieldOfBlades.addStat("def", 0);
+			fieldOfBlades.addStat("vampirism", 0);
+			fieldOfBlades.addStat("evade", 5);
+			fieldOfBlades.addStat("undead", 0);
+			return fieldOfBlades;
 		}
 		
 		default ->
