@@ -18,8 +18,10 @@ public class OverGrownField extends SpawnCard {
 	public void spawn(int i, int j, GameData gameData, int day) {	
 		Cell c = move(gameData, i, j);
 		
+		super.spawn(i, j, gameData, day);
+		
 		if (c instanceof RoadCell) {
-			((RoadCell)c).fill(Monster.createMonster(super.spawnableMonster(), gameData.getLoopCount()));
+			((RoadCell)c).fill(Monster.createMonster("FieldOfBlades", gameData.getLoopCount()));
 		}
 	}
 

@@ -64,6 +64,12 @@ public class RoadCell extends Cell {
 		}
 	}
 	
+	public void fill(Monster monster) {
+		for (int i = 0; i < 5 - entitiesOn.size(); i++) {
+			entitiesOn.add(monster);
+		}
+	}
+	
 	
 	@Override
 	public void clear() {

@@ -136,9 +136,9 @@ public interface Card {
 			c = new ArrayList<>();
 			lst = new ArrayList<>();
 			c.add(CardState.ROAD);
-			OverGrownField overGrownField = new OverGrownField(c, "WheatFields.png", lst, 4, "Scarecrow", 0, 0);
+			OverGrownField overGrownField = new OverGrownField(c, "OverGrownField.png", lst, 4, "Scarecrow", 0, 0);
 		
-			return wheatFields;
+			return overGrownField;
 			
 		case "Village":
 			c = new ArrayList<>();
