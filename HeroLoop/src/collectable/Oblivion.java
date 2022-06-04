@@ -29,14 +29,14 @@ public class Oblivion extends AbstractCard {
 			ZoneCard card = ((ZoneCard)c.card());
 			for (GridPosition g : card.zone()) {
 				System.out.println(g);
-				gameData.map().getCell(g).setZone(false);
+				gameData.map().getCell(g).addToZone(-1);
 			}
 		}
 		c.clear();
 	}
 	
 	@Override 
-	public boolean acceptCardState(Cell c) {
+	public boolean acceptCardState(Cell c, GameData gameData) {
 		if (c.hasNoBuilding() && c.hasNoMonsters()) {
 			return false;
 		}

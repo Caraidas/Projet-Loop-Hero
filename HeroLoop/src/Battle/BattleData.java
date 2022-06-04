@@ -48,11 +48,11 @@ public class BattleData { // this class takes care of all the battle related ope
 					((RoadCell)c).getEntities().remove(n);
 					if (target.revive())
 						if (target.getSprite() == "Ghost")
-							((RoadCell)c).spawn(Monster.createMonster("GhostOfAGhost", 1));
+							((RoadCell)c).spawn(Monster.createMonster("GhostOfAGhost", gameData.getLoopCount()));
 						else if(target.getSprite() == "GhostOfAGhost")
-							((RoadCell)c).spawn(Monster.createMonster("PrimeMatter", 1));
+							((RoadCell)c).spawn(Monster.createMonster("PrimeMatter", gameData.getLoopCount()));
 						else
-							((RoadCell)c).spawn(Monster.createMonster("Ghost", 1));
+							((RoadCell)c).spawn(Monster.createMonster("Ghost", gameData.getLoopCount()));
 					view.drawScreen();					
 					size = ((RoadCell)c).getEntities().size();
 					
@@ -76,7 +76,6 @@ public class BattleData { // this class takes care of all the battle related ope
 					}
 					m.setBattleState("Idle");
 				}
-				
 			}
 			
 			gameData.switchGameState();

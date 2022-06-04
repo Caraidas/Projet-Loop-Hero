@@ -1,5 +1,6 @@
 package data;
 
+import collectable.BattleField;
 import collectable.Card;
 import collectable.DailyBoost;
 import collectable.Oblivion;
@@ -44,6 +45,14 @@ public class GameData { // Takes care of all the data in the game that should be
 	
 	public void updateLoopCount() {
 		loopCount++;
+		
+		for (int i = 0; i < map.lines(); i++) {
+			for (int j = 0; j < map.columns(); j++) {
+				if (map.getCell(i, j).card() instanceof BattleField) {
+					map.getCell(i, j).card().spawn(i, j, this, timeData.dayCount());
+				}
+			}
+		}
 	}
 	
 	public void spawn() {
@@ -55,7 +64,7 @@ public class GameData { // Takes care of all the data in the game that should be
 		
 		for (int i = 0; i < map.lines(); i++) {
 			for (int j = 0; j < map.columns(); j++) {
-				if (map.getCell(i, j).card() != null) {
+				if (map.getCell(i, j).card() != null && (map.getCell(i, j).card() instanceof BattleField == false)) {
 					map.getCell(i, j).card().spawn(i, j, this, timeData.dayCount());
 				}
 			}
@@ -113,7 +122,7 @@ public class GameData { // Takes care of all the data in the game that should be
 	public void startGame() {
 		inGame = true;
 	}
-	
+	 
 	public void updateRessourceState() {
 		inRessourceMenu = !inRessourceMenu;
 	}

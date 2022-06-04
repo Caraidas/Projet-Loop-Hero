@@ -3,6 +3,7 @@ package collectable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import data.GameData;
 import entities.Player;
 import map.Cell;
 
@@ -40,7 +41,7 @@ public abstract class AbstractCard implements Card {
 	}
 	
 	@Override
-	public boolean acceptCardState(Cell cell) {
+	public boolean acceptCardState(Cell cell, GameData gameData) {
 		if (cell.card() != null) {
 			return false;
 		}

@@ -69,16 +69,17 @@ public class ZoneCard extends AbstractCard {
 	public void setZone(GameData gameData) {
 		for (int i = -dimension; i <= dimension; i++) {
 			for (int j = -dimension; j <= dimension; j++) {
-				if (i == j || -i == j) {
-					if (diagonal) {
-						GridPosition pos = new GridPosition(position.line() + i, position.column() + j);
+				GridPosition pos = new GridPosition(position.line() + i, position.column() + j);
+				if (gameData.map().isValid(pos.column(), pos.line())) {
+					if ((i == j || -i == j)) {
+						if (diagonal) {
+							zone.add(pos);
+							gameData.map().getCell(pos).addToZone(1);
+						}
+					} else {
 						zone.add(pos);
-						gameData.map().getCell(pos).setZone(true);
+						gameData.map().getCell(pos).addToZone(1);
 					}
-				} else {
-					GridPosition pos = new GridPosition(position.line() + i, position.column() + j);
-					zone.add(pos);
-					gameData.map().getCell(pos).setZone(true);
 				}
 			}
 		}
@@ -87,6 +88,10 @@ public class ZoneCard extends AbstractCard {
 	
 	public HashMap<String, Double> boost() {
 		return boost;
+	}
+	
+	public ArrayList<String> spawnableMonsters() {
+		return spawnableMonsters;
 	}
 	
 	public ArrayList<GridPosition> zone() {

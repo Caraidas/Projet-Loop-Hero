@@ -77,7 +77,7 @@ public class RoadCell extends Cell {
 		}
 		entitiesOn.clear();
 		this.addCard(null);
-		this.setZone(false);
+		this.addToZone(-1);
 	}
 	
 	@Override

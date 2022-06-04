@@ -134,7 +134,8 @@ public class Main {
 	}
 	
 	private void doPlayerAction(ApplicationContext context) {
-		if (timeData.elapsedPlayer() >= TimeData.PLAYER_DELAY) {
+		if (timeData.elapsedPlayer() >= TimeData.PLAYER_DELAY) { // rajouter dans time data playerMoved avec dedans
+			// le updatePosition et le player delay deveindrai un multiplicateur de la stat
 			player.updatePosition();
 			timeData.resetElapsedBob();
 			
@@ -199,6 +200,7 @@ public class Main {
 		player.addCard(Card.createCard("SpiderCocoon"));
 		player.addCard(Card.createCard("Cemetery"));
 		player.addCard(Card.createCard("VampireMansion"));
+		player.addCard(Card.createCard("Battlefield"));
 		player.addCard(Card.createCard("Battlefield"));
 		
 		while (true) {

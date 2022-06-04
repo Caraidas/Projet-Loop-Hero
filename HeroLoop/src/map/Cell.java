@@ -10,7 +10,7 @@ import entities.Monster;
 public class Cell {
 	private Card card;
 	private CardState acceptableCardState;
-	private boolean inZone = false; // for graphics purposes
+	private int inZone = 0; // for graphics purposes
 	
 	public Cell(Card card, CardState acceptableCardState) {
 		this.card = card;
@@ -35,7 +35,7 @@ public class Cell {
 	
 	public void clear() { // clears a cell from the building on it
 		addCard(null);
-		setZone(false);
+		addToZone(-1);
 	}
 	
 	public void addCard(Card c) {
@@ -50,8 +50,11 @@ public class Cell {
 		return card == null;
 	}
 	
-	public void setZone(boolean b) {
-		inZone = b;
+	public void addToZone(int i) {
+		inZone += i;
+		if (inZone < 0) {
+			inZone = 0;
+		}
 	}
 	
 	// Getters :
@@ -68,7 +71,7 @@ public class Cell {
 		return card.sprite();
 	}
 	
-	public boolean inZone() {
+	public int inZone() {
 		return inZone;
 	}
 	

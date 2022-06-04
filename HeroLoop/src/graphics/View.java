@@ -59,8 +59,10 @@ public class View {
 		ImageConstructor playerImage = new ImageConstructor(
 				Path.of("ressources/Entities-Sprite/outOfBattle/Player.png"), (int) (caseSize * 0.5),
 				(int) (caseSize * 0.5));
+		
 		int column = gameData.map().loop().get(player.position()).column();
 		int line = gameData.map().loop().get(player.position()).line();
+		
 		drawImage(graphics, (int) ((line * caseSize) + (caseSize * 0.25)),
 				(int) ((column * caseSize) + (caseSize * 1.25)), playerImage);
 	}
@@ -126,7 +128,7 @@ public class View {
 
 		}
 		
-		if (c.inZone()) {
+		if (c.inZone() > 0) {
 			ImageConstructor image = new ImageConstructor(
 					Path.of("ressources/Map-Sprite/zone.png"), caseSize, caseSize);
 			drawImage(graphics, i, j, image);
@@ -365,11 +367,11 @@ public class View {
 		}
 
 		Card card = player.selectedCard(gameData.selectedCard());
-		if (!(card.acceptCardState(gameData.map().getCell(toCellPos(location))))) {
+		if (!(card.acceptCardState(gameData.map().getCell(toCellPos(location)), gameData))) {
 			return false;
 		}
 
-		if (card instanceof Oblivion) {
+		if (card instanceof Oblivion) { 
 			return true;
 		}
 
@@ -387,7 +389,7 @@ public class View {
 		if (gameData.selectedCard() != -1) {
 			for (int i = 0; i < gameData.map().lines(); i++) {
 				for (int j = 0; j < gameData.map().columns(); j++) {		
-					if (player.deck().getCard(gameData.selectedCard()).acceptCardState(gameData.map().getCell(i, j))) {
+					if (player.deck().getCard(gameData.selectedCard()).acceptCardState(gameData.map().getCell(i, j), gameData)) {
 						drawImage(graphics, j * caseSize, i * caseSize + caseSize, selectable);
 					}
 				}
@@ -423,14 +425,14 @@ public class View {
 		
 		if (i != 4) {
 			x = (int) (3 * (width / 6)) + 3 * caseSize;
-			y = (int) (i * 2 * caseSize + (height / 6) + caseSize) + caseSize;
+			y = (int) (i * 2 * caseSize + (height / 6) + caseSize);
 		} else {
 			x = (int) (3 * (width / 7));
-			y = (int)(caseSize + (height / 6) + caseSize);
+			y = (int)(caseSize + (height / 6));
 		}
 		
 		for (String stat : m.basicStats().keySet()) {
-			if (stat != "hpMax") {
+			if (stat != "hpMax" && stat != "undead") {
 				if (stat == "hp") {
 					String s = stat + " : " + round(m.basicStats().get(stat), 2) + "/" + m.getHpMax();
 					graphics.setColor(Color.red);

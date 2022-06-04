@@ -106,13 +106,23 @@ public interface Card {
 		case "Battlefield":
 			c = new ArrayList<>();
 			lst = new ArrayList<>();
+			lst.add("Chest");
+			lst.add("Mimic");
 			c.add(CardState.ROADSIDE);
 			stats = new HashMap<>();
 			stats.put("undead", 50.0);
-			ZoneCard battleField = new ZoneCard(c, "Battlefield.png", lst, new GridPosition(0, 0), new ArrayList<>(), 
-					stats, lst, true, 1);
+			BattleField battleField = new BattleField(c, "Battlefield.png", lst, new GridPosition(0, 0), new ArrayList<>(), 
+					stats, lst, true, 1, "BloodPath");
 			
 			return battleField;
+			
+		case "BloodPath":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			SpawnCard bloodPath = new SpawnCard(c, "BloodPath.png", lst, 4, "BloodClot", 0, 0);
+			
+			return bloodPath;
 
 		default:
 			return null;
@@ -121,6 +131,6 @@ public interface Card {
 
 	void giveRessource(Player player);
 	
-	boolean acceptCardState(Cell c);
+	boolean acceptCardState(Cell c, GameData gameData);
 
 }

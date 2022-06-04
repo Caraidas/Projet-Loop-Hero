@@ -88,19 +88,19 @@ public class Map {
 		
 		String s = "";
 
-		if (map[i][j + 1] instanceof RoadCell) {
+		if (isValid(i, j + 1) && map[i][j + 1] instanceof RoadCell) {
 			s += "Right";
 		} 
 		
-		if (map[i][j - 1] instanceof RoadCell) {
+		if (isValid(i, j - 1) && map[i][j - 1] instanceof RoadCell) {
 			s += "Left";
 		} 
 		
-		if (map[i - 1][j] instanceof RoadCell) {
+		if (isValid(i - 1, j) && map[i - 1][j] instanceof RoadCell) {
 			s += "Top";
 		}
 		
-		if (map[i + 1][j] instanceof RoadCell) {
+		if (isValid(i + 1, j) && map[i + 1][j] instanceof RoadCell) {
 			s += "Bottom";
 		}
 		return s;

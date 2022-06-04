@@ -79,6 +79,7 @@ public class Monster extends AbstractEntity {
 			chest.addStat("undead", -1);
 			return chest;
 		}
+		
 		case "Mimic" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Stable Branches");		
@@ -92,6 +93,7 @@ public class Monster extends AbstractEntity {
 			mimic.addStat("undead", -1);
 			return mimic;
 		}
+		
 		case "ScorchWorm" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
@@ -104,6 +106,7 @@ public class Monster extends AbstractEntity {
 			scorchWorm.addStat("undead", 0);
 			return scorchWorm;
 		}
+		
 		case "Scarecrow" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Stable branches");
@@ -118,6 +121,7 @@ public class Monster extends AbstractEntity {
 			scarecrow.addStat("undead", -1);
 			return scarecrow;
 		}
+		
 		case "Vampire" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
@@ -130,6 +134,7 @@ public class Monster extends AbstractEntity {
 			vampire.addStat("undead", 0);
 			return vampire;
 		}	
+		
 		case "Ghost" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
@@ -142,6 +147,7 @@ public class Monster extends AbstractEntity {
 			ghost.addStat("undead", 50.0);
 			return ghost;
 		}
+		
 		case "GhostOfAGhost" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
@@ -154,6 +160,7 @@ public class Monster extends AbstractEntity {
 			ghostOfAGhost.addStat("undead", 50.0);
 			return ghostOfAGhost;
 		}
+		
 		case "PrimeMatter" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
@@ -166,6 +173,19 @@ public class Monster extends AbstractEntity {
 			PrimeMatter.addStat("undead", 0);
 			return PrimeMatter;
 		}
+		
+		case "BloodClot" ->{
+			ArrayList<String> dropableRessources = new ArrayList<>();
+			Monster bloodClot = new Monster(new HashMap<>(), dropableRessources, 4.8, 80, "BloodClot");
+			bloodClot.addStat("hp", (int)(20 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			bloodClot.addStat("hpMax", (int)(20 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
+			bloodClot.addStat("def", 0);
+			bloodClot.addStat("vampirism", 0);
+			bloodClot.addStat("evade", 20);
+			bloodClot.addStat("undead", 0);
+			return bloodClot;
+		}
+		
 		default ->
 			throw new IllegalArgumentException("Unexpected value: " + name);
 		}
