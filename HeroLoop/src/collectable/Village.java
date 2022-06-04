@@ -41,6 +41,24 @@ public class Village extends EnteringBoost {
 		}
 	}
 	
+	public void createFields(GameData gameData, GridPosition pos) {
+		int lst[] = new int[2];
+		lst[0] = -1;
+		lst[1] = 1;
+		
+		for (int i : lst) {
+			if (gameData.map().isValid(pos.line() + i, pos.column()) && gameData.map().getCell(pos.line() + i, pos.column()).card() 
+					instanceof OverGrownField) {
+				gameData.map().getCell(pos.line() + i, pos.column()).addCard(Card.createCard("WheatFields"));
+			}
+			
+			if (gameData.map().isValid(pos.line(), pos.column() + i) && gameData.map().getCell(pos.line(), pos.column() + i).card() 
+					instanceof OverGrownField) {
+				gameData.map().getCell(pos.line(), pos.column() + i).addCard(Card.createCard("WheatFields"));
+			}
+		}
+	}
+	
 	public void addToHealFactor(int i) {
 		healFactor += i;
 	}

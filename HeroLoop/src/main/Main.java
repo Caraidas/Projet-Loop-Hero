@@ -110,6 +110,8 @@ public class Main {
 					((SpawnCard)deposedCard).setBirthday(timeData.dayCount());
 				} else if (deposedCard instanceof ZoneCard) {
 					((ZoneCard)deposedCard).setPosition(pos, gameData);
+				} else if (deposedCard instanceof Village) {
+					((Village)deposedCard).createFields(gameData, pos);
 				}
 				
 				gameData.depositCard(deposedCard, pos);
@@ -167,7 +169,7 @@ public class Main {
 	
 	public void doEventAction(ApplicationContext context) { 
 		
-		Event event = context.pollOrWaitEvent(200);
+		Event event = context.pollOrWaitEvent(50);
 		
 		if (event == null) { // no event
 			return;
@@ -217,7 +219,7 @@ public class Main {
 		player.addCard(Card.createCard("VampireMansion"));
 		player.addCard(Card.createCard("Battlefield"));
 		player.addCard(Card.createCard("WheatFields"));
-		player.addCard(Card.createCard("WheatFields"));
+		player.addCard(Card.createCard("Village"));
 		player.addCard(Card.createCard("Village"));
 		
 		while (true) {
