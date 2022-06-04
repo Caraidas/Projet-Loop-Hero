@@ -18,7 +18,11 @@ public class WheatFields extends SpawnCard {
 	
 	@Override
 	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
-		// gameData.map().getCell(villagePos); .boost()
+		((Village)gameData.map().getCell(villagePos).card()).addToHealFactor(1);
+		
+		if (gameData.map().getCell(villagePos).card() instanceof Village != false) {
+			gameData.map().getCell(pos).addCard(Card.createCard("OverGrownField"));
+		}
 	}
 	
 	@Override
@@ -40,12 +44,12 @@ public class WheatFields extends SpawnCard {
 		lst[1] = 1;
 		
 		for (int i : lst) {
-			if (gameData.map().isValid(pos.line() + i, pos.column()) && gameData.map().getCell(pos.line() + i, pos.column()).card() instanceof SpawnCard) {
+			if (gameData.map().isValid(pos.line() + i, pos.column()) && gameData.map().getCell(pos.line() + i, pos.column()).card() instanceof Village) {
 				villagePos = new GridPosition(pos.line() + i, pos.column());
 				return true;
 			}
 			
-			if (gameData.map().isValid(pos.line(), pos.column() + i) && gameData.map().getCell(pos.line(), pos.column() + i).card() instanceof SpawnCard) {
+			if (gameData.map().isValid(pos.line(), pos.column() + i) && gameData.map().getCell(pos.line(), pos.column() + i).card() instanceof Village) {
 				villagePos = new GridPosition(pos.line(), pos.column() + i);
 				return true;
 			}

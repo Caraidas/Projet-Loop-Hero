@@ -5,8 +5,10 @@ import java.awt.geom.Point2D;
 import java.util.HashMap;
 import Battle.BattleData;
 import collectable.Card;
+import collectable.EnteringBoost;
 import collectable.Item;
 import collectable.SpawnCard;
+import collectable.Village;
 import collectable.ZoneCard;
 import data.GameData;
 import data.GridPosition;
@@ -110,7 +112,10 @@ public class Main {
 				}
 				
 				gameData.depositCard(deposedCard, pos);
-				deposedCard.cardAction(player, gameData, timeData, pos);
+				
+				if (deposedCard instanceof EnteringBoost == false) {
+					deposedCard.cardAction(player, gameData, timeData, pos);
+				}			
 				deposedCard.giveRessource(player);
 				
 				player.deck().remove(gameData.selectedCard());
@@ -138,6 +143,11 @@ public class Main {
 			// le updatePosition et le player delay deveindrai un multiplicateur de la stat
 			player.updatePosition();
 			timeData.resetElapsedBob();
+			
+			if (gameData.map().playerCell(player).card() instanceof EnteringBoost) {
+				((Village)gameData.map().playerCell(player).card()).cardAction(player, gameData, 
+						timeData, gameData.map().getPlayerPos(player));
+			}
 			
 			if (player.position() == 0) {
 				gameData.updateLoopCount();
@@ -196,12 +206,12 @@ public class Main {
 		player.addCard(Card.createCard("Oblivion"));
 		player.addCard(Card.createCard("Ruins"));
 		player.addCard(Card.createCard("SpiderCocoon"));
-		player.addCard(Card.createCard("SpiderCocoon"));
 		player.addCard(Card.createCard("Cemetery"));
 		player.addCard(Card.createCard("VampireMansion"));
 		player.addCard(Card.createCard("Battlefield"));
 		player.addCard(Card.createCard("Battlefield"));
 		player.addCard(Card.createCard("WheatFields"));
+		player.addCard(Card.createCard("Village"));
 		
 		while (true) {
 			doTimeAction(context);

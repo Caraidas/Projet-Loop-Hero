@@ -83,5 +83,9 @@ public class SpawnCard extends AbstractCard {
 		System.out.println("birthday set : " + b);
 		birthday = b;
 	}
+	
+	public String spawnableMonster() {
+		return spawnableMonster;
+	}
 
 }

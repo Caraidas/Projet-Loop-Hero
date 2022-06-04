@@ -36,6 +36,7 @@ public class GameData { // Takes care of all the data in the game that should be
 		this.addCardToDrawPile(Card.createCard("Ruins"), 3);
 		this.addCardToDrawPile(Card.createCard("SpiderCocoon"), 6);
 		this.addCardToDrawPile(Card.createCard("WheatFields"), 6);
+		this.addCardToDrawPile(Card.createCard("Village"), 3);
 	}
 	
 	public void addCardToDrawPile(Card c, int n) {

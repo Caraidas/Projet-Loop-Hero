@@ -131,6 +131,24 @@ public interface Card {
 			WheatFields wheatFields = new WheatFields(c, "WheatFields.png", lst, 4, "Scarecrow", 0, 0);
 		
 			return wheatFields;
+			
+		case "OverGrownField":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			OverGrownField overGrownField = new OverGrownField(c, "WheatFields.png", lst, 4, "Scarecrow", 0, 0);
+		
+			return wheatFields;
+			
+		case "Village":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			stats = new HashMap<>();
+			stats.put("hp", 15.0);
+			Village village = new Village(c, "Village.png", lst, stats);
+		
+			return village;
 
 		default:
 			return null;
