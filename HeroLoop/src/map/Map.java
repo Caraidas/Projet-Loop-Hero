@@ -35,7 +35,6 @@ public class Map {
 	}
 	
 	public GridPosition getPlayerPos(Player p) {
-		System.out.println(loop.get(p.position()));
 		return loop.get(p.position());
 	}
 	

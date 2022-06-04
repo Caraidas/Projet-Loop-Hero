@@ -3,7 +3,6 @@ package collectable;
 import java.util.ArrayList;
 
 import data.GameData;
-import entities.Monster;
 import map.Cell;
 import map.RoadCell;
 
@@ -14,14 +13,10 @@ public class OverGrownField extends SpawnCard {
 		super(cardStates, sprite, ressourcesGiven, spawnFrequency, spawnableMonster, birthday, moveWhenSpawn);
 	}
 	
-	@Override
-	public void spawn(int i, int j, GameData gameData, int day) {	
+	public void fill(int i, int j, GameData gameData) {
 		Cell c = move(gameData, i, j);
-		
-		super.spawn(i, j, gameData, day);
-		
 		if (c instanceof RoadCell) {
-			((RoadCell)c).fill(Monster.createMonster("FieldOfBlades", gameData.getLoopCount()));
+			((RoadCell)c).fill("FieldOfBlades", gameData.getLoopCount());
 		}
 	}
 

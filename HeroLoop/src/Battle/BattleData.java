@@ -93,7 +93,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			
 			if (veski > victim.getStat("evade")) { // si le player esquive pas
 				
-				if (gounter > ((Player)victim).counter()) { // si le player contre pas
+				if (gounter < ((Player)victim).counter()) { // si le player contre pas
 					
 					attacker.lifeSteal(attacker.getStat("vampirism"), (int)((Monster)attacker).strength());
 					base = ((Monster)attacker).strength();

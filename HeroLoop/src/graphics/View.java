@@ -8,10 +8,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.util.ArrayList;
-
 import collectable.Card;
 import collectable.Oblivion;
-import collectable.ZoneCard;
 import data.GameData;
 import data.GridPosition;
 import entities.Monster;
@@ -181,8 +179,6 @@ public class View {
 	}
 
 	public void drawPlayerStats(Graphics2D graphics) {
-		int HudWidth = (int) (width - (21 * caseSize));
-
 		int i = 6;
 		graphics.setColor(Color.white);
 		for (String s : player.basicStats().keySet()) {
@@ -202,8 +198,6 @@ public class View {
 	}
 
 	public void drawItemStats(Graphics2D graphics) {
-		int HudWidth = (int) (width - (21 * caseSize));
-
 		graphics.setColor(Color.white);
 		ImageConstructor image = new ImageConstructor(Path.of("ressources/Utility-Sprite/HUD/Button.png"), 175, 50);
 		drawImage(graphics, (21 * caseSize) + 50, (int) (height - (height / 7)), image);
@@ -427,7 +421,7 @@ public class View {
 			x = (int) (3 * (width / 6)) + 3 * caseSize;
 			y = (int) (i * 2 * caseSize + (height / 6) + caseSize);
 		} else {
-			x = (int) (3 * (width / 7));
+			x = (int) (1.7 * (width / 7));
 			y = (int)(caseSize + (height / 6));
 		}
 		
@@ -445,7 +439,6 @@ public class View {
 					graphics.drawString(s, x, y + index * 20);
 					index++;
 				}
-
 			}
 		}
 		String s = "Strength : " + m.strength();

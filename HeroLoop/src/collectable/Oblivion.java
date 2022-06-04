@@ -33,6 +33,10 @@ public class Oblivion extends AbstractCard {
 			}
 		}
 		
+		if (c.card() instanceof Village) {
+			((Village)c.card()).destroyFields(gameData, pos);
+		}
+		
 		c.clear();
 	}
 	

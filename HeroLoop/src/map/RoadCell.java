@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 import collectable.Card;
 import collectable.CardState;
+import collectable.Village;
 import collectable.ZoneCard;
 import entities.Entity;
 import entities.Monster;
@@ -36,8 +37,10 @@ public class RoadCell extends Cell {
 			if (entitiesOn.size() <= 4 && containsMonster("Vampire") == false) {
 				entitiesOn.add(monster);
 			}
-		} else {
-			if (entitiesOn.size() < 4) {
+		} else { 
+			if (monster.getSprite().equals("FieldOfBlades")) {
+				entitiesOn.add(monster);
+			} else if (entitiesOn.size() < 4) {
 				entitiesOn.add(monster);
 			}
 		}
@@ -64,9 +67,12 @@ public class RoadCell extends Cell {
 		}
 	}
 	
-	public void fill(Monster monster) {
-		for (int i = 0; i < 5 - entitiesOn.size(); i++) {
-			entitiesOn.add(monster);
+	public void fill(String monster, int lvl) {
+		if (entitiesOn.size() != 0) {
+			int n = (5 - entitiesOn.size());
+			for (int i = 0; i < n; i++) {
+				spawn(Monster.createMonster(monster, lvl));
+			}
 		}
 	}
 	
@@ -81,6 +87,7 @@ public class RoadCell extends Cell {
 				}
 			}
 		}
+		
 		entitiesOn.clear();
 		this.addCard(null);
 		this.addToZone(-1);

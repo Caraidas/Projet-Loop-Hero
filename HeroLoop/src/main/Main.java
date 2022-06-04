@@ -7,6 +7,7 @@ import Battle.BattleData;
 import collectable.Card;
 import collectable.EnteringBoost;
 import collectable.Item;
+import collectable.OverGrownField;
 import collectable.SpawnCard;
 import collectable.Village;
 import collectable.ZoneCard;
@@ -115,7 +116,8 @@ public class Main {
 				
 				if (deposedCard instanceof EnteringBoost == false) {
 					deposedCard.cardAction(player, gameData, timeData, pos);
-				}			
+				} 
+				
 				deposedCard.giveRessource(player);
 				
 				player.deck().remove(gameData.selectedCard());
@@ -153,6 +155,11 @@ public class Main {
 				gameData.updateLoopCount();
 				player.heal(0.2);
 			}
+		}
+		
+		if (gameData.map().playerCell(player).card() instanceof OverGrownField) {
+			GridPosition g = gameData.map().getPlayerPos(player);
+			((OverGrownField)gameData.map().playerCell(player).card()).fill(g.line(), g.column(), gameData);
 		}
 		
 		battleData.startBattle(m.playerCell(player), player);
@@ -209,7 +216,7 @@ public class Main {
 		player.addCard(Card.createCard("Cemetery"));
 		player.addCard(Card.createCard("VampireMansion"));
 		player.addCard(Card.createCard("Battlefield"));
-		player.addCard(Card.createCard("Battlefield"));
+		player.addCard(Card.createCard("WheatFields"));
 		player.addCard(Card.createCard("WheatFields"));
 		player.addCard(Card.createCard("Village"));
 		

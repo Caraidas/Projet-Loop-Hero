@@ -13,22 +13,23 @@ public class WheatFields extends SpawnCard {
 	public WheatFields(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,
 			int spawnFrequency, String spawnableMonster, int birthday, int moveWhenSpawn) {
 		super(cardStates, sprite, ressourcesGiven, spawnFrequency, spawnableMonster, birthday, moveWhenSpawn);
-		
 	}
 	
 	@Override
 	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
 		((Village)gameData.map().getCell(villagePos).card()).addToHealFactor(1);
 		
-		if (gameData.map().getCell(villagePos).card() instanceof Village != false) {
+		System.out.println(gameData.map().getCell(villagePos).card());
+		System.out.println(villagePos);
+		if (gameData.map().getCell(villagePos).card() instanceof Village == false) {
+			System.out.println("in if");
 			gameData.map().getCell(pos).addCard(Card.createCard("OverGrownField"));
 		}
 	}
 	
 	@Override
 	public boolean acceptCardState(GridPosition pos, GameData gameData) {
-		System.out.println(pos);
-		Cell cell = gameData.map().getCell(pos);
+		Cell cell = gameData.map().getCell(pos); 
 		if (cell.card() != null) {
 			return false;
 		}
