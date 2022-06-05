@@ -21,30 +21,14 @@ public abstract class AbstractCard implements Card {
 		this.sprite = Objects.requireNonNull(sprite);
 		this.ressourcesGiven = ressourcesGiven;
 	}
+	/*
+	 *  Abstract class that contains every characters points in common for every cards
+	 */
 	
 	@Override
-	public String sprite() {
-		return sprite;
-	}
-	
-	@Override
-	public ArrayList<CardState> cardState() {
-		return cardStates;
-	}
-	
-	public static Card createCard(String name) {
-		return null;
-	}
-	
-	@Override
-	public void giveRessource(Player player) {
-		for (String r : ressourcesGiven) {
-			player.addRessource(r, 3);
-		}
-	}
-	
-	@Override
-	public boolean acceptCardState(GridPosition pos, GameData gameData) {
+	public boolean acceptCardState(GridPosition pos, GameData gameData) { // check if the tile can be place somewhere on the map
+		Objects.requireNonNull(pos);
+		Objects.requireNonNull(gameData);
 		System.out.println(pos);
 		Cell cell = gameData.map().getCell(pos);
 		if (cell.card() != null) {
@@ -59,7 +43,22 @@ public abstract class AbstractCard implements Card {
 		return true;
 	}
 	
-	public ArrayList<CardState> cardStates() {
+	// Getter
+	
+	@Override
+	public String sprite() { // get the sprite of the cards
+		return sprite;
+	}
+	
+	@Override
+	public ArrayList<CardState> cardState() { // get the CardState (ROAD, ROADSIDE,	LANDSCAPE)
 		return cardStates;
+	}
+	
+	@Override
+	public void giveRessource(Player player) { // get the resources give to the player
+		for (String r : ressourcesGiven) {
+			player.addRessource(r, 3);
+		}
 	}
 }

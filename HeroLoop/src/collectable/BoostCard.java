@@ -15,6 +15,7 @@ public class BoostCard extends AbstractCard implements Serializable {
 	private final HashMap<String, Double> boost;
 
 	public BoostCard(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, HashMap<String, Double> boost) {
+
 		super(cardStates, sprite, ressourcesGiven);
 		this.boost = boost;
 	}
@@ -27,10 +28,9 @@ public class BoostCard extends AbstractCard implements Serializable {
 	}
 
 	@Override
-	public void spawn(int i, int j, GameData gameData, int day) {
-	}
+	public void spawn(int i, int j, GameData gameData, int day) {}
 	
-	public HashMap<String, Double> boost() {
+	public HashMap<String, Double> boost() { // get the statistic of the boost
 		return boost;
 	}
 }

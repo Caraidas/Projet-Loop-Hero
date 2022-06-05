@@ -37,7 +37,7 @@ public class WheatFields extends SpawnCard implements Serializable {
 			return false;
 		}
 		
-		for (CardState c : super.cardStates()) {
+		for (CardState c : super.cardState()) {
 			if (c != cell.acceptableCardState()) {
 				return false;
 			}

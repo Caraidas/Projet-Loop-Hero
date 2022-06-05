@@ -3,6 +3,8 @@ package collectable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
+
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
@@ -21,8 +23,17 @@ public class BattleField extends ZoneCard implements Serializable {
 		this.card = card;
 	}
 	
+	/*
+	 * Creation of Battlefield class 
+	 */
+	
 	@Override
-	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
+	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) { // Method use for the synergy of battlefield when two Battlefield's zones enter in contact, create a BloodPath on the road
+		Objects.requireNonNull(player);
+		Objects.requireNonNull(gameData);
+		Objects.requireNonNull(timeData);
+		Objects.requireNonNull(pos);
+		
 		super.cardAction(player, gameData, timeData, pos);
 		
 		for (GridPosition g : super.zone()) {
@@ -34,7 +45,9 @@ public class BattleField extends ZoneCard implements Serializable {
 	}
 	
 	@Override
-	public void setZone(GameData gameData) {
+	public void setZone(GameData gameData) { // set the zone effect around the tile placed
+		Objects.requireNonNull(gameData);
+		
 		for (int i = -super.dimension(); i <= super.dimension(); i++) {
 			for (int j = -super.dimension(); j <= super.dimension(); j++) {
 				GridPosition pos = new GridPosition(super.position().line() + i, super.position().column() + j);
