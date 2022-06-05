@@ -16,7 +16,7 @@ public class OverGrownField extends SpawnCard implements Serializable {
 		super(cardStates, sprite, ressourcesGiven, spawnFrequency, spawnableMonster, birthday, moveWhenSpawn);
 	}
 	
-	public void fill(int i, int j, GameData gameData) {
+	public void fill(int i, int j, GameData gameData) { // fill the fight with FieldOfBlades
 		Cell c = move(gameData, i, j);
 		if (c instanceof RoadCell) {
 			((RoadCell)c).fill("FieldOfBlades", gameData.getLoopCount());

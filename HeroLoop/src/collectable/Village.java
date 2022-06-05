@@ -10,6 +10,10 @@ import entities.Player;
 import time.TimeData;
 
 public class Village extends EnteringBoost implements Serializable {
+	
+	/*
+	 * heal the player when walk on the tile and give a quest to kill a special enemy then give rewards when the quest is accomplished
+	 */
 
 	private static final long serialVersionUID = -2626588329519838811L;
 	private int healFactor = 1;
@@ -26,7 +30,7 @@ public class Village extends EnteringBoost implements Serializable {
 		}
 	}
 	
-	public void destroyFields(GameData gameData, GridPosition pos) {
+	public void destroyFields(GameData gameData, GridPosition pos) { //When the village is removed with an oblivion, remove Wheatfield for Overgrown fields
 		int lst[] = new int[2];
 		lst[0] = -1;
 		lst[1] = 1;
@@ -44,7 +48,7 @@ public class Village extends EnteringBoost implements Serializable {
 		}
 	}
 	
-	public void createFields(GameData gameData, GridPosition pos) {
+	public void createFields(GameData gameData, GridPosition pos) { // When the village is placed next to a Overgrown field, remove Overgrown field for Wheat field
 		int lst[] = new int[2];
 		lst[0] = -1;
 		lst[1] = 1;

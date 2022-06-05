@@ -13,6 +13,10 @@ public class DailyBoost extends BoostCard implements Serializable {
 
 	private static final long serialVersionUID = 6138389845937373064L;
 
+	/*
+	 * Effect that is apply on the player everyday
+	 */
+	
 	public DailyBoost(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, HashMap<String, Double> boost) {
 		super(cardStates, sprite, ressourcesGiven, boost);
 	}

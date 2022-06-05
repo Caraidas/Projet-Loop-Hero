@@ -3,6 +3,7 @@ package collectable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import data.GameData;
 import data.GridPosition;
@@ -21,7 +22,12 @@ public class BoostCard extends AbstractCard implements Serializable {
 	}
 
 	@Override
-	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
+	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) { // apply a boost to the player
+		Objects.requireNonNull(player);
+		Objects.requireNonNull(gameData);
+		Objects.requireNonNull(timeData);
+		Objects.requireNonNull(pos);
+		
 		for (String stat : boost.keySet()) {
 			player.boostStat(stat, boost.get(stat));
 		}

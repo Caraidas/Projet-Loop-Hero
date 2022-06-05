@@ -3,6 +3,7 @@ package collectable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class Item implements Serializable {
@@ -27,6 +28,7 @@ public class Item implements Serializable {
 	}
 	
 	private int setRarity(int lvl) {
+		Objects.requireNonNull(lvl);
 		Random rand = new Random();
 		int r = rand.nextInt(100);
 		/*
@@ -53,6 +55,10 @@ public class Item implements Serializable {
 	}
 	
 	private double setOriginalStat(String type, int rarity, int lvl, ArrayList<String> tab) { // create a new equipment 
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(rarity);
+		Objects.requireNonNull(lvl);
+		Objects.requireNonNull(tab);
 		double stat = 0;
 		Random rand = new Random();
 		int n;
@@ -93,6 +99,8 @@ public class Item implements Serializable {
 	}
 	
 	public double ringStat(String stat, int lvl) {
+		Objects.requireNonNull(stat);
+		Objects.requireNonNull(lvl);
 		// switch case for the ring random first statistic
 		switch (stat) {
 		case "def":
@@ -123,6 +131,7 @@ public class Item implements Serializable {
 	}
 	
 	public void setStats(int lvl) {
+		Objects.requireNonNull(lvl);
 		int rarity = setRarity(lvl);
 		Random rand = new Random();
 		int n;

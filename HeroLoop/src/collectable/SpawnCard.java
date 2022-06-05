@@ -2,6 +2,7 @@ package collectable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 import data.GameData;
 import data.GridPosition;
@@ -29,6 +30,9 @@ public class SpawnCard extends AbstractCard implements Serializable {
 		this.moveWhenSpawn = moveWhenSpawn;
 	}
 
+	/*
+	 * Make spawn enemies on the road
+	 */
 
 	@Override
 	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
@@ -85,12 +89,13 @@ public class SpawnCard extends AbstractCard implements Serializable {
 		}
 	}
 	
-	public void setBirthday(int b) {
+	public void setBirthday(int b) { // set when the ennemy spawn
+		Objects.requireNonNull(b);
 		System.out.println("birthday set : " + b);
 		birthday = b;
 	}
 	
-	public String spawnableMonster() {
+	public String spawnableMonster() { // get the spawnable monster;
 		return spawnableMonster;
 	}
 

@@ -9,6 +9,10 @@ import entities.Player;
 import map.Cell;
 import time.TimeData;
 
+/*
+ * remove a placed tile on the map
+ */
+
 public class Oblivion extends AbstractCard implements Serializable {
 
 	private static final long serialVersionUID = 5974450512998092940L;
@@ -18,12 +22,10 @@ public class Oblivion extends AbstractCard implements Serializable {
 	}
 
 	@Override
-	public void spawn(int i, int j, GameData gameData, int day) {
-		return;
-	}
+	public void spawn(int i, int j, GameData gameData, int day) {}
 
 	@Override
-	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
+	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) { // effect of oblivion
 		Cell c = gameData.map().getCell(pos);
 		System.out.println(c.card());
 		
@@ -43,7 +45,7 @@ public class Oblivion extends AbstractCard implements Serializable {
 	}
 	
 	@Override 
-	public boolean acceptCardState(GridPosition pos, GameData gameData) {
+	public boolean acceptCardState(GridPosition pos, GameData gameData) { // check if oblivion can be placed on a cell
 		Cell c = gameData.map().getCell(pos);
 		if (c.hasNoBuilding() && c.hasNoMonsters()) {
 			return false;
