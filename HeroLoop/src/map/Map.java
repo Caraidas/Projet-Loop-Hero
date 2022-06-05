@@ -74,7 +74,7 @@ public class Map implements Serializable {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
 				map[i][j] = new Cell();
-			}	
+			}
 		}
 		
 		for (GridPosition pos : loop) {
