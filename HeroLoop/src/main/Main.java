@@ -5,10 +5,8 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import Battle.BattleData;
 import collectable.Card;
@@ -28,6 +26,7 @@ import fr.umlv.zen5.Event;
 import graphics.View;
 import map.Map;
 import map.RoadCell;
+import save.Save;
 import time.TimeData;
 
 public class Main {
@@ -37,6 +36,7 @@ public class Main {
 	private static GameData gameData = new GameData(m, timeData);
 	private static View view = new View(player, timeData, gameData);
 	private BattleData battleData = new BattleData(gameData, timeData, view);
+	private final static Save save = new Save();
 	
 	public static void doKeyActionAndDraw(ApplicationContext context, Event event) throws FileNotFoundException, IOException {
 		doKeyAction(context, event);
@@ -64,23 +64,7 @@ public class Main {
 		}
 		
 		case Q -> {
-			File fichier =  new File("saves/gameData.txt");
-			ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(fichier));
-			oos.writeObject(gameData);
-			
-			oos.close();
-			 
-			fichier =  new File("saves/timeData.txt");
-			oos =  new ObjectOutputStream(new FileOutputStream(fichier));
-			oos.writeObject(timeData);
-			
-			oos.close();
-			
-			fichier =  new File("saves/player.txt");
-			oos =  new ObjectOutputStream(new FileOutputStream(fichier));
-			oos.writeObject(player);
-			
-			oos.close();
+			save.write(gameData, timeData, player);
 		}
 	
 		case S -> {  // do freeze or play the game
@@ -119,26 +103,13 @@ public class Main {
 				gameData.startGame();
 				
 			} else if (view.clickedOnContinue(location)) {
-				File fichier =  new File("saves/gameData.txt");
-				ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier));
-				gameData = (GameData)ois.readObject();
+				gameData = (GameData)save.read("saves/gameData.txt");
+				timeData = (TimeData)save.read("saves/timeData.txt");
+				player = (Player)save.read("saves/player.txt");
 				
-				ois.close();
-				
-				fichier =  new File("saves/player.txt");
-				ois =  new ObjectInputStream(new FileInputStream(fichier));
-				player = (Player)ois.readObject();
-				
-				ois.close();
-				
-				fichier =  new File("saves/timeData.txt");
-				ois =  new ObjectInputStream(new FileInputStream(fichier));
-				timeData = (TimeData)ois.readObject();
-				
-				ois.close();
-				
-				gameData.setTimeData(timeData);
+				gameData.setTimeData(timeData); 
 				gameData.startGame();
+				
 				view = new View(player, timeData, gameData);
 				battleData = new BattleData(gameData, timeData, view);
 				view.initContext(context);

@@ -4,14 +4,9 @@ import collectable.BattleField;
 import collectable.Card;
 import collectable.DailyBoost;
 import collectable.Oblivion;
-import collectable.SpawnCard;
 import collectable.ZoneCard;
 import entities.Player;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,6 +28,7 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 	private boolean inBattle = false; 
 	private boolean inGame = false;
 	private boolean inRessourceMenu = false;
+	private boolean inStudio = false; // to create new loops easily
 	
 	public GameData(Map map, TimeData timeData) {
 		this.map = map;
@@ -181,6 +177,14 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 	
 	public boolean inRessourceMenu() {
 		return inRessourceMenu;
+	}
+
+	public boolean isInStudio() {
+		return inStudio;
+	}
+
+	public void setInStudio(boolean inStudio) {
+		this.inStudio = inStudio;
 	}
 
 }
