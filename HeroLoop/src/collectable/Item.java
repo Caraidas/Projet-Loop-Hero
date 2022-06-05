@@ -26,33 +26,36 @@ public class Item {
 	private int setRarity(int lvl) {
 		Random rand = new Random();
 		int r = rand.nextInt(100);
-		
+		/*
+		 * give a random rarity to every equipments
+		 */
 		if (lvl < 3) {
-			if (r < 35) {
+			if (r < 35)
 				return 0; // gray
-			} else if (r < 65) {
+			else if (r < 65)
 				return 1; // blue
-			} else {
+			else
 				return 2; // yellow
-			}
 			
 		} else {
-			if (r < 35) {
+			if (r < 35)
 				return 0; // gray
-			} else if (r < 65) {
+			else if (r < 65)
 				return 1; // blue
-			} else if (r < 85) {
-				return 2; // yellow
-			} 
+			else if (r < 85)
+				return 2; // yellow 
 			
 			return 3; // orange
 		}
 	}
 	
-	private double setOriginalStat(String type, int rarity, int lvl, ArrayList<String> tab) {
+	private double setOriginalStat(String type, int rarity, int lvl, ArrayList<String> tab) { // create a new equipment 
 		double stat = 0;
 		Random rand = new Random();
 		int n;
+		/*
+		 * switch case for the creation of an equipment
+		 */
 		
 		switch (type) {
 		case "Weapon":
@@ -87,6 +90,7 @@ public class Item {
 	}
 	
 	public double ringStat(String stat, int lvl) {
+		// switch case for the ring random first statistic
 		switch (stat) {
 		case "def":
 			return lvl * 1.5;
@@ -129,7 +133,7 @@ public class Item {
 		tab.add("damageToAll");
 		
 		double stat = setOriginalStat(type, rarity, lvl, tab);
-		
+		// switch case to add statistics in terms of his rarity
 		for (int i = 0; i < rarity; i++) {
 			n = rand.nextInt(tab.size());
 			

@@ -10,7 +10,7 @@ import time.TimeData;
 
 public class BattleField extends ZoneCard {
 	private final String card;
-
+	
 	public BattleField(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,
 			GridPosition position, ArrayList<GridPosition> zone, HashMap<String, Double> boost,
 			ArrayList<String> spawnableMonsters, boolean diagonal, int dimension, String card) {

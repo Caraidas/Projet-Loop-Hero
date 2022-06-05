@@ -19,9 +19,22 @@ public class Player extends AbstractEntity {
 	private Range damage;
 	private int pureDamage;
 	private int counter;
+	@SuppressWarnings("unused")
 	private double regen;
+	@SuppressWarnings("unused")
 	private int damageToAll;
 
+	/*
+	 * Creation of the Player that contains:
+	 * 	- His first position on the road
+	 * 	- An HashMap of his resources
+	 * 	- An inventory that contains his item like sword, shield etc.
+	 * 	- A deck for cards
+	 * 	- A list of Item equipped (Sword, shield, etc.)
+	 * 	- An HashMap of statistics
+	 * 	- A range for his damages
+	 * 	- And unique statistic of the player (statistic that cannot be used for a monster
+	 */	
 	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {
 		
 		super(basicStats, "Player");
@@ -43,6 +56,7 @@ public class Player extends AbstractEntity {
 	
 	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {
 		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage, pureDamage, counter, regen, damageToAll);
+		// Set all the stats of the player
 		this.addStat("hp", 200);
 		this.addStat("hpMax", 250);
 		this.addStat("def", 0);
@@ -54,7 +68,7 @@ public class Player extends AbstractEntity {
 		this.addStat("damageToAll", damageToAll);
 	}
 	
-	public Card selectedCard(int selected) {
+	public Card selectedCard(int selected) { //return the card selected by the user
 		return deck.getCard(selected);
 	}
 	
@@ -69,19 +83,8 @@ public class Player extends AbstractEntity {
 		deck.add(c);
 	}
 	
-	public int deckSize() {
-		return deck.size();
-	}
 	
-	public boolean isDead() {
-		if (super.getHp() <= 0) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public void addRessource(String s, int n) { // adds n ressources in the players "bag"
+	public void addRessource(String s, int n) { // adds n resources in the players "bag"
 		if (ressources.containsKey(s)) {
 			ressources.replace(s, ressources.get(s) + n);
 		} else {
@@ -89,18 +92,18 @@ public class Player extends AbstractEntity {
 		}
 	}
 	
-	public void addItemInInventory(Item item) {
+	public void addItemInInventory(Item item) { // add item to the item's list
 		if (items.size() == 12) {
 			items.remove(0);
 		}
 		items.add(item);
 	}
 	
-	public Card selectCard(int i) {
+	public Card selectCard(int i) { // get the card with his position in the deck's list
 		return deck.getCard(i);
 	}
 	
-	public Item selectItem(int i) {
+	public Item selectItem(int i) { // get the item with his position in the item's list
 		return items.get(i);
 	}
 	
@@ -172,7 +175,7 @@ public class Player extends AbstractEntity {
 		destroyItem(itemIndex);
 	}
 	
-	public void destroyItem(int i) {		
+	public void destroyItem(int i) { // delete the surplus (the last item) of the inventory
 		for (int j = i; j >= 0; j--) {
 			if (j == 0) {
 				items.set(j, null);
@@ -198,31 +201,35 @@ public class Player extends AbstractEntity {
 	
 	// Getters :
 	
-	public int position() {
+	public int deckSize() { // get the deck size
+		return deck.size();
+	}
+	
+	public int position() { // get the position of the player
 		return position;
 	}
 	
-	public Deck deck() {
+	public Deck deck() { // get the deck of the player
 		return deck;
 	}
 	
-	public HashMap<String, Integer> ressources() {
+	public HashMap<String, Integer> ressources() { // get the resources of the player
 		return ressources;
 	}
 	
-	public Inventory inventory() {
+	public Inventory inventory() { // get the inventory of the player
 		return inventory;
 	}
 	
-	public ArrayList<Item> items() {
+	public ArrayList<Item> items() { // get the item of the player
 		return items;
 	}
 	
-	public int pureDamage() {
+	public int pureDamage() { // get the pure damages of the player
 		return pureDamage;
 	}
 	
-	public int counter() {
+	public int counter() { // get the percentage of counter of the player
 		return counter;
 	}
 	

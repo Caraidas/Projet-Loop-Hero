@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Random;
 import collectable.Card;
 import collectable.CardState;
-import collectable.Village;
 import collectable.ZoneCard;
 import entities.Entity;
 import entities.Monster;

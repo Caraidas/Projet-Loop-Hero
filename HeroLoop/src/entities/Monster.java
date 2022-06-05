@@ -15,7 +15,13 @@ public class Monster extends AbstractEntity {
 		this.dropableRessources = dropableRessources;
 	}
 	
-	public static Monster createMonster(String name, int lvl) {
+	public static Monster createMonster(String name, int lvl) { 
+	/*
+	 * Create a monster with a switch case and in parameter the String of the monster and the actual level of the loop
+	 * the monsters contains a List of dropable ressources with witch we can add ressources that the monster can drop according to the wiki of the game
+	 * monster also have an HashMap that contains the stats of the monsters
+	 * So with that stats we can initialize their HP and other stats like evade that can be different according to the wiki between monsters
+	*/
 		switch (name) {
 		case "RatWolf" -> {
 			ArrayList<String> dropableRessources = new ArrayList<>();
@@ -211,15 +217,15 @@ public class Monster extends AbstractEntity {
 	
 	// Getter :
 	
-	public int ressourceChance() {
+	public int ressourceChance() { // get the percentage for a monster to drop ressources
 		return ressourceChance;
 	}
 	
-	public ArrayList<String> dropableRessources() {
+	public ArrayList<String> dropableRessources() { // get the ressources that can be drop by a monster
 		return dropableRessources;
 	}
 	
-	public double strength() {
+	public double strength() { // get the damages of the monster
 		return baseStrength;
 	}
 

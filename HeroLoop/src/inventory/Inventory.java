@@ -17,6 +17,8 @@ public class Inventory {
 		// this.amulet = null;
 	}
 	
+	// setter 
+	
 	public void setWeapon(Item item) {
 		weapon = item;
 	}
@@ -32,6 +34,8 @@ public class Inventory {
 	public void setRing(Item item) {
 		ring = item;
 	}
+	
+	// has equipment 
 	
 	public boolean hasWeapon() {
 		return !(weapon == null);

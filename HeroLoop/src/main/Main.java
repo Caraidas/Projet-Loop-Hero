@@ -54,7 +54,7 @@ public class Main {
 			context.exit(0);
 			throw new AssertionError("ne devrait pas arriver");
 		}
-		case S -> {
+		case S -> {  // do freeze or play the game
 			if (!gameData.inBattle()) {
 				timeData.timeControl();
 				view.blackScreen();
@@ -62,9 +62,9 @@ public class Main {
 			}	
 		}
 		
-		case A -> timeData.accelerateTime(1);
-		case Z -> timeData.accelerateTime(2);
-		case E -> timeData.accelerateTime(4);
+		case A -> timeData.accelerateTime(1); // set the acceleration * 1
+		case Z -> timeData.accelerateTime(2); // set the acceleration * 2 
+		case E -> timeData.accelerateTime(4); // set the acceleration * 4
 		
 		case D -> {
 			player.addItemInInventory(Item.debugItem(gameData.getLoopCount()));

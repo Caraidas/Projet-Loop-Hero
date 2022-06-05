@@ -2,8 +2,6 @@ package map;
 
 import collectable.Card;
 import collectable.CardState;
-import collectable.ZoneCard;
-import data.GridPosition;
 import entities.Monster;
 
 

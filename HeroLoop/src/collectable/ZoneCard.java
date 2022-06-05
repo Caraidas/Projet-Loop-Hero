@@ -86,6 +86,8 @@ public class ZoneCard extends AbstractCard {
 		System.out.println(zone);
 	}
 	
+	// Getters
+	
 	public HashMap<String, Double> boost() {
 		return boost;
 	}

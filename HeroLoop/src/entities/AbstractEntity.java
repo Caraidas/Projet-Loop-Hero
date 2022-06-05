@@ -26,23 +26,23 @@ abstract class AbstractEntity implements Entity {
 	
 	// Getters :
 	
-	public HashMap<String, Double> basicStats() {
+	public HashMap<String, Double> basicStats() { // return all stats of the entity
 		return basicStats;
 	}
 	
-	public String getSprite() {
+	public String getSprite() { // get the sprite of the entity 
 		return sprite;
 	}
 	
-	public double getHp() {
+	public double getHp() { // get the HP of the entity
 		return basicStats.get("hp"); 
 	}
 	
-	public double getHpMax() {
+	public double getHpMax() { // get the HP max of the entity
 		return basicStats.get("hpMax");
 	}
 	
-	public double getLifeSteal() {
+	public double getLifeSteal() { // get the percentage of vampirism of the entity 
 		return basicStats.get("vampirism");
 	}
 	

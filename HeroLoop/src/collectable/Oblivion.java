@@ -6,7 +6,6 @@ import data.GameData;
 import data.GridPosition;
 import entities.Player;
 import map.Cell;
-import map.RoadCell;
 import time.TimeData;
 
 public class Oblivion extends AbstractCard {

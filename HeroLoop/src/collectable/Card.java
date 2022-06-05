@@ -6,7 +6,6 @@ import java.util.HashMap;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
-import map.Cell;
 import time.TimeData;
 
 public interface Card {
@@ -24,6 +23,9 @@ public interface Card {
 	}
 	
 	static Card createCard(String name) {
+		
+		// switch case for the card creation
+		
 		switch (name) {
 		case "Rock":
 			ArrayList<CardState> c = new ArrayList<>();

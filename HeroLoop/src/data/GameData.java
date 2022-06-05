@@ -29,6 +29,8 @@ public class GameData { // Takes care of all the data in the game that should be
 		this.map = map;
 		this.timeData = timeData;
 		
+		// add cards to the deck pile with the number of cards
+		
 		this.addCardToDrawPile(Card.createCard("Rock"), 12);
 		this.addCardToDrawPile(Card.createCard("Meadow"), 14);
 		this.addCardToDrawPile(Card.createCard("Meadow"), 3);
