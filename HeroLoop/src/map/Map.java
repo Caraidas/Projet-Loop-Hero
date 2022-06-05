@@ -54,7 +54,7 @@ public class Map implements Serializable {
 	
 	public void generateLoop() throws IOException { // generate a loop randomly from already texts files in resources
         Random r = new Random();
-        int x = r.nextInt(3) + 1;
+        int x = r.nextInt(7) + 1;
         
         try(BufferedReader br = new BufferedReader(new FileReader("ressources/loops/loop"+ x +".txt"))) {
             StringBuilder sb = new StringBuilder();
