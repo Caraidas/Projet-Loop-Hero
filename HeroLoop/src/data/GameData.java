@@ -4,8 +4,15 @@ import collectable.BattleField;
 import collectable.Card;
 import collectable.DailyBoost;
 import collectable.Oblivion;
+import collectable.SpawnCard;
 import collectable.ZoneCard;
 import entities.Player;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,13 +20,15 @@ import map.Map;
 import map.RoadCell;
 import time.TimeData;
 
-public class GameData { // Takes care of all the data in the game that should be memorized
+public class GameData implements Serializable{ // Takes care of all the data in the game that should be memorized
+
+	private static final long serialVersionUID = 5334584766800637562L;
 	private final Map map;
 	private int loopCount = 1;
 	private int selectedCard = -1; // -1 means no card selected
 	private int selectedItem = -1;
 	private ArrayList<Card> drawPile = new ArrayList<>();
-	private final TimeData timeData;
+	private TimeData timeData; // not final because of the save
 	
 	private boolean inBattle = false; 
 	private boolean inGame = false;
@@ -62,13 +71,14 @@ public class GameData { // Takes care of all the data in the game that should be
 	public void spawn() {
 		for (int i = 0; i < map.loop().size(); i++) {
 			if (i != 0) {
-				((RoadCell)map.getCell( map.loop().get(i).line(), map.loop().get(i).column())).spawn(timeData.dayCount(), loopCount);
+				((RoadCell)map.getCell(map.loop().get(i).line(), map.loop().get(i).column())).spawn(timeData.dayCount(), loopCount);
 			}
 		}
 		
 		for (int i = 0; i < map.lines(); i++) {
 			for (int j = 0; j < map.columns(); j++) {
 				if (map.getCell(i, j).card() != null && (map.getCell(i, j).card() instanceof BattleField == false)) {
+					System.out.println("day in gamedata from timeData.dayCount() = " + timeData.dayCount());
 					map.getCell(i, j).card().spawn(i, j, this, timeData.dayCount());
 				}
 			}
@@ -85,7 +95,7 @@ public class GameData { // Takes care of all the data in the game that should be
 		}
 	}
 	
-	public void generateGameBoard() {
+	public void generateGameBoard() throws IOException {
 		map.generateLoop();
 		map.generateMap();
 	}
@@ -126,6 +136,10 @@ public class GameData { // Takes care of all the data in the game that should be
 	public void startGame() {
 		inGame = true;
 	}
+	
+	public void endGame() {
+		inGame = false;
+	}
 	 
 	public void updateRessourceState() {
 		inRessourceMenu = !inRessourceMenu;
@@ -133,6 +147,10 @@ public class GameData { // Takes care of all the data in the game that should be
 	
 	public void updateRessourceState(boolean b) {
 		inRessourceMenu = false;
+	}
+	
+	public void setTimeData(TimeData td) {
+		timeData = td;
 	}
 	
 	// Getters :

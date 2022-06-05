@@ -1,10 +1,11 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
-public interface Entity {
+public interface Entity extends Serializable {
 	
 	HashMap<String, Double> basicStats();
 	

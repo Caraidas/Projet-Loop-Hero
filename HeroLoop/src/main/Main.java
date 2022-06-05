@@ -2,6 +2,13 @@ package main;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import Battle.BattleData;
 import collectable.Card;
@@ -20,17 +27,18 @@ import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
 import graphics.View;
 import map.Map;
+import map.RoadCell;
 import time.TimeData;
 
 public class Main {
 	private final static Map m = new Map();
-	private final static Player player = new Player(0, new HashMap<>(), new Range(20, 22), 0, 0, 0, 0);
-	private final static TimeData timeData = new TimeData();
-	private final static GameData gameData = new GameData(m, timeData);
-	private final static View view = new View(player, timeData, gameData);
-	private final BattleData battleData = new BattleData(gameData, timeData, view);
+	private static Player player = new Player(0, new HashMap<>(), new Range(20, 22), 0, 0, 0, 0);
+	private static TimeData timeData = new TimeData();
+	private static GameData gameData = new GameData(m, timeData);
+	private static View view = new View(player, timeData, gameData);
+	private BattleData battleData = new BattleData(gameData, timeData, view);
 	
-	public static void doKeyActionAndDraw(ApplicationContext context, Event event) {
+	public static void doKeyActionAndDraw(ApplicationContext context, Event event) throws FileNotFoundException, IOException {
 		doKeyAction(context, event);
 		view.drawScreen();
 	}
@@ -47,13 +55,34 @@ public class Main {
 		}
 	}
 	
-	public static void doKeyAction(ApplicationContext context, Event event) {
+	public static void doKeyAction(ApplicationContext context, Event event) throws FileNotFoundException, IOException {
 		switch (event.getKey()) {
 		case SPACE -> {
 			System.out.println("Fin du jeu");
 			context.exit(0);
 			throw new AssertionError("ne devrait pas arriver");
 		}
+		
+		case Q -> {
+			File fichier =  new File("saves/gameData.txt");
+			ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(fichier));
+			oos.writeObject(gameData);
+			
+			oos.close();
+			 
+			fichier =  new File("saves/timeData.txt");
+			oos =  new ObjectOutputStream(new FileOutputStream(fichier));
+			oos.writeObject(timeData);
+			
+			oos.close();
+			
+			fichier =  new File("saves/player.txt");
+			oos =  new ObjectOutputStream(new FileOutputStream(fichier));
+			oos.writeObject(player);
+			
+			oos.close();
+		}
+	
 		case S -> {  // do freeze or play the game
 			if (!gameData.inBattle()) {
 				timeData.timeControl();
@@ -81,14 +110,40 @@ public class Main {
 		}
 	}
 	
-	public void doMouseAction(ApplicationContext context, Event event) {
+	public void doMouseAction(ApplicationContext context, Event event) throws FileNotFoundException, IOException, ClassNotFoundException {
 		
 		Point2D.Float location = event.getLocation();
 		
 		if (!gameData.inGame()) {
 			if (view.clickedOnPlay(location)) {
 				gameData.startGame();
+				
+			} else if (view.clickedOnContinue(location)) {
+				File fichier =  new File("saves/gameData.txt");
+				ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier));
+				gameData = (GameData)ois.readObject();
+				
+				ois.close();
+				
+				fichier =  new File("saves/player.txt");
+				ois =  new ObjectInputStream(new FileInputStream(fichier));
+				player = (Player)ois.readObject();
+				
+				ois.close();
+				
+				fichier =  new File("saves/timeData.txt");
+				ois =  new ObjectInputStream(new FileInputStream(fichier));
+				timeData = (TimeData)ois.readObject();
+				
+				ois.close();
+				
+				gameData.setTimeData(timeData);
+				gameData.startGame();
+				view = new View(player, timeData, gameData);
+				battleData = new BattleData(gameData, timeData, view);
+				view.initContext(context);
 			}
+			
 		} else {
 			if (view.clickedOnRessources(location)) {
 				gameData.updateRessourceState();
@@ -98,7 +153,6 @@ public class Main {
 			}
 			
 			if (view.clickedOnCards(location)) {
-				
 				gameData.selectCard((view.toCardPos(location)));
 				timeData.stop(); // planification mode
 				
@@ -146,6 +200,7 @@ public class Main {
 		if (timeData.elapsedPlayer() >= TimeData.PLAYER_DELAY) { // rajouter dans time data playerMoved avec dedans
 			// le updatePosition et le player delay deveindrai un multiplicateur de la stat
 			player.updatePosition();
+			System.out.println(((RoadCell)gameData.map().playerCell(player)).getEntities().size());
 			timeData.resetElapsedBob();
 			
 			if (gameData.map().playerCell(player).card() instanceof EnteringBoost) {
@@ -163,12 +218,11 @@ public class Main {
 			GridPosition g = gameData.map().getPlayerPos(player);
 			((OverGrownField)gameData.map().playerCell(player).card()).fill(g.line(), g.column(), gameData);
 		}
-		
-		battleData.startBattle(m.playerCell(player), player);
+
+		battleData.startBattle(gameData.map().playerCell(player), player);
 	}
 	
-	public void doEventAction(ApplicationContext context) { 
-		
+	public void doEventAction(ApplicationContext context) throws FileNotFoundException, IOException, ClassNotFoundException { 
 		Event event = context.pollOrWaitEvent(50);
 		
 		if (event == null) { // no event
@@ -194,33 +248,22 @@ public class Main {
 		}
 	}
 	
-	public void intro(ApplicationContext context) {
+	public void intro(ApplicationContext context) throws FileNotFoundException, IOException, ClassNotFoundException {
 		while (!gameData.inGame()) {
 			doEventAction(context);
-			view.drawScreen();
 		}
 	}
 	
-	public void gameLoop(ApplicationContext context) {
+	public void gameLoop(ApplicationContext context) throws FileNotFoundException, IOException, ClassNotFoundException {
 		
 		view.initContext(context);
+		gameData.endGame();
 		gameData.generateGameBoard();
-		intro(context);
+		view.drawScreen();
+		
+		intro(context);	
 		view.blackScreen();
 		view.drawScreen();
-		player.addCard(Card.createCard("Rock"));
-		player.addCard(Card.createCard("Meadow"));
-		player.addCard(Card.createCard("Grove"));
-		player.addCard(Card.createCard("Grove"));
-		player.addCard(Card.createCard("Oblivion"));
-		player.addCard(Card.createCard("Ruins"));
-		player.addCard(Card.createCard("SpiderCocoon"));
-		player.addCard(Card.createCard("Cemetery"));
-		player.addCard(Card.createCard("VampireMansion"));
-		player.addCard(Card.createCard("Battlefield"));
-		player.addCard(Card.createCard("WheatFields"));
-		player.addCard(Card.createCard("Village"));
-		player.addCard(Card.createCard("Village"));
 		
 		while (true) {
 			doTimeAction(context);
@@ -237,7 +280,17 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Main controller = new Main();
-		Application.run(Color.black, controller::gameLoop);
+		Application.run(Color.black, t -> {
+			try {
+				controller.gameLoop(t);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		});
 		System.out.println("Perdu :(");
 	}
 }

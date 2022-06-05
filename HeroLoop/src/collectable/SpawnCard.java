@@ -1,5 +1,6 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import data.GameData;
@@ -10,7 +11,9 @@ import map.Cell;
 import map.RoadCell;
 import time.TimeData;
 
-public class SpawnCard extends AbstractCard {
+public class SpawnCard extends AbstractCard implements Serializable {
+
+	private static final long serialVersionUID = 2249683186183910521L;
 	private final int spawnFrequency;
 	private final String spawnableMonster;
 	private int birthday;
@@ -74,6 +77,9 @@ public class SpawnCard extends AbstractCard {
 	public void spawn(int i, int j, GameData gameData, int day) {	
 		Cell c = move(gameData, i, j);
 		
+		System.out.println("birthday = " + birthday);
+		System.out.println("spawFrequency = " + spawnFrequency);
+		System.out.println("day = " + day);
 		if ((day - birthday) % spawnFrequency == 0) {
 			c.spawn(Monster.createMonster(spawnableMonster, gameData.getLoopCount()));
 		}

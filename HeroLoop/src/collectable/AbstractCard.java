@@ -9,6 +9,8 @@ import entities.Player;
 import map.Cell;
 
 public abstract class AbstractCard implements Card {
+
+	private static final long serialVersionUID = 3376995241453595011L;
 	private final ArrayList<CardState> cardStates;
 	private final String sprite;
 	private final ArrayList<String> ressourcesGiven;

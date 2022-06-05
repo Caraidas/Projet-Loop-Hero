@@ -1,5 +1,6 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import data.GameData;
@@ -8,7 +9,9 @@ import entities.Player;
 import map.Cell;
 import time.TimeData;
 
-public class Oblivion extends AbstractCard {
+public class Oblivion extends AbstractCard implements Serializable {
+
+	private static final long serialVersionUID = 5974450512998092940L;
 
 	public Oblivion(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven) {
 		super(cardStates, sprite, ressourcesGiven);

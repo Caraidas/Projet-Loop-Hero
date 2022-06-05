@@ -1,8 +1,12 @@
 package inventory;
 
+import java.io.Serializable;
+
 import collectable.Item;
 
-public class Inventory { 
+public class Inventory implements Serializable { 
+
+	private static final long serialVersionUID = -6235888908336865765L;
 	private Item armor;
 	private Item shield;
 	private Item weapon;

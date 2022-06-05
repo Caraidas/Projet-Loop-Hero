@@ -1,5 +1,6 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,7 +9,9 @@ import data.GridPosition;
 import entities.Player;
 import time.TimeData;
 
-public class Village extends EnteringBoost {
+public class Village extends EnteringBoost implements Serializable {
+
+	private static final long serialVersionUID = -2626588329519838811L;
 	private int healFactor = 1;
 
 	public Village(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,

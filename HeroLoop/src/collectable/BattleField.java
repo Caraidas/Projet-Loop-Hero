@@ -1,5 +1,6 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import data.GameData;
@@ -8,7 +9,9 @@ import entities.Player;
 import map.RoadCell;
 import time.TimeData;
 
-public class BattleField extends ZoneCard {
+public class BattleField extends ZoneCard implements Serializable {
+
+	private static final long serialVersionUID = 6243177915460869491L;
 	private final String card;
 	
 	public BattleField(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,

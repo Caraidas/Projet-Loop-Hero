@@ -1,5 +1,6 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,7 +10,9 @@ import data.Range;
 import inventory.Deck;
 import inventory.Inventory;
 
-public class Player extends AbstractEntity {
+public class Player extends AbstractEntity implements Serializable {
+
+	private static final long serialVersionUID = -3365884907282642497L;
 	private int position;
 	private final HashMap<String, Integer> ressources;
 	private Inventory inventory; 
@@ -52,6 +55,20 @@ public class Player extends AbstractEntity {
 		this.pureDamage = pureDamage;
 		this.counter = counter;
 		this.regen = regen;
+		
+		addCard(Card.createCard("Rock"));
+		addCard(Card.createCard("Meadow"));
+		addCard(Card.createCard("Grove"));
+		addCard(Card.createCard("Grove"));
+		addCard(Card.createCard("Oblivion"));
+		addCard(Card.createCard("Ruins"));
+		addCard(Card.createCard("SpiderCocoon"));
+		addCard(Card.createCard("Cemetery"));
+		addCard(Card.createCard("VampireMansion"));
+		addCard(Card.createCard("Battlefield"));
+		addCard(Card.createCard("WheatFields"));
+		addCard(Card.createCard("Village"));
+		addCard(Card.createCard("Village"));
 	}
 	
 	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {

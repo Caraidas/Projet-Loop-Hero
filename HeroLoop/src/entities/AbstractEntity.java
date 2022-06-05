@@ -3,10 +3,10 @@ package entities;
 import java.util.HashMap;
 
 abstract class AbstractEntity implements Entity {
-	private final HashMap<String, Double> basicStats; // all the stat shared by the player and the monsters
-	
+
+	private static final long serialVersionUID = 4097468320221143283L;
+	private final HashMap<String, Double> basicStats; // all the stat shared by the player and the monsters	
 	private String battleState = "Idle"; // Only for graphics
-	
 	private final String sprite;
 
 	public AbstractEntity(HashMap<String, Double> basicStats, String sprite) {

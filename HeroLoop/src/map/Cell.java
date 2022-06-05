@@ -1,11 +1,15 @@
 package map;
 
+import java.io.Serializable;
+
 import collectable.Card;
 import collectable.CardState;
 import entities.Monster;
 
 
-public class Cell {
+public class Cell implements Serializable {
+
+	private static final long serialVersionUID = 6948272495975465315L;
 	private Card card;
 	private CardState acceptableCardState;
 	private int zones = 0; // for graphics purposes

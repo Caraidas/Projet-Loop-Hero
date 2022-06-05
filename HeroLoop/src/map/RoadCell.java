@@ -1,5 +1,6 @@
 package map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -9,7 +10,9 @@ import collectable.ZoneCard;
 import entities.Entity;
 import entities.Monster;
 
-public class RoadCell extends Cell {
+public class RoadCell extends Cell implements Serializable {
+
+	private static final long serialVersionUID = -8488929168450547343L;
 	private final ArrayList<Monster> entitiesOn;
 	private String direction;
 	
@@ -61,7 +64,7 @@ public class RoadCell extends Cell {
 			int n = rand.nextInt(100);
 			
 			if (n < 5) { // 5% chance
-				// spawn(Monster.createMonster("Slime", loopCount));
+				spawn(Monster.createMonster("Slime", loopCount));
 			}
 		}
 	}
@@ -92,7 +95,10 @@ public class RoadCell extends Cell {
 		this.addToZone(-1);
 	}
 	
-	
+	public int monstersSize() {
+		return entitiesOn.size();
+	}
+
 	
 	@Override
 	public boolean hasNoMonsters() {

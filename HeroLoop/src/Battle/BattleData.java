@@ -1,5 +1,6 @@
 package Battle;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import map.RoadCell;
 import time.TimeData;
 
 public class BattleData { // this class takes care of all the battle related operations.
+
 	private final GameData gameData;
 	private final TimeData timeData;
 	private final View view;
@@ -31,10 +33,12 @@ public class BattleData { // this class takes care of all the battle related ope
 	public void startBattle(Cell c, Player player) { 
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(player);
+		
 		int hits = 0;
-		int size = ((RoadCell)c).getEntities().size();
+		ArrayList<Monster> monsters = ((RoadCell) (c)).getEntities(); 
+		int size = monsters.size();
 		Random rand = new Random();
-		if (size != 0) { // Checks if there are monster to fight
+		if (!((RoadCell)c).hasNoMonsters()) { // Checks if there are monster to fight
 			timeData.accelerateTime(1);
 			gameData.switchGameState();
 			view.drawScreen();
@@ -53,13 +57,13 @@ public class BattleData { // this class takes care of all the battle related ope
 					loot(target, player);
 					((RoadCell)c).getEntities().remove(n);
 					if (target.revive()) // see if the monster can revive
-						if (target.getSprite() == "Ghost") // if the monster is a ghost than do spawn a ghost of a ghost
+						if (target.getSprite().equals("Ghost")) // if the monster is a ghost than do spawn a ghost of a ghost
 							((RoadCell)c).spawn(Monster.createMonster("GhostOfAGhost", gameData.getLoopCount()));
-						else if(target.getSprite() == "GhostOfAGhost") // if the monster is a ghost than do spawn a Prime matter
+						else if(target.getSprite().equals("GhostOfAGhost")) // if the monster is a ghost than do spawn a Prime matter
 							((RoadCell)c).spawn(Monster.createMonster("PrimeMatter", gameData.getLoopCount()));
 						else // do spawn a ghost if the monster revive
 							((RoadCell)c).spawn(Monster.createMonster("Ghost", gameData.getLoopCount()));
-					view.drawScreen();					
+					view.drawScreen();				
 					size = ((RoadCell)c).getEntities().size();
 					
 					if (size == 0) {

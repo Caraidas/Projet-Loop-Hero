@@ -1,5 +1,6 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,7 +12,9 @@ import map.Cell;
 import map.RoadCell;
 import time.TimeData;
 
-public class ZoneCard extends AbstractCard {
+public class ZoneCard extends AbstractCard implements Serializable {
+
+	private static final long serialVersionUID = 6408565026952707721L;
 	private GridPosition position;
 	private final ArrayList<GridPosition> zone;
 	private final HashMap<String, Double> boost;

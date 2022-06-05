@@ -1,5 +1,6 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,7 +9,7 @@ import data.GridPosition;
 import entities.Player;
 import time.TimeData;
 
-public interface Card {
+public interface Card extends Serializable {
 	
 	String sprite();
 	

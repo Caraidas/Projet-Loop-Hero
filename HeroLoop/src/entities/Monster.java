@@ -1,9 +1,12 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Monster extends AbstractEntity {
+public class Monster extends AbstractEntity implements Serializable {
+
+	private static final long serialVersionUID = 6124488898763497165L;
 	private final double baseStrength;
 	private final int ressourceChance;
 	private final ArrayList<String> dropableRessources;

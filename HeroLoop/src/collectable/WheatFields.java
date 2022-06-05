@@ -1,5 +1,6 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import data.GameData;
 import data.GridPosition;
@@ -7,7 +8,9 @@ import entities.Player;
 import map.Cell;
 import time.TimeData;
 
-public class WheatFields extends SpawnCard {
+public class WheatFields extends SpawnCard implements Serializable {
+
+	private static final long serialVersionUID = 8318679728612632913L;
 	private GridPosition villagePos = new GridPosition(0, 0);
 
 	public WheatFields(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,

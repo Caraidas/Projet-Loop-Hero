@@ -1,5 +1,6 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,7 +9,9 @@ import data.GridPosition;
 import entities.Player;
 import time.TimeData;
 
-public class BoostCard extends AbstractCard {
+public class BoostCard extends AbstractCard implements Serializable {
+
+	private static final long serialVersionUID = 1901361545726339994L;
 	private final HashMap<String, Double> boost;
 
 	public BoostCard(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, HashMap<String, Double> boost) {

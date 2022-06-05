@@ -1,12 +1,19 @@
 package map;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 import collectable.CardState;
 import data.GridPosition;
 import entities.Player;
 
-public class Map {
+public class Map implements Serializable {
+	
+	private static final long serialVersionUID = 1123429668512568060L;
 	private final Cell map[][];
 	private final ArrayList<GridPosition> loop = new ArrayList<>();
 
@@ -42,24 +49,23 @@ public class Map {
 		return i >= 0 && i < lines() && j >= 0 && j < columns();
 	}
 	
-	public void generateLoop() {
-		
-		for (int i = 2; i <= 11; i++) { 
-			loop.add(new GridPosition(i, 2));
-		}
-		
-		for (int i = 3; i <= 10; i++) {
-			loop.add(new GridPosition(11, i));
-		}
-		
-		for (int i = 10; i >= 2; i--) {
-			loop.add(new GridPosition(i, 10));
-		}
-		
-		for (int i = 9; i >= 3; i--) {
-			loop.add(new GridPosition(2, i));
-		}
-	}
+	public void generateLoop() throws IOException {
+        Random r = new Random();
+        int x = r.nextInt(3) + 1;
+        
+        try(BufferedReader br = new BufferedReader(new FileReader("ressources/loops/loop"+ x +".txt"))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                System.out.println(line);
+                String[] parts = line.split(",");
+                loop.add(new GridPosition(Integer.parseInt(parts[0]),Integer.parseInt(parts[1])));
+                sb.append(line);
+                line = br.readLine();
+            }
+        }
+    }
 	
 	public void generateMap() {
 		for (int i = 0; i < map.length; i++) {

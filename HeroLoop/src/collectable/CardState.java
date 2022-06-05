@@ -1,6 +1,8 @@
 package collectable;
 
-public enum CardState { // Represents the three different states (types) a card can have.
+import java.io.Serializable;
+
+public enum CardState implements Serializable { // Represents the three different states (types) a card can have.
 	ROAD, 
 	ROADSIDE,
 	LANDSCAPE;

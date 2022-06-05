@@ -1,6 +1,10 @@
 package time;
 
-public class TimeData {
+import java.io.Serializable;
+
+public class TimeData implements Serializable {
+
+	private static final long serialVersionUID = 4586595290628799340L;
 	private long tick = System.currentTimeMillis();
 	private long elapsedTotal = 0; 	// elapsed time since creation
 	private long elapsedPlayer = 0; 	// elapsed time since last Player reset()

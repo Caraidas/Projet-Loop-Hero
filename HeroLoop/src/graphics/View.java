@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
@@ -21,6 +22,7 @@ import map.RoadCell;
 import time.TimeData;
 
 public class View {
+
 	private final Player player;
 	private final TimeData timeData;
 	private final GameData gameData;
@@ -72,7 +74,7 @@ public class View {
 	public void drawMonsters(Graphics2D graphics, int i, int j, Cell c) {
 		int newI;
 		int newJ;
-		ArrayList<Monster> monsters = ((RoadCell) (c)).getEntities();
+		ArrayList<Monster> monsters = ((RoadCell)(c)).getEntities();
 		for (int index = 0; index < monsters.size(); index++) {
 			ImageConstructor monsterImage = new ImageConstructor(
 					Path.of("ressources/Entities-Sprite/outOfBattle/monsters/" + monsters.get(index).getSprite() + ".png"),
@@ -182,7 +184,7 @@ public class View {
 		int i = 6;
 		graphics.setColor(Color.white);
 		for (String s : player.basicStats().keySet()) {
-			if (s != "hp" && s != "hpMax") {
+			if (!s.equals("hp") && !s.equals("hpMax")) {
 				graphics.drawString(s + " : " + (round((player.basicStats().get(s)), 1)), (21 * caseSize) + 50,
 						(int) (550 + (20 * i)));
 				i++;
@@ -192,7 +194,7 @@ public class View {
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 21));
 		String playerDamage = "damage : " + player.damageString();
 		graphics.drawString(playerDamage, (21 * caseSize) + 50, (int) (height - 215));
-
+ 
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 35));
 		graphics.drawString("- Statistiques -", (21 * caseSize) + 30, (int) (height - 270));
 	}
@@ -426,8 +428,8 @@ public class View {
 		}
 		
 		for (String stat : m.basicStats().keySet()) {
-			if (stat != "hpMax" && stat != "undead") {
-				if (stat == "hp") {
+			if (!stat.equals("hpMax") && !stat.equals("undead")) {
+				if (stat.equals("hp")) {
 					String s = stat + " : " + round(m.basicStats().get(stat), 2) + "/" + m.getHpMax();
 					graphics.setColor(Color.red);
 					graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
@@ -467,15 +469,25 @@ public class View {
 		image = new ImageConstructor(Path.of("ressources/Utility-Sprite/introMenu.png"), (2 * (width / 10)), height);
 		drawImage(graphics, (int)(4 * (width / 10)), 0, image);
 		
-		image = new ImageConstructor(Path.of("ressources/Utility-Sprite/HUD/Button.png"), -2, -2);
-		drawImage(graphics, (int)(4 * (width / 10)) + 53, (int)(3 * (height /8)), image);
-		
 		image = new ImageConstructor(Path.of("ressources/Utility-Sprite/logo.png"), -1.5, -1.5);
 		drawImage(graphics, (int)(4 * (width / 10) + 10), 30, image);
+		
+		
+		drawIntroButtons(graphics);
+	}
+	
+	public void drawIntroButtons(Graphics2D graphics) {
+		ImageConstructor image = new ImageConstructor(Path.of("ressources/Utility-Sprite/HUD/Button.png"), -2, -2);
+		drawImage(graphics, (int)(4 * (width / 10)) + 53, (int)(3 * (height /8)), image);
 		
 		graphics.setColor(Color.white);
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		graphics.drawString("Commencer", (int)(4 * (width / 10)) + 100, (int)(3 * (height /8) + 23));
+		
+		image = new ImageConstructor(Path.of("ressources/Utility-Sprite/HUD/Button.png"), -2, -2);
+		drawImage(graphics, (int)(4 * (width / 10)) + 53, (int)(3 * (height /8) + caseSize), image);
+		
+		graphics.drawString("Continuer", (int)(4 * (width / 10) + 10) + 100, (int)(3 * (height /8) + caseSize + 23));
 	}
 	
 	public void drawRessourceMenu(Graphics2D graphics) {
@@ -562,6 +574,11 @@ public class View {
 	public boolean clickedOnPlay(Point2D.Float location) {
 		return (location.x >= ((4 * (width / 10)) + 53) && location.x < (6 * (width / 10) - 50)
 				&& location.y >= (3 * (height /8)) && location.y < (3 * (height /8) + 30));
+	}
+	
+	public boolean clickedOnContinue(Point2D.Float location) {
+		return (location.x >= ((4 * (width / 10)) + 53) && location.x < (6 * (width / 10) - 50)
+				&& location.y >= (3 * (height /8) + caseSize) && location.y < (3 * (height /8) + caseSize + 30));
 	}
 	
 	public boolean clickedOnRessources(Point2D.Float location) {

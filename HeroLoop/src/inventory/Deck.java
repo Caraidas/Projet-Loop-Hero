@@ -1,10 +1,13 @@
 package inventory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import collectable.Card;
 
-public class Deck {
+public class Deck implements Serializable {
+
+	private static final long serialVersionUID = -3960471687503556044L;
 	private final ArrayList<Card> cards;
 	
 	public Deck() { // create a deck

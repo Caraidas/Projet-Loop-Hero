@@ -1,10 +1,13 @@
 package collectable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Item {
+public class Item implements Serializable {
+	
+	private static final long serialVersionUID = 7677443371031898904L;
 	private final String sprite;
 	private final String type;
 	private HashMap<String, Double> stats = new HashMap<>();

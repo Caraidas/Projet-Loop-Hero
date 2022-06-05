@@ -1,5 +1,7 @@
 package data;
 
-public record GridPosition(int line, int column) { // represents a position on a grid
+import java.io.Serializable;
+
+public record GridPosition(int line, int column) implements Serializable { // represents a position on a grid
 
 }
