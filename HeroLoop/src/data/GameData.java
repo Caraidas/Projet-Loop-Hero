@@ -4,6 +4,7 @@ import collectable.BattleField;
 import collectable.Card;
 import collectable.DailyBoost;
 import collectable.Oblivion;
+import collectable.Village;
 import collectable.ZoneCard;
 import entities.Player;
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 		this.addCardToDrawPile(Card.createCard("SpiderCocoon"), 6);
 		this.addCardToDrawPile(Card.createCard("WheatFields"), 6);
 		this.addCardToDrawPile(Card.createCard("Village"), 3);
+		this.addCardToDrawPile(Card.createCard("Beacon"), 3);
 	}
 	
 	public void addCardToDrawPile(Card c, int n) {
@@ -58,7 +60,7 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 		for (int i = 0; i < map.lines(); i++) {
 			for (int j = 0; j < map.columns(); j++) {
 				if (map.getCell(i, j).card() instanceof BattleField) {
-					map.getCell(i, j).card().spawn(i, j, this, timeData.dayCount());
+					map.getCell(i, j).card().spawn(i, j, this, timeData.dayCount(), "");
 				}
 			}
 		}
@@ -67,7 +69,7 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 	public void spawn() {
 		for (int i = 0; i < map.loop().size(); i++) {
 			if (i != 0) {
-				((RoadCell)map.getCell(map.loop().get(i).line(), map.loop().get(i).column())).spawn(timeData.dayCount(), loopCount);
+				((RoadCell)map.getCell(map.loop().get(i).line(), map.loop().get(i).column())).spawn(timeData.dayCount(), loopCount, "");
 			}
 		}
 		
@@ -75,7 +77,17 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 			for (int j = 0; j < map.columns(); j++) {
 				if (map.getCell(i, j).card() != null && (map.getCell(i, j).card() instanceof BattleField == false)) {
 					System.out.println("day in gamedata from timeData.dayCount() = " + timeData.dayCount());
-					map.getCell(i, j).card().spawn(i, j, this, timeData.dayCount());
+					map.getCell(i, j).card().spawn(i, j, this, timeData.dayCount(), "");
+				}
+			}
+		}
+	}
+	
+	public void dailyCardAction(Player player) {
+		for (int i = 0; i < map.lines(); i++) {
+			for (int j = 0; j < map.columns(); j++) {
+				if (map.getCell(i, j).card() instanceof DailyBoost) {
+					map.getCell(i, j).card().cardAction(player, this, timeData, new GridPosition(i, j));
 				}
 			}
 		}
@@ -84,10 +96,35 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 	public void cardAction(Player player) {
 		for (int i = 0; i < map.lines(); i++) {
 			for (int j = 0; j < map.columns(); j++) {
-				if (map.getCell(i, j).card() instanceof DailyBoost || map.getCell(i, j).card() instanceof ZoneCard) {
+				if (map.getCell(i, j).card() instanceof ZoneCard) {
 					map.getCell(i, j).card().cardAction(player, this, timeData, new GridPosition(i, j));
 				}
 			}
+		}
+	}
+	
+	public void spawnQuestMonster() {
+		System.out.println("in spawnQuestMonster gd");
+		Random rand = new Random();
+		int n = rand.nextInt(33) + 1;
+		
+		GridPosition g = map().loop().get(n);
+		RoadCell cell = ((RoadCell)map().getCell(g));
+		
+		while (cell.card() instanceof Village) {
+			n = rand.nextInt(33) + 1;
+			g = map().loop().get(n);
+			cell = ((RoadCell)map().getCell(g));
+		}
+		
+		if (cell.card() == null) {
+			System.out.println("in card == null");
+			System.out.println(cell.card());
+			cell.spawn(timeData.dayCount(), loopCount + 2, "Quest");
+		} else {
+			System.out.println("in card not null");
+			System.out.println(cell.card());
+			cell.card().spawn(g.line(), g.column(), this, timeData.dayCount() + 2, "Quest");
 		}
 	}
 	

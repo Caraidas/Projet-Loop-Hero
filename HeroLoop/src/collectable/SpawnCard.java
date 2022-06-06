@@ -78,15 +78,17 @@ public class SpawnCard extends AbstractCard implements Serializable {
 	}
 
 	@Override
-	public void spawn(int i, int j, GameData gameData, int day) {	
+	public void spawn(int i, int j, GameData gameData, int day, String quest) {	
 		Cell c = move(gameData, i, j);
-		
-		System.out.println("birthday = " + birthday);
-		System.out.println("spawFrequency = " + spawnFrequency);
-		System.out.println("day = " + day);
-		if ((day - birthday) % spawnFrequency == 0) {
-			c.spawn(Monster.createMonster(spawnableMonster, gameData.getLoopCount()));
+		if (quest.equals("Quest")) {
+			c.spawn(Monster.createMonster(spawnableMonster, gameData.getLoopCount() + 2, quest));
+		} else {
+			if ((day - birthday) % spawnFrequency == 0) {
+				c.spawn(Monster.createMonster(spawnableMonster, gameData.getLoopCount(), quest));
+			}
 		}
+		
+		
 	}
 	
 	public void setBirthday(int b) { // set when the ennemy spawn

@@ -8,8 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
+import java.util.List;
+
 import Battle.BattleData;
 import collectable.Card;
+import collectable.DailyBoost;
 import collectable.EnteringBoost;
 import collectable.Item;
 import collectable.OverGrownField;
@@ -25,13 +28,12 @@ import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
 import graphics.View;
 import map.Map;
-import map.RoadCell;
 import save.Save;
 import time.TimeData;
 
 public class Main {
 	private final static Map m = new Map();
-	private static Player player = new Player(0, new HashMap<>(), new Range(20, 22), 0, 0, 0, 0);
+	private static Player player = new Player(0, new HashMap<>(), new Range(20, 22), 0, 0, 0, 0, 1);
 	private static TimeData timeData = new TimeData();
 	private static GameData gameData = new GameData(m, timeData);
 	private static View view = new View(player, timeData, gameData);
@@ -46,7 +48,7 @@ public class Main {
 	public void doTimeAction(ApplicationContext context) {
 		if (timeData.dayPassed()) { 
 			gameData.spawn();
-			gameData.cardAction(player);
+			gameData.dailyCardAction(player);
 		}
 		
 		if (timeData.elapsedRegen() >= TimeData.REGEN_DELAY) {
@@ -143,7 +145,7 @@ public class Main {
 				
 				if (deposedCard instanceof EnteringBoost == false) {
 					deposedCard.cardAction(player, gameData, timeData, pos);
-				} 
+				}
 				
 				deposedCard.giveRessource(player);
 				
@@ -168,26 +170,20 @@ public class Main {
 	}
 	
 	private void doPlayerAction(ApplicationContext context) {
-		if (timeData.elapsedPlayer() >= TimeData.PLAYER_DELAY) { // rajouter dans time data playerMoved avec dedans
-			// le updatePosition et le player delay deveindrai un multiplicateur de la stat
+		if (timeData.playerMoved(player)) { 
 			player.updatePosition();
-			System.out.println(((RoadCell)gameData.map().playerCell(player)).getEntities().size());
 			timeData.resetElapsedBob();
-			
-			if (gameData.map().playerCell(player).card() instanceof EnteringBoost) {
-				((Village)gameData.map().playerCell(player).card()).cardAction(player, gameData, 
-						timeData, gameData.map().getPlayerPos(player));
-			}
+			GridPosition g = gameData.map().getPlayerPos(player);
 			
 			if (player.position() == 0) {
 				gameData.updateLoopCount();
-				player.heal(0.2);
 			}
-		}
-		
-		if (gameData.map().playerCell(player).card() instanceof OverGrownField) {
-			GridPosition g = gameData.map().getPlayerPos(player);
-			((OverGrownField)gameData.map().playerCell(player).card()).fill(g.line(), g.column(), gameData);
+			
+			gameData.cardAction(player);
+			
+			if (gameData.map().getCell(g).card() instanceof DailyBoost == false && gameData.map().getCell(g).card() != null) {
+				gameData.map().getCell(g).card().cardAction(player, gameData, timeData, g);
+			}
 		}
 
 		battleData.startBattle(gameData.map().playerCell(player), player);
@@ -237,8 +233,8 @@ public class Main {
 		view.drawScreen();
 		
 		while (true) {
-			doTimeAction(context);
 			doPlayerAction(context);
+			doTimeAction(context);		
 			doEventAction(context);
 			view.drawScreen();
 			if (player.isDead()) {

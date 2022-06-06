@@ -57,23 +57,28 @@ public class RoadCell extends Cell implements Serializable {
 		return false;
 	}
 	
-	public void spawn(int dayCount, int loopCount) {
-		if (this.card() == null) {
-			Random rand = new Random();
-			
-			int n = rand.nextInt(100);
-			
-			if (n < 5) { // 5% chance
-				spawn(Monster.createMonster("Slime", loopCount));
+	public void spawn(int dayCount, int loopCount, String quest) {
+		if (quest.equals("Quest")) {
+			spawn(Monster.createMonster("Slime", loopCount, quest));
+		} else {
+			if (this.card() == null) {
+				Random rand = new Random();
+				
+				int n = rand.nextInt(100);
+				
+				if (n < 5) { // 5% chance
+					spawn(Monster.createMonster("Slime", loopCount, quest));
+				}
 			}
 		}
+		
 	}
 	
 	public void fill(String monster, int lvl) {
 		if (entitiesOn.size() != 0) {
 			int n = (5 - entitiesOn.size());
 			for (int i = 0; i < n; i++) {
-				spawn(Monster.createMonster(monster, lvl));
+				spawn(Monster.createMonster(monster, lvl, ""));
 			}
 		}
 	}

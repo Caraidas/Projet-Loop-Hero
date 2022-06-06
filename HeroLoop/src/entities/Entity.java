@@ -25,7 +25,7 @@ public interface Entity extends Serializable {
 		}
 	}
 	
-	default void heal(double percentage) { // use the globalheal with percentage (for the fire camp)
+	default void campFireHeal(double percentage) { // use the globalheal with percentage (for the fire camp)
 		globalheal(getStat("hpMax") * percentage);
  	}
 	
@@ -75,5 +75,9 @@ public interface Entity extends Serializable {
 		if (getStat("hp") > getStat("hpMax")) {
 			basicStats().replace("hp", getStat("hpMax"));
 		}
+	}
+	
+	default void setStat(String stat, double value) {
+		basicStats().put(stat, value);
 	}
 }

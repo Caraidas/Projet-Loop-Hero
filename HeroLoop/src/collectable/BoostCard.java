@@ -34,7 +34,7 @@ public class BoostCard extends AbstractCard implements Serializable {
 	}
 
 	@Override
-	public void spawn(int i, int j, GameData gameData, int day) {}
+	public void spawn(int i, int j, GameData gameData, int day, String quest) {}
 	
 	public HashMap<String, Double> boost() { // get the statistic of the boost
 		return boost;

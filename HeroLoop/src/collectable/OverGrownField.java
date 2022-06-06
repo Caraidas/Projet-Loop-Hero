@@ -4,8 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import data.GameData;
+import data.GridPosition;
+import entities.Player;
 import map.Cell;
 import map.RoadCell;
+import time.TimeData;
 
 public class OverGrownField extends SpawnCard implements Serializable {
 
@@ -16,8 +19,9 @@ public class OverGrownField extends SpawnCard implements Serializable {
 		super(cardStates, sprite, ressourcesGiven, spawnFrequency, spawnableMonster, birthday, moveWhenSpawn);
 	}
 	
-	public void fill(int i, int j, GameData gameData) { // fill the fight with FieldOfBlades
-		Cell c = move(gameData, i, j);
+	@Override
+	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) { // fill the fight with FieldOfBlades
+		Cell c = move(gameData, pos.line(), pos.column());
 		if (c instanceof RoadCell) {
 			((RoadCell)c).fill("FieldOfBlades", gameData.getLoopCount());
 		}

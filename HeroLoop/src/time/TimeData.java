@@ -2,6 +2,8 @@ package time;
 
 import java.io.Serializable;
 
+import entities.Player;
+
 public class TimeData implements Serializable {
 
 	private static final long serialVersionUID = 4586595290628799340L;
@@ -58,8 +60,10 @@ public class TimeData implements Serializable {
 	
 	
 	public void stop() {
-		tickTock();
-		stopped = true;
+		if (!stopped) {
+			tickTock();
+			stopped = true;
+		}	
 	}
 
 	public void start() {
@@ -102,6 +106,10 @@ public class TimeData implements Serializable {
 			elapsedTotal += 1;
 			dayPassed();
 		}
+	}
+	
+	public boolean playerMoved(Player player) {
+		return (elapsedPlayer >= (PLAYER_DELAY * (1 / player.getStat("speed"))));
 	}
 	
 	// Getters :

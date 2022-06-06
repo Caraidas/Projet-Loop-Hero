@@ -98,7 +98,7 @@ public class Item implements Serializable {
 		return stat;
 	}
 	
-	public double ringStat(String stat, int lvl) {
+	private double ringStat(String stat, int lvl) {
 		Objects.requireNonNull(stat);
 		Objects.requireNonNull(lvl);
 		// switch case for the ring random first statistic

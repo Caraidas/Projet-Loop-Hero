@@ -3,6 +3,7 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Monster extends AbstractEntity implements Serializable {
 
@@ -10,15 +11,19 @@ public class Monster extends AbstractEntity implements Serializable {
 	private final double baseStrength;
 	private final int ressourceChance;
 	private final ArrayList<String> dropableRessources;
+	
+	private final String questMonster;
 
-	public Monster(HashMap<String, Double> basicStats, ArrayList<String> dropableRessources, double baseStrength, int ressourceChance, String sprite) {	
+	public Monster(HashMap<String, Double> basicStats, ArrayList<String> dropableRessources, double baseStrength, int ressourceChance, String sprite, 
+			String questMonster) {	
 		super(basicStats, sprite);
 		this.baseStrength = baseStrength;
 		this.ressourceChance = ressourceChance;
-		this.dropableRessources = dropableRessources;
+		this.dropableRessources = Objects.requireNonNull(dropableRessources);
+		this.questMonster = Objects.requireNonNull(questMonster);
 	}
 	
-	public static Monster createMonster(String name, int lvl) { 
+	public static Monster createMonster(String name, int lvl, String quest) { 
 	/*
 	 * Create a monster with a switch case and in parameter the String of the monster and the actual level of the loop
 	 * the monsters contains a List of dropable ressources with witch we can add ressources that the monster can drop according to the wiki of the game
@@ -29,7 +34,7 @@ public class Monster extends AbstractEntity implements Serializable {
 		case "RatWolf" -> {
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
-			Monster ratWolf = new Monster(new HashMap<>(), dropableRessources, 3.6, 40, "RatWolf");
+			Monster ratWolf = new Monster(new HashMap<>(), dropableRessources, 3.6, 40, "RatWolf", quest);
 			ratWolf.addStat("hp", (int)(16 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			ratWolf.addStat("hpMax", (int)(16 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			ratWolf.addStat("def", 0);
@@ -42,7 +47,7 @@ public class Monster extends AbstractEntity implements Serializable {
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Shapeless Mass");
 			dropableRessources.add("Craft Fragment");
-			Monster slime = new Monster(new HashMap<>(), dropableRessources, 3.3, 35, "Slime");
+			Monster slime = new Monster(new HashMap<>(), dropableRessources, 3.3, 35, "Slime", quest);
 			slime.addStat("hp", (int)(13 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			slime.addStat("hpMax", (int)(13 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			slime.addStat("def", 0);
@@ -54,7 +59,7 @@ public class Monster extends AbstractEntity implements Serializable {
 		case "Skeleton" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Pitful Remains");
-			Monster skeleton = new Monster(new HashMap<>(), dropableRessources, 9, 85, "Skeleton");
+			Monster skeleton = new Monster(new HashMap<>(), dropableRessources, 9, 85, "Skeleton", quest);
 			skeleton.addStat("hp", (int)(12 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			skeleton.addStat("hpMax", (int)(12 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			skeleton.addStat("def", 0);
@@ -66,7 +71,7 @@ public class Monster extends AbstractEntity implements Serializable {
 		case "Spider" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
-			Monster spider = new Monster(new HashMap<>(), dropableRessources, 3.1, 45, "Spider");
+			Monster spider = new Monster(new HashMap<>(), dropableRessources, 3.1, 45, "Spider", quest);
 			spider.addStat("hp", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			spider.addStat("hpMax", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			spider.addStat("def", 0);
@@ -79,7 +84,7 @@ public class Monster extends AbstractEntity implements Serializable {
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Stable Branches");		
 			dropableRessources.add("Craft Fragment");
-			Monster chest = new Monster(new HashMap<>(), dropableRessources, 0, 100, "Chest");
+			Monster chest = new Monster(new HashMap<>(), dropableRessources, 0, 100, "Chest", quest);
 			chest.addStat("hp", (int)(11 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			chest.addStat("hpMax", (int)(11 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			chest.addStat("def", 0);
@@ -93,7 +98,7 @@ public class Monster extends AbstractEntity implements Serializable {
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Stable Branches");		
 			dropableRessources.add("Living Fabric");
-			Monster mimic = new Monster(new HashMap<>(), dropableRessources, 7, 100, "Mimic");
+			Monster mimic = new Monster(new HashMap<>(), dropableRessources, 7, 100, "Mimic", quest);
 			mimic.addStat("hp", (int)(26 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			mimic.addStat("hpMax", (int)(26 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			mimic.addStat("def", 0);
@@ -106,7 +111,7 @@ public class Monster extends AbstractEntity implements Serializable {
 		case "ScorchWorm" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Living Fabric");
-			Monster scorchWorm = new Monster(new HashMap<>(), dropableRessources, 2.7, 85, "ScorchWorm");
+			Monster scorchWorm = new Monster(new HashMap<>(), dropableRessources, 2.7, 85, "ScorchWorm", quest);
 			scorchWorm.addStat("hp", (int)(10 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			scorchWorm.addStat("hpMax", (int)(10 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			scorchWorm.addStat("def", 0);
@@ -121,7 +126,7 @@ public class Monster extends AbstractEntity implements Serializable {
 			dropableRessources.add("Stable branches");
 			dropableRessources.add("Scare away");
 			dropableRessources.add("Countermeasure");
-			Monster scarecrow = new Monster(new HashMap<>(), dropableRessources, 8.25, 100, "Scarecrow");
+			Monster scarecrow = new Monster(new HashMap<>(), dropableRessources, 8.25, 100, "Scarecrow", quest);
 			scarecrow.addStat("hp", (int)(18 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			scarecrow.addStat("hpMax", (int)(18 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			scarecrow.addStat("def", 0);
@@ -134,7 +139,7 @@ public class Monster extends AbstractEntity implements Serializable {
 		case "Vampire" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Pitiful Remains");
-			Monster vampire = new Monster(new HashMap<>(), dropableRessources, 5.8, 45, "Vampire");
+			Monster vampire = new Monster(new HashMap<>(), dropableRessources, 5.8, 45, "Vampire", quest);
 			vampire.addStat("hp", (int)(18 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			vampire.addStat("hpMax", (int)(18 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			vampire.addStat("def", 0);
@@ -147,7 +152,7 @@ public class Monster extends AbstractEntity implements Serializable {
 		case "Ghost" ->{
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Pitiful Remains");		
-			Monster ghost = new Monster(new HashMap<>(), dropableRessources, 3, 0, "Ghost");
+			Monster ghost = new Monster(new HashMap<>(), dropableRessources, 3, 0, "Ghost", quest);
 			ghost.addStat("hp", (int)(3 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			ghost.addStat("hpMax", (int)(3 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			ghost.addStat("def", 0);
@@ -161,7 +166,7 @@ public class Monster extends AbstractEntity implements Serializable {
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Pitiful Remains");
 			dropableRessources.add("Shapeless Mass");
-			Monster ghostOfAGhost = new Monster(new HashMap<>(), dropableRessources, 4, 0, "GhostOfAGhost");
+			Monster ghostOfAGhost = new Monster(new HashMap<>(), dropableRessources, 4, 0, "GhostOfAGhost", quest);
 			ghostOfAGhost.addStat("hp", (int)(6 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			ghostOfAGhost.addStat("hpMax", (int)(6 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			ghostOfAGhost.addStat("def", 0);
@@ -175,7 +180,7 @@ public class Monster extends AbstractEntity implements Serializable {
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Pitful Remains");
 			dropableRessources.add("Time Shard");
-			Monster PrimeMatter = new Monster(new HashMap<>(), dropableRessources, 4.5, 0, "PrimeMatter");
+			Monster PrimeMatter = new Monster(new HashMap<>(), dropableRessources, 4.5, 0, "PrimeMatter", quest);
 			PrimeMatter.addStat("hp", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			PrimeMatter.addStat("hpMax", (int)(8 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			PrimeMatter.addStat("def", 0);
@@ -189,7 +194,7 @@ public class Monster extends AbstractEntity implements Serializable {
 			ArrayList<String> dropableRessources = new ArrayList<>();
 			dropableRessources.add("Pitiful Remains");
 			dropableRessources.add("Shapeless Mass");
-			Monster bloodClot = new Monster(new HashMap<>(), dropableRessources, 4.8, 64, "BloodClot");
+			Monster bloodClot = new Monster(new HashMap<>(), dropableRessources, 4.8, 64, "BloodClot", quest);
 			bloodClot.addStat("hp", (int)(15 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			bloodClot.addStat("hpMax", (int)(15 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			bloodClot.addStat("def", 0);
@@ -203,7 +208,7 @@ public class Monster extends AbstractEntity implements Serializable {
 			dropableRessources.add("Ration");
 			dropableRessources.add("Living Fabric");
 			dropableRessources.add("Shapeless Mass");
-			Monster fieldOfBlades = new Monster(new HashMap<>(), dropableRessources, 5, 80, "FieldOfBlades");
+			Monster fieldOfBlades = new Monster(new HashMap<>(), dropableRessources, 5, 80, "FieldOfBlades", quest);
 			fieldOfBlades.addStat("hp", (int)(20 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			fieldOfBlades.addStat("hpMax", (int)(20 * lvl * 0.95 * (1 + (lvl - 1) * 0.02)));
 			fieldOfBlades.addStat("def", 0);
@@ -230,6 +235,10 @@ public class Monster extends AbstractEntity implements Serializable {
 	
 	public double strength() { // get the damages of the monster
 		return baseStrength;
+	}
+
+	public String getQuestMonster() {
+		return questMonster;
 	}
 
 }

@@ -54,15 +54,19 @@ public class BattleData { // this class takes care of all the battle related ope
 				
 				if (target.isDead()) {
 					
+					if (target.getQuestMonster().equals("Quest")) {
+						player.addAccomplishedQuest(1);
+					}
+					
 					loot(target, player);
 					((RoadCell)c).getEntities().remove(n);
 					if (target.revive()) // see if the monster can revive
 						if (target.getSprite().equals("Ghost")) // if the monster is a ghost than do spawn a ghost of a ghost
-							((RoadCell)c).spawn(Monster.createMonster("GhostOfAGhost", gameData.getLoopCount()));
+							((RoadCell)c).spawn(Monster.createMonster("GhostOfAGhost", gameData.getLoopCount(), ""));
 						else if(target.getSprite().equals("GhostOfAGhost")) // if the monster is a ghost than do spawn a Prime matter
-							((RoadCell)c).spawn(Monster.createMonster("PrimeMatter", gameData.getLoopCount()));
+							((RoadCell)c).spawn(Monster.createMonster("PrimeMatter", gameData.getLoopCount(), ""));
 						else // do spawn a ghost if the monster revive
-							((RoadCell)c).spawn(Monster.createMonster("Ghost", gameData.getLoopCount()));
+							((RoadCell)c).spawn(Monster.createMonster("Ghost", gameData.getLoopCount(), ""));
 					view.drawScreen();				
 					size = ((RoadCell)c).getEntities().size();
 					
@@ -109,7 +113,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			
 			if (veski > victim.getStat("evade")) { // if the player do not evade
 				
-				if (gounter > ((Player)victim).counter()) { // if the player do not counter
+				if (gounter > ((Player)victim).getStat("counter")) { // if the player do not counter
 					
 					attacker.lifeSteal(attacker.getStat("vampirism"), (int)((Monster)attacker).strength());
 					base = ((Monster)attacker).strength();
@@ -139,7 +143,7 @@ public class BattleData { // this class takes care of all the battle related ope
 			
 			attacker.lifeSteal(attacker.getStat("vampirism"), (int)((Player)attacker).damage());
 			System.out.println(attacker + " lifeSteal : " + attacker.getStat("vampirism"));
-			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).pureDamage()));
+			victim.takeDamage((int)((((Player)attacker).damage() - victim.basicStats().get("def")) + ((Player)attacker).getStat("pureDamage")));
 			attacker.setBattleState("Attack");
 			return;
 			

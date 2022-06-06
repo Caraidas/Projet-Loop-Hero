@@ -20,12 +20,12 @@ public class Player extends AbstractEntity implements Serializable {
 	private final ArrayList<Item> items;
 	
 	private Range damage;
-	private int pureDamage;
-	private int counter;
-	@SuppressWarnings("unused")
-	private double regen;
-	@SuppressWarnings("unused")
-	private int damageToAll;
+	
+	// for vilage quest
+	private int accomplishedQuest = 0;
+	
+	// for score
+	private final HashMap<String, Integer> ressourcePoint = new HashMap<>();
 
 	/*
 	 * Creation of the Player that contains:
@@ -38,7 +38,7 @@ public class Player extends AbstractEntity implements Serializable {
 	 * 	- A range for his damages
 	 * 	- And unique statistic of the player (statistic that cannot be used for a monster
 	 */	
-	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {
+	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage) {
 		
 		super(basicStats, "Player");
 		this.position = position;
@@ -50,11 +50,9 @@ public class Player extends AbstractEntity implements Serializable {
 			items.add(null);
 		}
 		
+		// stats that monsters can't have but player can
 		this.ressources = ressources;
 		this.damage = damage;
-		this.pureDamage = pureDamage;
-		this.counter = counter;
-		this.regen = regen;
 		
 		addCard(Card.createCard("Rock"));
 		addCard(Card.createCard("Meadow"));
@@ -68,11 +66,13 @@ public class Player extends AbstractEntity implements Serializable {
 		addCard(Card.createCard("Battlefield"));
 		addCard(Card.createCard("WheatFields"));
 		addCard(Card.createCard("Village"));
-		addCard(Card.createCard("Village"));
+		addCard(Card.createCard("Beacon"));
+		
+		// ressourcePoint.put(); a faire
 	}
 	
-	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll) {
-		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage, pureDamage, counter, regen, damageToAll);
+	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll, double speed) {
+		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage);
 		// Set all the stats of the player
 		this.addStat("hp", 200);
 		this.addStat("hpMax", 250);
@@ -83,6 +83,7 @@ public class Player extends AbstractEntity implements Serializable {
 		this.addStat("evade", 0);
 		this.addStat("regen", regen);
 		this.addStat("damageToAll", damageToAll);
+		this.addStat("speed", speed);
 	}
 	
 	public Card selectedCard(int selected) { //return the card selected by the user
@@ -241,13 +242,13 @@ public class Player extends AbstractEntity implements Serializable {
 	public ArrayList<Item> items() { // get the item of the player
 		return items;
 	}
-	
-	public int pureDamage() { // get the pure damages of the player
-		return pureDamage;
+
+	public boolean accomplishedQuest() {
+		return accomplishedQuest > 0;
 	}
-	
-	public int counter() { // get the percentage of counter of the player
-		return counter;
+
+	public void addAccomplishedQuest(int accomplishedQuest) {
+		this.accomplishedQuest += accomplishedQuest;
 	}
 	
 

@@ -36,13 +36,13 @@ public class ZoneCard extends AbstractCard implements Serializable {
 
 	@Override
 	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) {
+		
 		for (GridPosition g : zone) {
 			Cell c = gameData.map().getCell(g);
 			if (c instanceof RoadCell) {
-				for (Monster m : ((RoadCell)c).getEntities()) {
-					for (String stat : boost.keySet()) {
-						if (m.getStat(stat) == 0) {
-							System.out.println(m + " : " + stat);
+				for (String stat : boost.keySet()) {
+					for (Monster m : ((RoadCell)c).getEntities()) {
+						if (stat.equals("vampirism") && m.getStat(stat) == 0) {
 							m.boostStat(stat, boost.get(stat));
 						}
 					}
@@ -52,12 +52,11 @@ public class ZoneCard extends AbstractCard implements Serializable {
 	}
 
 	@Override
-	public void spawn(int i, int j, GameData gameData, int day) {
+	public void spawn(int i, int j, GameData gameData, int day, String quest) {
 		for (GridPosition g : zone) {
 			if (gameData.map().getCell(g) instanceof RoadCell && ((RoadCell)gameData.map().getCell(g)).getEntities().size() != 0) {
-				System.out.println("Spawn");
 				for (String m : spawnableMonsters) {
-					gameData.map().getCell(g).spawn(Monster.createMonster(m, gameData.getLoopCount()));
+					gameData.map().getCell(g).spawn(Monster.createMonster(m, gameData.getLoopCount(), quest));
 				}
 			}
 		}

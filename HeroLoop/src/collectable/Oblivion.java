@@ -22,7 +22,7 @@ public class Oblivion extends AbstractCard implements Serializable {
 	}
 
 	@Override
-	public void spawn(int i, int j, GameData gameData, int day) {}
+	public void spawn(int i, int j, GameData gameData, int day, String quest) {}
 
 	@Override
 	public void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos) { // effect of oblivion

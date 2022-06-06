@@ -27,7 +27,6 @@ public class DailyBoost extends BoostCard implements Serializable {
 	}
 
 	@Override
-	public void spawn(int i, int j, GameData gameData, int day) {
-		// TODO Auto-generated method stub
+	public void spawn(int i, int j, GameData gameData, int day, String quest) {
 	}
 }

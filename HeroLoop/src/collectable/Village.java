@@ -12,7 +12,7 @@ import time.TimeData;
 public class Village extends EnteringBoost implements Serializable {
 	
 	/*
-	 * heal the player when walk on the tile and give a quest to kill a special enemy then give rewards when the quest is accomplished
+	 * heal the player when he walks on the tile and gives a quest to kill a special enemy then gives a reward when the quest is accomplished
 	 */
 
 	private static final long serialVersionUID = -2626588329519838811L;
@@ -28,6 +28,15 @@ public class Village extends EnteringBoost implements Serializable {
 		for (String stat : super.boost().keySet()) {
 			player.globalheal(super.boost().get(stat) + healFactor * (5 * gameData.getLoopCount()));
 		}
+		
+		if (player.accomplishedQuest()) {
+			player.addAccomplishedQuest(-1);
+			System.out.println("bravo t'as reussi la quete ! ");
+			Item item = new Item();
+			item.setStats(gameData.getLoopCount() + 3);
+			player.addItemInInventory(item);
+		}	
+		gameData.spawnQuestMonster();
 	}
 	
 	public void destroyFields(GameData gameData, GridPosition pos) { //When the village is removed with an oblivion, remove Wheatfield for Overgrown fields

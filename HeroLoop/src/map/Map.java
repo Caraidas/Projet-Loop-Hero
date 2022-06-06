@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+import collectable.Card;
 import collectable.CardState;
 import data.GridPosition;
 import entities.Player;
@@ -46,24 +47,23 @@ public class Map implements Serializable {
 		return this.getCell(g.line(), g.column());
 	}
 	
-	public boolean isValid(int i, int j) { // check if the coordinates are in bounds
+	public boolean isValid(int i, int j) { // checks if the coordinates are in bounds
 		Objects.requireNonNull(i);
 		Objects.requireNonNull(j);
 		return i >= 0 && i < lines() && j >= 0 && j < columns();
 	}
 	
-	public void generateLoop() throws IOException { // generate a loop randomly from already texts files in resources
+	public void generateLoop() throws IOException { // generates a loop randomly from already existing text file in resources
         Random r = new Random();
-        int x = r.nextInt(7) + 1;
+        int x = r.nextInt(6) + 1;
         
         try(BufferedReader br = new BufferedReader(new FileReader("ressources/loops/loop"+ x +".txt"))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 
-            while (line != null) { // read the txt
-                System.out.println(line);
+            while (line != null) { // reads the txt file
                 String[] parts = line.split(",");
-                loop.add(new GridPosition(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]))); // add route on the map
+                loop.add(new GridPosition(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]))); // adds a road on the map  
                 sb.append(line);
                 line = br.readLine();
             }
@@ -85,8 +85,10 @@ public class Map implements Serializable {
 			for (int j = 0; j < map[0].length; j++) {
 				map[i][j].addCardState(determinateCardState(i, j));
 				map[i][j].addDirection(determinateDirection(i, j));
-			}	
+			}
 		}
+		
+		getCell(loop.get(0)).addCard(Card.createCard("Campfire"));
 		
 	}
 	

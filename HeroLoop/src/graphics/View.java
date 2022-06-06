@@ -27,6 +27,8 @@ public class View {
 	private final TimeData timeData;
 	private final GameData gameData;
 	private ApplicationContext context;
+	
+	private ImageConstructor selectable;
 
 	double width = 0.0;
 	double height = 0.0;
@@ -43,6 +45,8 @@ public class View {
 		this.width = getScreenWidth();
 		this.height = getScreenHeight();
 		this.caseSize = (int) ((60 * width) / 1536);
+		
+		selectable = new ImageConstructor(Path.of("ressources/Utility-Sprite/selectable.png"), caseSize, caseSize);
 	}
 
 	private float getScreenWidth() {
@@ -77,8 +81,8 @@ public class View {
 		ArrayList<Monster> monsters = ((RoadCell)(c)).getEntities();
 		for (int index = 0; index < monsters.size(); index++) {
 			ImageConstructor monsterImage = new ImageConstructor(
-					Path.of("ressources/Entities-Sprite/outOfBattle/monsters/" + monsters.get(index).getSprite() + ".png"),
-					(int) (caseSize * 0.25), (int) (caseSize * 0.25));
+					Path.of("ressources/Entities-Sprite/outOfBattle/monsters/" + monsters.get(index).getQuestMonster() + monsters.get(index).getSprite() + ".png"),
+					-0.18, -0.18);
 			
 			if (index == 4) {
 				newI = (int)(i + (caseSize * 0.5) - 5);
@@ -380,8 +384,6 @@ public class View {
 	}
 
 	public void drawCliquableCells(Graphics2D graphics) {
-		ImageConstructor selectable = new ImageConstructor(Path.of("ressources/Map-Sprite/selectable.png"), caseSize,
-				caseSize);
 		if (gameData.selectedCard() != -1) {
 			for (int i = 0; i < gameData.map().lines(); i++) {
 				for (int j = 0; j < gameData.map().columns(); j++) {		
@@ -404,7 +406,7 @@ public class View {
 		int i = 0;
 		for (Monster m : c.getEntities()) {
 			ImageConstructor mnstrImage = new ImageConstructor(
-					Path.of("ressources/Entities-Sprite/InBattle/monsters/" + m.getSprite() +  m.battleState() + ".png"), -0.15, -0.15);
+					Path.of("ressources/Entities-Sprite/InBattle/monsters/" +  m.getSprite() +  m.battleState() + ".png"), -0.15, -0.15);
 			drawImageInBattle(graphics, i, mnstrImage);
 			drawMonsterStat(graphics, i, m);
 			i++;

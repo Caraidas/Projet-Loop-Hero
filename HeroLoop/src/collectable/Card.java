@@ -17,7 +17,7 @@ public interface Card extends Serializable {
 	
 	void cardAction(Player player, GameData gameData, TimeData timeData, GridPosition pos);
 	
-	void spawn(int i, int j, GameData gameData, int day);
+	void spawn(int i, int j, GameData gameData, int day, String quest);
 	
 	default boolean contains(CardState c) {
 		return cardState().contains(c);
@@ -152,6 +152,27 @@ public interface Card extends Serializable {
 			Village village = new Village(c, "Village.png", lst, stats);
 		
 			return village;
+			
+		case "Beacon":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.LANDSCAPE);
+			stats = new HashMap<>();
+			stats.put("speed", 39.0);
+			Beacon beacon = new Beacon(c, "Beacon.png", lst, new GridPosition(0, 0), new ArrayList<>(), 
+					stats, lst, false, 3);
+			
+			return beacon;
+			
+		case "Campfire":
+			c = new ArrayList<>();
+			lst = new ArrayList<>();
+			c.add(CardState.ROAD);
+			stats = new HashMap<>();
+			stats.put("hp", 0.2);
+			CampFire campfire = new CampFire(c, "Campfire.png", lst, stats);
+			
+			return campfire;
 
 		default:
 			return null;
