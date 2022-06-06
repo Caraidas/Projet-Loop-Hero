@@ -8,6 +8,7 @@ import data.GameData;
 import data.GridPosition;
 import entities.Monster;
 import entities.Player;
+import inventory.Ressource;
 import map.Cell;
 import map.RoadCell;
 import time.TimeData;
@@ -21,7 +22,7 @@ public class SpawnCard extends AbstractCard implements Serializable {
 	private final int moveWhenSpawn;
 	
 	
-	public SpawnCard(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, int spawnFrequency,
+	public SpawnCard(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven, int spawnFrequency,
 			String spawnableMonster, int birthday, int moveWhenSpawn) {
 		super(cardStates, sprite, ressourcesGiven);
 		this.spawnFrequency = spawnFrequency;

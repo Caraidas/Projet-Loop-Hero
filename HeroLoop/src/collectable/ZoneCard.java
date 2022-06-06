@@ -8,6 +8,7 @@ import data.GameData;
 import data.GridPosition;
 import entities.Monster;
 import entities.Player;
+import inventory.Ressource;
 import map.Cell;
 import map.RoadCell;
 import time.TimeData;
@@ -22,7 +23,7 @@ public class ZoneCard extends AbstractCard implements Serializable {
 	private final boolean diagonal;
 	private final int dimension;
 
-	public ZoneCard(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, GridPosition position, 
+	public ZoneCard(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven, GridPosition position, 
 			ArrayList<GridPosition> zone, HashMap<String, Double> boost, ArrayList<String> spawnableMonsters, boolean diagonal, 
 			int dimension) {
 		super(cardStates, sprite, ressourcesGiven);

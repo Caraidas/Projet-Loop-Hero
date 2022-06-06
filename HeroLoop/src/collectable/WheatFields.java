@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import map.Cell;
 import time.TimeData;
 
@@ -13,7 +14,7 @@ public class WheatFields extends SpawnCard implements Serializable {
 	private static final long serialVersionUID = 8318679728612632913L;
 	private GridPosition villagePos = new GridPosition(0, 0);
 
-	public WheatFields(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,
+	public WheatFields(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven,
 			int spawnFrequency, String spawnableMonster, int birthday, int moveWhenSpawn) {
 		super(cardStates, sprite, ressourcesGiven, spawnFrequency, spawnableMonster, birthday, moveWhenSpawn);
 	}

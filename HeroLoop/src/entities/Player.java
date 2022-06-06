@@ -9,23 +9,21 @@ import collectable.Item;
 import data.Range;
 import inventory.Deck;
 import inventory.Inventory;
+import inventory.Ressource;
 
 public class Player extends AbstractEntity implements Serializable {
 
 	private static final long serialVersionUID = -3365884907282642497L;
 	private int position;
-	private final HashMap<String, Integer> ressources;
-	private Inventory inventory; 
+	private final HashMap<Ressource, Integer> ressources;
+	private Inventory inventory;
 	private final Deck deck;
 	private final ArrayList<Item> items;
 	
 	private Range damage;
 	
-	// for vilage quest
+	// for village quest
 	private int accomplishedQuest = 0;
-	
-	// for score
-	private final HashMap<String, Integer> ressourcePoint = new HashMap<>();
 
 	/*
 	 * Creation of the Player that contains:
@@ -38,7 +36,7 @@ public class Player extends AbstractEntity implements Serializable {
 	 * 	- A range for his damages
 	 * 	- And unique statistic of the player (statistic that cannot be used for a monster
 	 */	
-	private Player(int position, HashMap<String, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage) {
+	private Player(int position, HashMap<Ressource, Integer> ressources, Inventory inventory, Deck deck, ArrayList<Item> items, HashMap<String, Double> basicStats, Range damage) {
 		
 		super(basicStats, "Player");
 		this.position = position;
@@ -67,41 +65,12 @@ public class Player extends AbstractEntity implements Serializable {
 		addCard(Card.createCard("WheatFields"));
 		addCard(Card.createCard("Village"));
 		addCard(Card.createCard("Beacon"));
-		
-		ressourcePoint.put("Stable Branches", 3);
-		ressourcePoint.put("Stable Wood", 25);
-		ressourcePoint.put("Preserved Pebbles", 3);
-		ressourcePoint.put("Preserved Rock", 25);
-		ressourcePoint.put("Scrap Metal", 3);
-		ressourcePoint.put("Stable Metal", 25);
-		ressourcePoint.put("Ration", 3);
-		ressourcePoint.put("Food Supply", 25);
-		ressourcePoint.put("Orb of Expansion", 25);
-		ressourcePoint.put("Orb of Immortality", 100);
-		ressourcePoint.put("Memory Fragment", 3);
-		ressourcePoint.put("Book of Memories", 25);
-		ressourcePoint.put("Noticeable Change", 5);
-		ressourcePoint.put("Metamorphosis", 50);
-		ressourcePoint.put("Pitiful Remains", 10);
-		ressourcePoint.put("Orb of Afterlife", 100);
-		ressourcePoint.put("Time Shard", 15);
-		ressourcePoint.put("Astral Orb", 100);
-		ressourcePoint.put("Craft Fragment", 10);
-		ressourcePoint.put("Orb of Crafts", 100);
-		ressourcePoint.put("Living Fabric", 15);
-		ressourcePoint.put("Orb of Evolution", 100);
-		ressourcePoint.put("Shapeless Mass", 15);
-		ressourcePoint.put("Orb of Unity", 150);
-
-
-
-
 	}
 	
 	public Player(int position, HashMap<String, Double> basicStats, Range damage, int pureDamage, int counter, double regen, int damageToAll, double speed) {
 		this(position, new HashMap<>(), new Inventory(), new Deck(), new ArrayList<>(), basicStats, damage);
 		// Set all the stats of the player
-		this.addStat("hp", 200);
+		this.addStat("hp", 250);
 		this.addStat("hpMax", 250);
 		this.addStat("def", 0);
 		this.addStat("pureDamage", pureDamage);
@@ -129,95 +98,25 @@ public class Player extends AbstractEntity implements Serializable {
 	}
 	
 	
-	public void addRessource(String s, int n) { // adds n resources in the players "bag"
-		if (ressources.containsKey(s)) {
-			ressources.replace(s, ressources.get(s) + n);
-			if (s.equals("Preserved Pebbles") && ressources.get(s) == 10) {
-				ressources.replace(s, ressources.get(s) - 10);
-				if (ressources.containsKey("Preserved Rock"))
-					ressources.replace("Preserved Rock", ressources.get("Preserved Rock") + 1);
-				else
-					ressources.put("Preserved Rock", 1);
-			}
-			else if (s.equals("Stable Branches") && ressources.get(s) == 12) {
-				ressources.replace(s, ressources.get(s) - 12);
-				if (ressources.containsKey("Stable Wood"))
-					ressources.replace("Stable Wood", ressources.get("Stable Wood") + 1);
-				else
-					ressources.put("Stable Wood", 1);
-			}
-			else if (s.equals("Scrap Metal") && ressources.get(s) == 13) {
-				ressources.replace(s, ressources.get(s) - 13);
-				if (ressources.containsKey("Stable Metal"))
-					ressources.replace("Stable Metal", ressources.get("Stable Metal") + 1);
-				else
-					ressources.put("Stable Metal", 1);
-			}
-			else if (s.equals("Ration") && ressources.get(s) == 12) {
-				ressources.replace(s, ressources.get(s) - 12);
-				if (ressources.containsKey("Food Supply"))
-					ressources.replace("Food Supply", ressources.get("Food Supply") + 1);
-				else
-					ressources.put("Food Supply", 1);
-			}
-			else if (s.equals("Noticeable Change") && ressources.get(s) == 20) {
-				ressources.replace(s, ressources.get(s) - 20);
-				if (ressources.containsKey("Metamorphosis"))
-					ressources.replace("Metamorphosis", ressources.get("Metamorphosis") + 1);
-				else
-					ressources.put("Metamorphosis", 1);
-			}
-			else if (s.equals("Memory Fragment") && ressources.get(s) == 10) {
-				ressources.replace(s, ressources.get(s) - 10);
-				if (ressources.containsKey("Book of Memories"))
-					ressources.replace("Book of Memories", ressources.get("Book of Memories") + 1);
-				else
-					ressources.put("Book of Memories", 1);
-			}
-			else if (s.equals("Pitiful Remains") && ressources.get(s) == 10) {
-				ressources.replace(s, ressources.get(s) - 10);
-				if (ressources.containsKey("Orb of Afterlife"))
-					ressources.replace("Orb of Afterlife", ressources.get("Orb of Afterlife") + 1);
-				else
-					ressources.put("Orb of Afterlife", 1);
-			}
-			else if (s.equals("Time Shard") && ressources.get(s) == 10) {
-				ressources.replace(s, ressources.get(s) - 10);
-				if (ressources.containsKey("Astral Orb"))
-					ressources.replace("Astral Orb", ressources.get("Astral Orb") + 1);
-				else
-					ressources.put("Astral Orb", 1);
-			}
-			else if (s.equals("Craft Fragment") && ressources.get(s) == 10) {
-				ressources.replace(s, ressources.get(s) - 10);
-				if (ressources.containsKey("Orb of Crafts"))
-					ressources.replace("Orb of Craft", ressources.get("Orb of Craft") + 1);
-				else
-					ressources.put("Orb of Craft", 1);
-			}
-			else if (s.equals("Living Fabric") && ressources.get(s) == 10) {
-				ressources.replace(s, ressources.get(s) - 10);
-				if (ressources.containsKey("Orb of Evolution"))
-					ressources.replace("Orb of Evolution", ressources.get("Orb of Evolution") + 1);
-				else
-					ressources.put("Orb of Evolution", 1);
-			}
-			else if (ressources.get(s) == 10) {
-				ressources.replace(s, ressources.get(s) - 10);
-				if (ressources.containsKey("Orb of Unity"))
-					ressources.replace("Orb of Unity", ressources.get("Orb of Unity") + 1);
-				else
-					ressources.put("Orb of Unity", 1);
+	public void addRessource(Ressource r, int n) { // adds n resources in the players "bag"
+		
+		if (ressources.containsKey(r)) {
+			if (ressources.get(r) + n >= r.quantityToNext() && r.quantityToNext() != -1) {
+				ressources.put(r.next(), 1);
+				int difference = (ressources.get(r) + n) - r.quantityToNext();
+				ressources.put(r, difference);
+			} else {
+				ressources.replace(r, ressources.get(r) + n);
 			}
 		} else {
-			ressources.put(s, n);
-		}
-	}
+			ressources.put(r, n);
+		}	
+	} 
 	
 	public int getScore() {
 		int total = 0;
-		for (String r : ressources.keySet()) {
-			total += ressourcePoint.get(r) * ressources.get(r);
+		for (Ressource r : ressources.keySet()) {
+			total += r.points();
 		}
 		return total;
 	}
@@ -343,7 +242,7 @@ public class Player extends AbstractEntity implements Serializable {
 		return deck;
 	}
 	
-	public HashMap<String, Integer> ressources() { // get the resources of the player
+	public HashMap<Ressource, Integer> ressources() { // get the resources of the player
 		return ressources;
 	}
 	

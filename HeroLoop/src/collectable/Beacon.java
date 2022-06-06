@@ -6,13 +6,14 @@ import java.util.HashMap;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import time.TimeData;
 
 public class Beacon extends ZoneCard {
 
 	private static final long serialVersionUID = -622325475620958931L;
 
-	public Beacon(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,
+	public Beacon(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven,
 			GridPosition position, ArrayList<GridPosition> zone, HashMap<String, Double> boost,
 			ArrayList<String> spawnableMonsters, boolean diagonal, int dimension) {
 		super(cardStates, sprite, ressourcesGiven, position, zone, boost, spawnableMonsters, diagonal, dimension);

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import Battle.BattleData;
 import collectable.Card;
@@ -33,7 +34,7 @@ import time.TimeData;
 
 public class Main {
 	private final static Map m = new Map();
-	private static Player player = new Player(0, new HashMap<>(), new Range(20, 22), 0, 0, 0, 0, 1);
+	private static Player player = new Player(0, new HashMap<>(), new Range(4, 6), 0, 0, 0, 0, 1);
 	private static TimeData timeData = new TimeData();
 	private static GameData gameData = new GameData(m, timeData);
 	private static View view = new View(player, timeData, gameData);
@@ -237,7 +238,13 @@ public class Main {
 			doTimeAction(context);		
 			doEventAction(context);
 			view.drawScreen();
-			if (player.isDead()) {
+			if (player.isDead() || gameData.getLoopCount() == 2) {
+				view.drawEndScreen();
+				try {
+					TimeUnit.SECONDS.sleep(5);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				context.exit(0);
 				break;
 			}

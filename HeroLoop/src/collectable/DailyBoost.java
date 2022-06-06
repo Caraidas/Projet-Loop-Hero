@@ -7,6 +7,7 @@ import java.util.HashMap;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import time.TimeData;
 
 public class DailyBoost extends BoostCard implements Serializable {
@@ -17,7 +18,7 @@ public class DailyBoost extends BoostCard implements Serializable {
 	 * Effect that is apply on the player everyday
 	 */
 	
-	public DailyBoost(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, HashMap<String, Double> boost) {
+	public DailyBoost(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven, HashMap<String, Double> boost) {
 		super(cardStates, sprite, ressourcesGiven, boost);
 	}
 

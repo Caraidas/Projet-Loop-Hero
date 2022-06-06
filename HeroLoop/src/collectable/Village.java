@@ -7,6 +7,7 @@ import java.util.HashMap;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import time.TimeData;
 
 public class Village extends EnteringBoost implements Serializable {
@@ -18,7 +19,7 @@ public class Village extends EnteringBoost implements Serializable {
 	private static final long serialVersionUID = -2626588329519838811L;
 	private int healFactor = 1;
 
-	public Village(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,
+	public Village(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven,
 			HashMap<String, Double> boost) {
 		super(cardStates, sprite, ressourcesGiven, boost);
 	}
@@ -31,12 +32,12 @@ public class Village extends EnteringBoost implements Serializable {
 		
 		if (player.accomplishedQuest()) {
 			player.addAccomplishedQuest(-1);
-			System.out.println("bravo t'as reussi la quete ! ");
 			Item item = new Item();
 			item.setStats(gameData.getLoopCount() + 3);
 			player.addItemInInventory(item);
 		}	
-		gameData.spawnQuestMonster();
+
+		gameData.chooseQuestMonster();
 	}
 	
 	public void destroyFields(GameData gameData, GridPosition pos) { //When the village is removed with an oblivion, remove Wheatfield for Overgrown fields

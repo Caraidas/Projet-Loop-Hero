@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import map.Cell;
 import map.RoadCell;
 import time.TimeData;
@@ -14,7 +15,7 @@ public class OverGrownField extends SpawnCard implements Serializable {
 
 	private static final long serialVersionUID = 6269005917746217007L;
 
-	public OverGrownField(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,
+	public OverGrownField(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven,
 			int spawnFrequency, String spawnableMonster, int birthday, int moveWhenSpawn) {
 		super(cardStates, sprite, ressourcesGiven, spawnFrequency, spawnableMonster, birthday, moveWhenSpawn);
 	}

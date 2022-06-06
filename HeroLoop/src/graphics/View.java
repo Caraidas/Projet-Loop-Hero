@@ -17,6 +17,7 @@ import entities.Monster;
 import entities.Player;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.ScreenInfo;
+import inventory.Ressource;
 import map.Cell;
 import map.RoadCell;
 import time.TimeData;
@@ -406,7 +407,7 @@ public class View {
 		int i = 0;
 		for (Monster m : c.getEntities()) {
 			ImageConstructor mnstrImage = new ImageConstructor(
-					Path.of("ressources/Entities-Sprite/InBattle/monsters/" +  m.getSprite() +  m.battleState() + ".png"), -0.15, -0.15);
+					Path.of("ressources/Entities-Sprite/InBattle/monsters/" + m.getQuestMonster() +  m.getSprite() +  m.battleState() + ".png"), -0.15, -0.15);
 			drawImageInBattle(graphics, i, mnstrImage);
 			drawMonsterStat(graphics, i, m);
 			i++;
@@ -499,8 +500,8 @@ public class View {
 		
 		int i = 1;
 		graphics.setColor(Color.white);
-		for (String s : player.ressources().keySet()) {
-			String line = "¤ " + s + " : " + player.ressources().get(s);
+		for (Ressource r : player.ressources().keySet()) {
+			String line = "¤ " + r.name() + " : " + player.ressources().get(r);
 			graphics.drawString(line, (21 * caseSize) + 45, 200 + (i * 25));
 			i++;
 		}
@@ -537,6 +538,20 @@ public class View {
 			} else {
 				drawIntro(graphics);
 			}
+		});
+	}
+	
+	public void drawEndScreen() {
+		context.renderFrame(graphics -> {
+			graphics.setColor(Color.white);
+			graphics.setFont(new Font("TimesRoman", Font.BOLD, 40));
+			
+			ImageConstructor image = new ImageConstructor(Path.of("ressources/Utility-Sprite/bg.png"), width, height);
+			drawImage(graphics, 0, 0, image);
+			
+			graphics.drawString("Congrats !", (int)(width / 3) + caseSize * 3, (int)(height / 3));
+			graphics.setFont(new Font("TimesRoman", Font.BOLD, 30));
+			graphics.drawString("Score : " + player.getScore(), (int)(width / 3) + caseSize * 3 + 30, (int)(height / 3) + caseSize);
 		});
 	}
 

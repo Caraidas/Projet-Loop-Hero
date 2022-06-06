@@ -8,6 +8,7 @@ import java.util.Objects;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import time.TimeData;
 
 public class BoostCard extends AbstractCard implements Serializable {
@@ -15,7 +16,7 @@ public class BoostCard extends AbstractCard implements Serializable {
 	private static final long serialVersionUID = 1901361545726339994L;
 	private final HashMap<String, Double> boost;
 
-	public BoostCard(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven, HashMap<String, Double> boost) {
+	public BoostCard(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven, HashMap<String, Double> boost) {
 
 		super(cardStates, sprite, ressourcesGiven);
 		this.boost = boost;

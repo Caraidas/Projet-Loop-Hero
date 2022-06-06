@@ -103,8 +103,7 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 		}
 	}
 	
-	public void spawnQuestMonster() {
-		System.out.println("in spawnQuestMonster gd");
+	public void chooseQuestMonster() {
 		Random rand = new Random();
 		int n = rand.nextInt(33) + 1;
 		
@@ -117,15 +116,13 @@ public class GameData implements Serializable{ // Takes care of all the data in 
 			cell = ((RoadCell)map().getCell(g));
 		}
 		
-		if (cell.card() == null) {
-			System.out.println("in card == null");
-			System.out.println(cell.card());
-			cell.spawn(timeData.dayCount(), loopCount + 2, "Quest");
-		} else {
-			System.out.println("in card not null");
-			System.out.println(cell.card());
-			cell.card().spawn(g.line(), g.column(), this, timeData.dayCount() + 2, "Quest");
+		if (cell.hasNoMonsters()) {
+			System.out.println("in has no monsters");
+			cell.spawn(timeData.dayCount(), loopCount, "Quest");
 		}
+		
+		n = rand.nextInt(cell.getEntities().size());
+		cell.getEntities().get(n).boostQuest();
 	}
 	
 	public void generateGameBoard() throws IOException {

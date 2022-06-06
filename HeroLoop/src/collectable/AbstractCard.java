@@ -6,6 +6,7 @@ import java.util.Objects;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import map.Cell;
 
 public abstract class AbstractCard implements Card {
@@ -13,9 +14,9 @@ public abstract class AbstractCard implements Card {
 	private static final long serialVersionUID = 3376995241453595011L;
 	private final ArrayList<CardState> cardStates;
 	private final String sprite;
-	private final ArrayList<String> ressourcesGiven;
+	private final ArrayList<Ressource> ressourcesGiven;
 	
-	public AbstractCard(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven) {
+	public AbstractCard(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven) {
 		super();
 		this.cardStates = Objects.requireNonNull(cardStates);
 		this.sprite = Objects.requireNonNull(sprite);
@@ -57,7 +58,7 @@ public abstract class AbstractCard implements Card {
 	
 	@Override
 	public void giveRessource(Player player) { // get the resources give to the player
-		for (String r : ressourcesGiven) {
+		for (Ressource r : ressourcesGiven) {
 			player.addRessource(r, 3);
 		}
 	}

@@ -6,13 +6,14 @@ import java.util.HashMap;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import time.TimeData;
 
 public class CampFire extends EnteringBoost {
 
 	private static final long serialVersionUID = 1707661259165489194L;
 
-	public CampFire(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven,
+	public CampFire(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven,
 			HashMap<String, Double> boost) {
 		super(cardStates, sprite, ressourcesGiven, boost);
 	}

@@ -11,6 +11,7 @@ import entities.Entity;
 import entities.Monster;
 import entities.Player;
 import graphics.View;
+import inventory.Ressource;
 import map.Cell;
 import map.RoadCell;
 import time.TimeData;
@@ -170,7 +171,7 @@ public class BattleData { // this class takes care of all the battle related ope
 		
 		Random rand = new Random();
 		
-		for (String ressource : monster.dropableRessources()) { // Resource loots
+		for (Ressource ressource : monster.dropableRessources()) { // Resource loots
 			player.addRessource(ressource, 3);
 		}
 		

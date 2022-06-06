@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import map.Cell;
 import time.TimeData;
 
@@ -17,7 +18,7 @@ public class Oblivion extends AbstractCard implements Serializable {
 
 	private static final long serialVersionUID = 5974450512998092940L;
 
-	public Oblivion(ArrayList<CardState> cardStates, String sprite, ArrayList<String> ressourcesGiven) {
+	public Oblivion(ArrayList<CardState> cardStates, String sprite, ArrayList<Ressource> ressourcesGiven) {
 		super(cardStates, sprite, ressourcesGiven);
 	}
 

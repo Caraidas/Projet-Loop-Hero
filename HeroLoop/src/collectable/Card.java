@@ -7,6 +7,7 @@ import java.util.HashMap;
 import data.GameData;
 import data.GridPosition;
 import entities.Player;
+import inventory.Ressource;
 import time.TimeData;
 
 public interface Card extends Serializable {
@@ -31,10 +32,10 @@ public interface Card extends Serializable {
 		case "Rock":
 			ArrayList<CardState> c = new ArrayList<>();
 			HashMap<String, Double> stats = new HashMap<>();
-			ArrayList<String> lst = new ArrayList<>();
+			ArrayList<Ressource> lst = new ArrayList<>();
 			c.add(CardState.LANDSCAPE);
 			stats.put("hpMax", 0.01);
-			lst.add("Pebble");
+			lst.add(new Ressource("Preserved Pebbles", new Ressource("Preserved Rock", null, -1, 25), 10, 3));
 			BoostCard rock = new BoostCard(c, "Rock.png", lst, stats);
 			
 			return rock;
@@ -53,8 +54,8 @@ public interface Card extends Serializable {
 			c = new ArrayList<>();
 			lst = new ArrayList<>();
 			c.add(CardState.ROAD);
-			lst.add("Preserved Pebbles");
-			lst.add("Memory Fragment");
+			lst.add(new Ressource("Preserved Pebbles", new Ressource("Preserved Rock", null, -1, 25), 10, 3));
+			lst.add(new Ressource("Memory Fragment", new Ressource("Book of Memories", null, -1, 25), 10, 3));
 			SpawnCard cemetery = new SpawnCard(c, "Cemetery.png", lst, 3, "Skeleton", 0, 0);
 			
 			return cemetery;
@@ -63,7 +64,7 @@ public interface Card extends Serializable {
 			c = new ArrayList<>();
 			lst = new ArrayList<>();
 			c.add(CardState.ROAD);
-			lst.add("Stable Branches");
+			lst.add(new Ressource("Stable Branches", new Ressource("Stable Wood", null, -1, 25), 12, 3));
 			SpawnCard grove = new SpawnCard(c, "Grove.png", lst, 2, "RatWolf", 0, 1);
 			
 			return grove;
@@ -96,26 +97,28 @@ public interface Card extends Serializable {
 			
 		case "VampireMansion":
 			c = new ArrayList<>();
+			ArrayList<String> monsters = new ArrayList<>();
+			monsters.add("Vampire");
 			lst = new ArrayList<>();
-			lst.add("Vampire");
 			c.add(CardState.ROADSIDE);
 			stats = new HashMap<>();
 			stats.put("vampirism", 10.0);
 			ZoneCard vampireMansion = new ZoneCard(c, "VampireMansion.png", lst, new GridPosition(0, 0), new ArrayList<>(), 
-					stats, lst, true, 1);
+					stats, monsters, true, 1);
 			
 			return vampireMansion;
 			
 		case "Battlefield":
 			c = new ArrayList<>();
+			monsters = new ArrayList<>();
+			monsters.add("Chest");
+			monsters.add("Mimic");
 			lst = new ArrayList<>();
-			lst.add("Chest");
-			lst.add("Mimic");
 			c.add(CardState.ROADSIDE);
 			stats = new HashMap<>();
 			stats.put("undead", 50.0);
 			BattleField battleField = new BattleField(c, "Battlefield.png", lst, new GridPosition(0, 0), new ArrayList<>(), 
-					stats, lst, true, 1, "BloodPath");
+					stats, monsters, true, 1, "BloodPath");
 			
 			return battleField;
 			
@@ -156,11 +159,12 @@ public interface Card extends Serializable {
 		case "Beacon":
 			c = new ArrayList<>();
 			lst = new ArrayList<>();
+			monsters = new ArrayList<>();
 			c.add(CardState.LANDSCAPE);
 			stats = new HashMap<>();
 			stats.put("speed", 39.0);
 			Beacon beacon = new Beacon(c, "Beacon.png", lst, new GridPosition(0, 0), new ArrayList<>(), 
-					stats, lst, false, 3);
+					stats, monsters, false, 3);
 			
 			return beacon;
 			
