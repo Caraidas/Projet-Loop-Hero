@@ -238,7 +238,7 @@ public class Main {
 			doTimeAction(context);		
 			doEventAction(context);
 			view.drawScreen();
-			if (player.isDead() || gameData.getLoopCount() == 2) {
+			if (player.isDead() || gameData.getLoopCount() == 9) {
 				view.drawEndScreen();
 				try {
 					TimeUnit.SECONDS.sleep(5);
